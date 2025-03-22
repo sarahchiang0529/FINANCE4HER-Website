@@ -33,3 +33,11 @@
 .result-block-container .result-block {
   opacity: 1;
 }
+
+body, html, #app {
+  background-color: #65318F;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #E9D436; /* Ensure text color is readable */
+}

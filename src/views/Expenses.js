@@ -22,9 +22,14 @@ const Expenses = () => {
     };
 
     return (
-        <div className="expenses-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="expenses-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#65318F', color: '#E9D436', minHeight: '100vh' }}>
             <h1>Expenses</h1>
-            <div className="controls" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+            
+            <div className="chart-container" style={{ width: '50%', height: '300px',marginTop:'50px', color: '#E9D436' }}>
+                <ChartComponent data={data} />
+            </div>
+            
+            <div className="controls" style={{ display: 'flex', justifyContent: 'center', paddingTop: '75px' }}>
                 <label style={{ marginRight: '10px' }}>
                     Month:
                     <select value={selectedMonth} onChange={handleMonthChange}>
@@ -46,22 +51,19 @@ const Expenses = () => {
                     </select>
                 </label>
             </div>
-            <div className="chart-container" style={{ width: '50%', height: '300px' }}>
-                <ChartComponent data={data} />
-            </div>
-            <div className="table-container" style={{ width: '50%', marginTop: '20px' }}>
-                <table className="expenses-table" style={{ width: '100%' }}>
+            <div className="table-container" style={{ width: '50%' }}>
+                <table className="expenses-table" style={{ width: '100%', color: '#E9D436', fontWeight: 'bold' }}>
                     <thead>
                         <tr>
                             <th>Category</th>
-                            <th>Value (in dollars)</th>
+                            <th>Value</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.category}</td>
-                                <td>{item.value}</td>
+                                <td>${item.value}</td>
                             </tr>
                         ))}
                     </tbody>
