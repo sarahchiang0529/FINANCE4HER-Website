@@ -24,6 +24,28 @@ const ChartComponent = ({ data }) => {
         "rgba(255, 205, 86, 0.5)",
     ];
 
+    const totalValue = data.reduce((acc, item) => acc + item.value, 0);
+
+    const centerTextPlugin = {
+        id: 'centerText',
+        beforeDraw: (chart) => {
+            const { width, height, ctx } = chart;
+            ctx.restore();
+            const fontSize = (height / 114).toFixed(2);
+            ctx.font = `${fontSize}em sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const text = totalValue.toString();
+            const textY = height / 2;
+            const textX = width / 2;
+            ctx.fillStyle = '#E9D436';
+            ctx.fillText(`$${text}`, textX, textY + 10);
+            ctx.save();
+        }
+    };
+
+    ChartJS.register(centerTextPlugin);
+
     const chartData = {
         labels: data.map(item => item.category),
         datasets: [
@@ -38,13 +60,14 @@ const ChartComponent = ({ data }) => {
     };
     const options = {
         responsive: true,
-        maintainAspectRatio: false, // Add this line to allow the chart to resize properly
+        maintainAspectRatio: false, 
         plugins: {
             legend: {
-                position: "right",
+                position: "top",
                 labels: {
                     usePointStyle: true,
                     pointStyle: 'circle',
+                    color: '#E9D436'
                 },
             },
             title: {
@@ -52,7 +75,7 @@ const ChartComponent = ({ data }) => {
                 text: "Expenses Chart",
             },
         },
-        cutout: "70%", // Increased cutout percentage to make the donut thinner
+        cutout: "70%",
     };
 
     const chartContainerStyle = {

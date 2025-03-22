@@ -22,15 +22,14 @@ const Expenses = () => {
     };
 
     return (
-        <div className="expenses-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#65318F', color: '#E9D436', minHeight: '100vh' }}>
+        <div className="expenses-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#65318F', color: '#E9D436', minHeight: '100vh' }}>
             <h1>Expenses</h1>
-            
-            <div className="chart-container" style={{ width: '50%', height: '300px',marginTop:'50px', color: '#E9D436' }}>
+            <div className="chart-container" style={{ width: '50%', height: '300px', marginTop: '50px', color: '#E9D436' }}>
                 <ChartComponent data={data} />
             </div>
             
-            <div className="controls" style={{ display: 'flex', justifyContent: 'center', paddingTop: '75px' }}>
-                <label style={{ marginRight: '10px' }}>
+            <div className="controls" style={{ display: 'flex', textAlign:'left',justifyContent: 'left', paddingTop: '75px' }}>
+                <label style={{ marginRight: '0px' }}>
                     Month:
                     <select value={selectedMonth} onChange={handleMonthChange}>
                         {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((month) => (
@@ -51,8 +50,8 @@ const Expenses = () => {
                     </select>
                 </label>
             </div>
-            <div className="table-container" style={{ width: '50%' }}>
-                <table className="expenses-table" style={{ width: '100%', color: '#E9D436', fontWeight: 'bold' }}>
+            <div className="table-container" style={{ width: '50%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                <table className="expenses-table" style={{ width: '65%', color: '#E9D436', fontWeight: 'bold', textAlign: 'left' }}>
                     <thead>
                         <tr>
                             <th>Category</th>
