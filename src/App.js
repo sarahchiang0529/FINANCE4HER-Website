@@ -8,8 +8,10 @@ import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
 import ExternalApi from "./views/ExternalApi";
+import NameForm from "./components/NameForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
+import Expenses from "./views/Expenses";
 
 // styles
 import "./App.css";
@@ -38,6 +40,8 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
             <Route path="/external-api" component={ExternalApi} />
+            <Route path="/name-form" component={NameForm} />
+            <Route path="/expenses" component={Expenses} />
           </Switch>
         </Container>
         <Footer />
