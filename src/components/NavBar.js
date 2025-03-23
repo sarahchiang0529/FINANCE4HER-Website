@@ -19,6 +19,8 @@ import {
 } from "reactstrap";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import NameForm from "./NameForm";
+import ChartComponent from "./ChartComponent"; // Import the ChartComponent
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +66,30 @@ const NavBar = () => {
                     activeClassName="router-link-exact-active"
                   >
                     External API
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/name-form"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Name Form
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/chart"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Chart
                   </NavLink>
                 </NavItem>
               )}
