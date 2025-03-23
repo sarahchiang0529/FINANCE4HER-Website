@@ -1,5 +1,6 @@
 import React from 'react';
 import ChartComponent from '../components/ChartComponent'; // Adjust the path as necessary
+import Dropdown from '../components/Dropdown'; 
 //import './Expenses.css'; // Import the CSS file
 
 const data = [
@@ -38,24 +39,10 @@ const Income = () => {
             
             <div className="controls" style={{ display: 'flex', textAlign:'left', justifyContent: 'left', paddingTop: '75px' }}>
                 <label style={{ marginRight: '10px' }}>
-                    Month:
-                    <select value={selectedMonth} onChange={handleMonthChange}>
-                        {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((month) => (
-                            <option key={month} value={month}>
-                                {month}
-                            </option>
-                        ))}
-                    </select>
+                    <Dropdown value={selectedMonth} onChange={handleMonthChange} options={['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']} />
                 </label>
                 <label style={{ marginLeft: '10px' }}>
-                    Year:
-                    <select value={selectedYear} onChange={handleYearChange}>
-                        {[2021, 2022, 2023, 2024, 2025].map((year) => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
+                    <Dropdown value={selectedYear} onChange={handleYearChange} options={[2021, 2022, 2023, 2024, 2025]} />
                 </label>
             </div>
             <div className="table-container" style={{ width: '50%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
