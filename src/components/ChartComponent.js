@@ -33,9 +33,11 @@ const ChartComponent = ({ data }) => {
             ctx.restore();
             const fontSize = (height / 114).toFixed(2);
             ctx.font = `${fontSize}em sans-serif`;
+            const formattedTotalValue = totalValue.toFixed(2);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            const text = totalValue.toString();
+            const text = formattedTotalValue.toString();
+            // const textX = Math.round((width - ctx.measureText(text).width) / 2);
             const textY = height / 2;
             const textX = width / 2;
             ctx.fillStyle = '#E9D436';
