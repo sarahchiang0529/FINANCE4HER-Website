@@ -22,14 +22,22 @@ const Expenses = () => {
     };
 
     return (
-        <div className="expenses-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#65318F', color: '#E9D436', minHeight: '100vh' }}>
-            <h1>Expenses</h1>
+        <div className="expenses-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#65318F', color: '#E9D436', minHeight: '100vh', paddingLeft: '40px', paddingRight: '40px' }}>
+            <h1>Expense</h1>
+            <div className="tab-switch" style={{ padding:'3px' ,marginTop:'20px',marginBottom: '20px', display: 'flex', borderRadius: '25px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', backgroundColor: '#FFFFFF' }}>
+                <button onClick={() => window.location.href = '/expenses'} style={{ borderRadius: '25px', flex: 1, padding: '10px 40px', backgroundColor: window.location.pathname === '/expenses' ? '#65318F' : '#FFFFFF', color: window.location.pathname === '/expenses' ? '#FFFFFF' : '#65318F', border: 'none', cursor: 'pointer' }}>
+                    Expense
+                </button>
+                <button onClick={() => window.location.href = '/income'} style={{ borderRadius: '25px', flex: 1, padding: '10px 40px', backgroundColor: window.location.pathname === '/income' ? '#65318F' : '#FFFFFF', color: window.location.pathname === '/income' ? '#FFFFFF' : '#65318F', border: 'none', cursor: 'pointer' }}>
+                    Income
+                </button>
+            </div>
             <div className="chart-container" style={{ width: '50%', height: '300px', marginTop: '50px', color: '#E9D436' }}>
                 <ChartComponent data={data} />
             </div>
             
-            <div className="controls" style={{ display: 'flex', textAlign:'left',justifyContent: 'left', paddingTop: '75px' }}>
-                <label style={{ marginRight: '0px' }}>
+            <div className="controls" style={{ display: 'flex', textAlign:'left', justifyContent: 'left', paddingTop: '75px' }}>
+                <label style={{ marginRight: '10px' }}>
                     Month:
                     <select value={selectedMonth} onChange={handleMonthChange}>
                         {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((month) => (
@@ -39,7 +47,7 @@ const Expenses = () => {
                         ))}
                     </select>
                 </label>
-                <label>
+                <label style={{ marginLeft: '10px' }}>
                     Year:
                     <select value={selectedYear} onChange={handleYearChange}>
                         {[2021, 2022, 2023, 2024, 2025].map((year) => (
@@ -62,7 +70,7 @@ const Expenses = () => {
                         {data.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.category}</td>
-                                <td>${item.value}</td>
+                                <td>${item.value.toFixed(2)}</td>
                             </tr>
                         ))}
                     </tbody>

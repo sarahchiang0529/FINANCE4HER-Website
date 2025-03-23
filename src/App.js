@@ -12,6 +12,7 @@ import NameForm from "./components/NameForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 import Expenses from "./views/Expenses";
+import Income from "./views/Income";
 
 // styles
 import "./App.css";
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/external-api" component={ExternalApi} />
             <Route path="/name-form" component={NameForm} />
             <Route path="/expenses" component={Expenses} />
+            <Route path="/income" component={Income} />
           </Switch>
         </Container>
         <Footer />
