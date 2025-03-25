@@ -13,6 +13,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 import Expenses from "./views/Expenses";
 import Income from "./views/Income";
+import Dashboard from "./views/Dashboard";
 
 // styles
 import "./App.css";
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="/name-form" component={NameForm} />
             <Route path="/expenses" component={Expenses} />
             <Route path="/income" component={Income} />
+            <Route path="/dashboard" component={Dashboard} />
           </Switch>
         </Container>
         <Footer />

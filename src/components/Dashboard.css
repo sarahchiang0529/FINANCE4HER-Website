@@ -1,0 +1,49 @@
+.label {
+    height: 137px;
+    width: 100%;
+  }
+  
+  .label .text-wrapper {
+    color: #dda1d6;
+    font-family: "Inter-ExtraBold", Helvetica;
+    font-size: 96px;
+    font-weight: 800;
+    height: 137px;
+    left: 40;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative; 
+    text-align: center;
+    top: 30;
+    width: 100%;
+  }
+
+  .custom-btn {
+    background-color: #dda1d6 !important;
+    color: #3c0061 !important;
+    height: 60px !important;
+
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  
+
+  
+  

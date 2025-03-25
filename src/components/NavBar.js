@@ -21,6 +21,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import NameForm from "./NameForm";
 import ChartComponent from "./ChartComponent"; // Import the ChartComponent
+import Dashboard from "../views/Dashboard";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,6 +91,18 @@ const NavBar = () => {
                     activeClassName="router-link-exact-active"
                   >
                     Chart
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/dashboard"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Dashboard
                   </NavLink>
                 </NavItem>
               )}
