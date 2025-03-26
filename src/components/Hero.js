@@ -1,6 +1,6 @@
 import React from "react";
 
-import logo from "../assets/logo1.png";
+import logo from "../assets/logos/logo1.png";
 
 const Hero = () => (
   <div className="text-center hero my-5">

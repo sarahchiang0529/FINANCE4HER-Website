@@ -17,7 +17,10 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { useAuth0 } from "@auth0/auth0-react";
-import logo from "../assets/logo1.png"; // Example: your uploaded logo
+import logo from "../assets/logos/logo1.png";
+import NameForm from "./NameForm";
+import ChartComponent from "./ChartComponent"; // Import the ChartComponent
+import Dashboard from "../views/Dashboard";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
