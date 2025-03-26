@@ -10,7 +10,9 @@ import Profile from "./views/Profile";
 import ExternalApi from "./views/ExternalApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
-
+import Expenses from "./views/Expenses";
+import Income from "./views/Income";
+import Dashboard from "./views/Dashboard";
 import LearningResources from "./views/LearningResources";
 
 // styles
@@ -40,6 +42,10 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
             <Route path="/external-api" component={ExternalApi} />
+            <Route path="/name-form" component={NameForm} />
+            <Route path="/expenses" component={Expenses} />
+            <Route path="/income" component={Income} />
+            <Route path="/dashboard" component={Dashboard} />
             <Route path="/learning-resources" component={LearningResources} />
           </Switch>
         </Container>

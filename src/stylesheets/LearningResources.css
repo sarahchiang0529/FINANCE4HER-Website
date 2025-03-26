@@ -1,0 +1,43 @@
+.desktop-5-learning-resources {
+    background: #65318f;
+    min-height: 100vh; /* or 1024px if you prefer a fixed height */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  /* Container to hold the four squares side by side */
+  .squares-container {
+    display: flex;
+    gap: 2rem;           /* spacing between squares */
+    padding: 2rem;       /* outer padding from the purple background */
+  }
+  
+  /* Each pink box */
+  .rectangle {
+    background: #dda1d6;
+    border-radius: 20px;
+    width: 309px;
+    height: 388px;
+  
+    /* 
+      Use flex to center the title horizontally, 
+      and place it at the top with some padding
+    */
+    display: flex;
+    align-items: flex-start; 
+    justify-content: center;
+    padding-top: 1.5rem; /* push the title down from the top edge */
+    position: relative;
+  }
+  
+  /* The text inside the pink box, near the top center */
+  .rectangle-title {
+    font-family: "Inter-SemiBold", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    text-align: center;
+  }
+  

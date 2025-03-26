@@ -29,7 +29,7 @@ const NavBar = () => {
     logout({
       logoutParams: {
         returnTo: window.location.origin,
-      },
+      }
     });
 
   return (
@@ -74,30 +74,64 @@ const NavBar = () => {
               </NavItem>
 
               {isAuthenticated && (
-                <>
-                  <NavItem>
-                    <NavLink
-                      tag={RouterNavLink}
-                      to="/external-api"
-                      exact
-                      activeClassName="router-link-exact-active"
-                      style={{ color: "#fff", fontFamily: "Inter-SemiBold, sans-serif" }}
-                    >
-                      External API
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      tag={RouterNavLink}
-                      to="/learning-resources"
-                      exact
-                      activeClassName="router-link-exact-active"
-                      style={{ color: "#fff", fontFamily: "Inter-SemiBold, sans-serif" }}
-                    >
-                      Learning Resources
-                    </NavLink>
-                  </NavItem>
-                </>
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/external-api"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    External API
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/name-form"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Name Form
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/chart"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Chart
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/dashboard"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Dashboard
+                  </NavLink>
+                </NavItem>
+              )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/learning-resources"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Learning Resources
+                  </NavLink>
+                </NavItem>
               )}
             </Nav>
 

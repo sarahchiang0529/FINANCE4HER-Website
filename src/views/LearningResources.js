@@ -1,19 +1,24 @@
-import "./Desktop5LearningResources.css";
+import "../stylesheets/LearningResources.css";
 
-export const Desktop5LearningResources = ({ className, ...props }) => {
+export const LearningResources = () => {
   return (
-    <div className={"desktop-5-learning-resources " + className}>
-
-      <div className="rectangle-236"></div>
-      <div className="rectangle-239"></div>
-      <div className="rectangle-237"></div>
-      <div className="rectangle-238"></div>
-      <div className="suggested-services">Suggested Services </div>
-      <div className="investing-tips">Investing Tips </div>
-      <div className="daily-tutorial">Daily Tutorial </div>
-      <div className="saving-tips">Saving Tips </div>
+    <div className="desktop-5-learning-resources">
+      <div className="squares-container">
+        <div className="rectangle">
+          <div className="rectangle-title">Suggested Services</div>
+        </div>
+        <div className="rectangle">
+          <div className="rectangle-title">Investing Tips</div>
+        </div>
+        <div className="rectangle">
+          <div className="rectangle-title">Daily Tutorial</div>
+        </div>
+        <div className="rectangle">
+          <div className="rectangle-title">Saving Tips</div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Desktop5LearningResources;
+export default LearningResources;
