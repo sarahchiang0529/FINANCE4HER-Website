@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./NameForm.css"; // Import the CSS file for styling
+import "../stylesheets/NameForm.css"; // Import the CSS file for styling
 
 const NameForm = () => {
   const [firstName, setFirstName] = useState("");

@@ -1,5 +1,5 @@
 import React from "react";
-import "../components/Dashboard.css";
+import "../stylesheets/Dashboard.css";
 import { Box, Button } from '@mui/material';
 import { white } from '@mui/material/colors';
 

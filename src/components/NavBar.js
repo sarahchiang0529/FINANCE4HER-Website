@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import {
   Collapse,
   Container,
@@ -17,47 +16,66 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-
 import { useAuth0 } from "@auth0/auth0-react";
+import logo from "../assets/logos/logo1.png";
 import NameForm from "./NameForm";
 import ChartComponent from "./ChartComponent"; // Import the ChartComponent
 import Dashboard from "../views/Dashboard";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    user,
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-  } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
   const toggle = () => setIsOpen(!isOpen);
 
   const logoutWithRedirect = () =>
     logout({
-        logoutParams: {
-          returnTo: window.location.origin,
-        }
+      logoutParams: {
+        returnTo: window.location.origin,
+      }
     });
 
   return (
     <div className="nav-container">
-      <Navbar color="light" light expand="md" container={false}>
-        <Container>
-          <NavbarBrand className="logo" />
+      {/* Dark variant helps ensure toggler and text can be white */}
+      <Navbar style={{ backgroundColor: "#65318f" }} dark expand="md">
+        {/* 
+          Use fluid if you want the container to stretch the full width,
+          or remove 'fluid' to use the default fixed-width container 
+        */}
+        <Container fluid>
+          {/* Logo on the left */}
+          <NavbarBrand href="/" className="d-flex align-items-center">
+            {/* Adjust size as needed */}
+            <img
+              src={logo}
+              alt="App Logo"
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                marginRight: "0.75rem",
+              }}
+            />
+          </NavbarBrand>
+
           <NavbarToggler onClick={toggle} />
+
           <Collapse isOpen={isOpen} navbar>
-            <Nav className="mr-auto" navbar>
+            {/* Left side links */}
+            <Nav navbar className="me-auto">
               <NavItem>
                 <NavLink
                   tag={RouterNavLink}
                   to="/"
                   exact
                   activeClassName="router-link-exact-active"
+                  style={{ color: "#fff", fontFamily: "Inter-SemiBold, sans-serif" }}
                 >
                   Home
                 </NavLink>
               </NavItem>
+
               {isAuthenticated && (
                 <NavItem>
                   <NavLink
@@ -106,13 +124,28 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/learning-resources"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Learning Resources
+                  </NavLink>
+                </NavItem>
+              )}
             </Nav>
-            <Nav className="d-none d-md-block" navbar>
+
+            {/* Right side: Login or Profile */}
+            <Nav navbar className="ms-auto">
               {!isAuthenticated && (
                 <NavItem>
                   <Button
                     id="qsLoginBtn"
-                    color="primary"
+                    color="light"
+                    outline
                     className="btn-margin"
                     onClick={() => loginWithRedirect()}
                   >
@@ -120,17 +153,18 @@ const NavBar = () => {
                   </Button>
                 </NavItem>
               )}
+
               {isAuthenticated && (
                 <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret id="profileDropDown">
+                  <DropdownToggle nav caret>
                     <img
                       src={user.picture}
                       alt="Profile"
                       className="nav-user-profile rounded-circle"
-                      width="50"
+                      width="40"
                     />
                   </DropdownToggle>
-                  <DropdownMenu>
+                  <DropdownMenu right>
                     <DropdownItem header>{user.name}</DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
@@ -140,69 +174,13 @@ const NavBar = () => {
                     >
                       <FontAwesomeIcon icon="user" className="mr-3" /> Profile
                     </DropdownItem>
-                    <DropdownItem
-                      id="qsLogoutBtn"
-                      onClick={() => logoutWithRedirect()}
-                    >
-                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
-                      out
+                    <DropdownItem id="qsLogoutBtn" onClick={logoutWithRedirect}>
+                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Log out
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
             </Nav>
-            {!isAuthenticated && (
-              <Nav className="d-md-none" navbar>
-                <NavItem>
-                  <Button
-                    id="qsLoginBtn"
-                    color="primary"
-                    block
-                    onClick={() => loginWithRedirect({})}
-                  >
-                    Log in
-                  </Button>
-                </NavItem>
-              </Nav>
-            )}
-            {isAuthenticated && (
-              <Nav
-                className="d-md-none justify-content-between"
-                navbar
-                style={{ minHeight: 170 }}
-              >
-                <NavItem>
-                  <span className="user-info">
-                    <img
-                      src={user.picture}
-                      alt="Profile"
-                      className="nav-user-profile d-inline-block rounded-circle mr-3"
-                      width="50"
-                    />
-                    <h6 className="d-inline-block">{user.name}</h6>
-                  </span>
-                </NavItem>
-                <NavItem>
-                  <FontAwesomeIcon icon="user" className="mr-3" />
-                  <RouterNavLink
-                    to="/profile"
-                    activeClassName="router-link-exact-active"
-                  >
-                    Profile
-                  </RouterNavLink>
-                </NavItem>
-                <NavItem>
-                  <FontAwesomeIcon icon="power-off" className="mr-3" />
-                  <RouterNavLink
-                    to="#"
-                    id="qsLogoutBtn"
-                    onClick={() => logoutWithRedirect()}
-                  >
-                    Log out
-                  </RouterNavLink>
-                </NavItem>
-              </Nav>
-            )}
           </Collapse>
         </Container>
       </Navbar>
