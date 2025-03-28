@@ -14,6 +14,7 @@ import history from "./utils/history";
 import Expenses from "./views/Expenses";
 import Income from "./views/Income";
 import Dashboard from "./views/Dashboard";
+import SavingGoal from "./views/SavingGoal";
 import LearningResources from "./views/LearningResources";
 
 // styles
@@ -47,7 +48,6 @@ const App = () => {
             <Route path="/expenses" component={Expenses} />
             <Route path="/income" component={Income} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/learning-resources" component={LearningResources} />
           </Switch>
         </Container>
         <Footer />
