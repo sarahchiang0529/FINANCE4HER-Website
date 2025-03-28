@@ -19,7 +19,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import logo from "../assets/logos/logo1.png";
 import NameForm from "./NameForm";
-import ChartComponent from "./ChartComponent"; // Import the ChartComponent
+import ChartComponent from "./ChartComponent";
 import Dashboard from "../views/Dashboard";
 
 const NavBar = () => {
@@ -32,21 +32,33 @@ const NavBar = () => {
     logout({
       logoutParams: {
         returnTo: window.location.origin,
-      }
+      },
     });
 
   return (
     <div className="nav-container">
-      {/* Dark variant helps ensure toggler and text can be white */}
-      <Navbar style={{ backgroundColor: "#65318f" }} dark expand="md">
+      <Navbar
+        dark
+        expand="md"
+        style={{
+          backgroundColor: "#3e1c66",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         {/* 
-          Use fluid if you want the container to stretch the full width,
-          or remove 'fluid' to use the default fixed-width container 
+          You can also apply display:flex; alignItems:center; on the Container 
+          if needed, but typically doing it on the Navbar is enough. 
         */}
-        <Container fluid>
-          {/* Logo on the left */}
-          <NavbarBrand href="/" className="d-flex align-items-center">
-            {/* Adjust size as needed */}
+        <Container
+          fluid
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {/* Logo on the left, aligned center with the nav items */}
+          <NavbarBrand href="/" className="d-flex align-items-center" style={{ marginBottom: 0 }}>
             <img
               src={logo}
               alt="App Logo"
@@ -62,15 +74,18 @@ const NavBar = () => {
           <NavbarToggler onClick={toggle} />
 
           <Collapse isOpen={isOpen} navbar>
-            {/* Left side links */}
-            <Nav navbar className="me-auto">
+            {/* All nav items on the right */}
+            <Nav navbar style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
               <NavItem>
                 <NavLink
                   tag={RouterNavLink}
                   to="/"
                   exact
                   activeClassName="router-link-exact-active"
-                  style={{ color: "#fff", fontFamily: "Inter-SemiBold, sans-serif" }}
+                  style={{
+                    color: "#f2ede9",
+                    fontFamily: "Inter-SemiBold, sans-serif",
+                  }}
                 >
                   Home
                 </NavLink>
@@ -83,6 +98,7 @@ const NavBar = () => {
                     to="/external-api"
                     exact
                     activeClassName="router-link-exact-active"
+                    style={{ color: "#f2ede9" }}
                   >
                     External API
                   </NavLink>
@@ -95,6 +111,7 @@ const NavBar = () => {
                     to="/name-form"
                     exact
                     activeClassName="router-link-exact-active"
+                    style={{ color: "#f2ede9" }}
                   >
                     Name Form
                   </NavLink>
@@ -107,6 +124,7 @@ const NavBar = () => {
                     to="/chart"
                     exact
                     activeClassName="router-link-exact-active"
+                    style={{ color: "#f2ede9" }}
                   >
                     Chart
                   </NavLink>
@@ -119,6 +137,7 @@ const NavBar = () => {
                     to="/dashboard"
                     exact
                     activeClassName="router-link-exact-active"
+                    style={{ color: "#f2ede9" }}
                   >
                     Dashboard
                   </NavLink>
@@ -131,15 +150,13 @@ const NavBar = () => {
                     to="/learning-resources"
                     exact
                     activeClassName="router-link-exact-active"
+                    style={{ color: "#f2ede9" }}
                   >
                     Learning Resources
                   </NavLink>
                 </NavItem>
               )}
-            </Nav>
 
-            {/* Right side: Login or Profile */}
-            <Nav navbar className="ms-auto">
               {!isAuthenticated && (
                 <NavItem>
                   <Button
