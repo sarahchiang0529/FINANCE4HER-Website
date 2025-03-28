@@ -104,7 +104,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
-              {isAuthenticated && (
+                            {isAuthenticated && (
                 <NavItem>
                   <NavLink
                     tag={RouterNavLink}
@@ -117,6 +117,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
+
               {isAuthenticated && (
                 <NavItem>
                   <NavLink
@@ -130,6 +131,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
+
               {isAuthenticated && (
                 <NavItem>
                   <NavLink
@@ -143,6 +145,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
+
               {isAuthenticated && (
                 <NavItem>
                   <NavLink
@@ -153,6 +156,20 @@ const NavBar = () => {
                     style={{ color: "#f2ede9" }}
                   >
                     Learning Resources
+                  </NavLink>
+                </NavItem>
+              )}
+
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/saving-goals"
+                    exact
+                    activeClassName="router-link-exact-active"
+                    style={{ color: "#f2ede9" }}
+                  >
+                    Saving Goals
                   </NavLink>
                 </NavItem>
               )}

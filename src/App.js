@@ -48,6 +48,8 @@ const App = () => {
             <Route path="/expenses" component={Expenses} />
             <Route path="/income" component={Income} />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/saving-goals" component={SavingGoal} />
+            <Route path="/learning-resources" component={LearningResources} />
           </Switch>
         </Container>
         <Footer />
