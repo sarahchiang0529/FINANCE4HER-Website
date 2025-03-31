@@ -1,50 +1,6 @@
 import React from 'react';
 import "../stylesheets/SavingGoal.css";
 
-const Header = () => {
-  return (
-    <header className="header">
-      <img src="https://dashboard.codeparrot.ai/api/image/Z-bfHAz4-w8v6Rf-/logo-sta.png" alt="Logo" className="header-logo" />
-      <nav className="nav-links">
-        <a href="/" className="nav-link">Home</a>
-        <a href="/about" className="nav-link">About</a>
-        <a href="/signup" className="nav-link">Sign Up</a>
-        <a href="/login" className="nav-link">Login</a>
-      </nav>
-    </header>
-  );
-};
-
-const Sidebar = ({ style = {} }) => {
-  const menuItems = [
-    { title: 'Dashboard', path: '/' },
-    { title: 'Income & Expenses', path: '/income-expenses' },
-    { title: 'Saving Goals', path: '/saving-goals' },
-    { title: 'Rewards & Points', path: '/rewards' },
-    { title: 'Learning Resources', path: '/learning' },
-    { title: 'Settings', path: '/settings' }
-  ];
-
-  return (
-    <div className="sidebar" style={style}>
-      <div className="sidebar-logo">
-        <img 
-          src="https://dashboard.codeparrot.ai/api/image/Z-bfHAz4-w8v6Rf-/logo-sta.png" 
-          alt="Logo"
-        />
-      </div>
-      {menuItems.map((item, index) => (
-        <button
-          key={index}
-          className={`sidebar-button ${index === menuItems.length - 1 ? 'sidebar-settings' : ''}`}
-        >
-          {item.title}
-        </button>
-      ))}
-    </div>
-  );
-};
-
 const SavingsGoalCard = ({ title = "Education", currentAmount = 4300, goalAmount = 12000, style }) => {
   const progress = (currentAmount / goalAmount) * 100;
 
@@ -74,16 +30,12 @@ AddGoalButton.defaultProps = {
 const SavingGoal = () => {
   return (
     <div className="saving-goal-container">
-      <Header />
-      <div style={{ display: 'flex', flexGrow: 1 }}>
-        <Sidebar style={{ flexGrow: 0, width: '250px' }} />
-        <div className="savings-content">
-          <SavingsGoalCard title="Education" currentAmount={4300} goalAmount={12000} />
-          <SavingsGoalCard title="Travel & Vacation" currentAmount={5000} goalAmount={25000} />
-          <SavingsGoalCard title="Buying a Car" currentAmount={3000} goalAmount={18000} />
-          <div className="add-goal-container">
-            <AddGoalButton />
-          </div>
+      <div className="savings-content">
+        <SavingsGoalCard title="Education" currentAmount={4300} goalAmount={12000} />
+        <SavingsGoalCard title="Travel & Vacation" currentAmount={5000} goalAmount={25000} />
+        <SavingsGoalCard title="Buying a Car" currentAmount={3000} goalAmount={18000} />
+        <div className="add-goal-container">
+          <AddGoalButton />
         </div>
       </div>
     </div>
