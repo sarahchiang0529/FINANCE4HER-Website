@@ -1,12 +1,12 @@
 // 1. Load environment variables from .env
-require("dotenv").config();
+require("dotenv").config({debug: true}); // Set debug to true to see if .env is loaded correctly
 
 // 2. Import Supabase
 const { createClient } = require("@supabase/supabase-js");
 
 // 3. Use your Supabase URL and the key from .env
 const supabaseUrl = "https://hotylxrgwkghsjhyudvh.supabase.co";
-const supabaseKey = process.env.SUPABASE_KEY; // Must match .env variable name
+const supabaseKey = process.env.supabaseKey; // Must match .env variable name
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Log the key to confirm it's loaded (not recommended in production)
