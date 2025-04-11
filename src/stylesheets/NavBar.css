@@ -1,0 +1,125 @@
+/* Custom Navbar Styles */
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background-color: #65328f;
+  color: #dda1d6;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem !important;
+  font-family: "Inter-SemiBold", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backface-visibility: hidden;
+}
+
+/* Navbar container */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+/* Navbar brand */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  margin-left: 0 !important; 
+}
+
+/* Logo image styling */
+.navbar-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Nav links container */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;  
+  flex-wrap: nowrap;
+  margin-left: auto; 
+}
+
+/* Base nav link style (force pink using !important) */
+.nav-link {
+  color: #dda1d6 !important;
+  font-family: "Inter-SemiBold", sans-serif !important;
+  font-size: 0.95rem !important;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* On hover, keep the same pink */
+.nav-link:hover {
+  color: #f2ede9 !important;
+  text-decoration: underline;
+}
+
+/* Active nav link: remain pink (even on focus or hover) */
+.nav-link.active-link,
+.nav-link.active-link:focus,
+.nav-link.active-link:hover {
+  color: #f2ede9 !important;
+  font-weight: 500;
+  text-decoration: underline !important;
+  transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+}
+
+/* User profile image */
+.nav-user-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.nav-user-profile:hover {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Dropdown styles */
+.dropdown-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.caret-triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #dda1d6;
+  margin-left: 0.4rem;
+  margin-top: 0;
+  align-self: center;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-links {
+    margin-left: 0;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

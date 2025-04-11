@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink as RouterNavLink } from "react-router-dom";
+import { NavLink as RouterNavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Collapse,
@@ -18,11 +18,14 @@ import {
 } from "reactstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 import logo from "../assets/logos/logo1.png";
-import NameForm from "./NameForm";
-import ChartComponent from "./ChartComponent";
-import Dashboard from "../views/Dashboard";
+import "../stylesheets/NavBar.css";
 
 const NavBar = () => {
+  // Get the current location from React Router
+  const location = useLocation();
+  // Define "selected page" as any route other than "/" (adjust as needed)
+  const isSelectedPage = location.pathname !== "/";
+  
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
@@ -35,167 +38,49 @@ const NavBar = () => {
       },
     });
 
+  // For React Router v5, we use "exact" with activeClassName
+  const renderNavLink = (to, label) => (
+    <NavItem>
+      <NavLink
+        tag={RouterNavLink}
+        to={to}
+        exact
+        activeClassName="active-link"
+        className="nav-link"
+      >
+        {label}
+      </NavLink>
+    </NavItem>
+  );
+
   return (
     <div className="nav-container">
-      <Navbar
-        dark
-        expand="md"
-        style={{
-          backgroundColor: "#3e1c66",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {/* 
-          You can also apply display:flex; alignItems:center; on the Container 
-          if needed, but typically doing it on the Navbar is enough. 
-        */}
-        <Container
-          fluid
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          {/* Logo on the left, aligned center with the nav items */}
-          <NavbarBrand href="/" className="d-flex align-items-center" style={{ marginBottom: 0 }}>
-            <img
-              src={logo}
-              alt="App Logo"
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "50%",
-                marginRight: "0.75rem",
-              }}
-            />
+      {/* Conditionally apply the "custom-navbar--white" class when on a selected page */}
+      <Navbar dark expand="md" className={`custom-navbar ${isSelectedPage ? "custom-navbar--white" : ""}`}>
+        <Container fluid className="navbar-container">
+          <NavbarBrand href="/" className="navbar-brand">
+            <img src={logo} alt="App Logo" className="navbar-logo" />
           </NavbarBrand>
 
           <NavbarToggler onClick={toggle} />
 
           <Collapse isOpen={isOpen} navbar>
-            {/* All nav items on the right */}
-            <Nav navbar style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
-              <NavItem>
-                <NavLink
-                  tag={RouterNavLink}
-                  to="/"
-                  exact
-                  activeClassName="router-link-exact-active"
-                  style={{
-                    color: "#f2ede9",
-                    fontFamily: "Inter-SemiBold, sans-serif",
-                  }}
-                >
-                  Home
-                </NavLink>
-              </NavItem>
+            <Nav navbar className="nav-links">
+              {renderNavLink("/", "Home")}
 
               {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/external-api"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    External API
-                  </NavLink>
-                </NavItem>
-              )}
-                            {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/name-form"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    Name Form
-                  </NavLink>
-                </NavItem>
-              )}
-
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/expenses"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    Expenses
-                  </NavLink>
-                </NavItem>
-              )}
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/income"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    Income
-                  </NavLink>
-                </NavItem>
-              )}
-
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/dashboard"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    Dashboard
-                  </NavLink>
-                </NavItem>
-              )}
-
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/learning-resources"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    Learning Resources
-                  </NavLink>
-                </NavItem>
-              )}
-
-              {isAuthenticated && (
-                <NavItem>
-                  <NavLink
-                    tag={RouterNavLink}
-                    to="/saving-goals"
-                    exact
-                    activeClassName="router-link-exact-active"
-                    style={{ color: "#f2ede9" }}
-                  >
-                    Saving Goals
-                  </NavLink>
-                </NavItem>
+                <>
+                  {renderNavLink("/dashboard", "Dashboard")}
+                  {renderNavLink("/income", "Income")}
+                  {renderNavLink("/expenses", "Expenses")}
+                  {renderNavLink("/saving-goals", "Saving Goals")}
+                  {renderNavLink("/learning-resources", "Learning Resources")}
+                </>
               )}
 
               {!isAuthenticated && (
                 <NavItem>
-                  <Button
-                    id="qsLoginBtn"
-                    color="light"
-                    outline
-                    className="btn-margin"
-                    onClick={() => loginWithRedirect()}
-                  >
+                  <Button id="qsLoginBtn" color="light" outline onClick={() => loginWithRedirect()}>
                     Log in
                   </Button>
                 </NavItem>
@@ -203,26 +88,30 @@ const NavBar = () => {
 
               {isAuthenticated && (
                 <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                    <img
-                      src={user.picture}
-                      alt="Profile"
-                      className="nav-user-profile rounded-circle"
-                      width="40"
-                    />
+                  <DropdownToggle nav>
+                    <div className="dropdown-profile">
+                      <img
+                        src={user.picture}
+                        alt="Profile"
+                        className="nav-user-profile rounded-circle"
+                        width="40"
+                      />
+                      <div className="caret-triangle"></div>
+                    </div>
                   </DropdownToggle>
-                  <DropdownMenu right>
+                  <DropdownMenu end>
                     <DropdownItem header>{user.name}</DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
                       to="/profile"
-                      className="dropdown-profile"
-                      activeClassName="router-link-exact-active"
+                      exact
+                      activeClassName="active-link"
+                      className="nav-link"
                     >
-                      <FontAwesomeIcon icon="user" className="mr-3" /> Profile
+                      <FontAwesomeIcon icon="user" className="me-2" /> Profile
                     </DropdownItem>
                     <DropdownItem id="qsLogoutBtn" onClick={logoutWithRedirect}>
-                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Log out
+                      <FontAwesomeIcon icon="power-off" className="me-2" /> Log out
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>

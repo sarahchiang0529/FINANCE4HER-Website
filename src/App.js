@@ -7,8 +7,6 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
-import ExternalApi from "./views/ExternalApi";
-import NameForm from "./components/NameForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 import Expenses from "./views/Expenses";
@@ -39,12 +37,10 @@ const App = () => {
     <Router history={history}>
       <div id="app" className="d-flex flex-column h-100">
         <NavBar />
-        <Container className="flex-grow-1 mt-5">
+        <Container className="flex-grow-1 mt-5" style={{ paddingTop: "100px" }}>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
-            <Route path="/external-api" component={ExternalApi} />
-            <Route path="/name-form" component={NameForm} />
             <Route path="/expenses" component={Expenses} />
             <Route path="/income" component={Income} />
             <Route path="/dashboard" component={Dashboard} />
