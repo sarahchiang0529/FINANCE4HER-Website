@@ -1,0 +1,133 @@
+/* Income Page Container f2ede9 */
+.income-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #65318F; 
+  color: #dda1d6;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Input Section Styles */
+.input-container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #502a6e;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.input-heading {
+  margin-bottom: 20px;
+  color: #f2ede9;
+}
+
+.add-income {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.income-input,
+.description-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #dda1d6;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f2ede9; 
+  outline: none;
+  width: 150px;
+}
+
+.description-input {
+  width: 200px;
+}
+
+.income-input::placeholder,
+.description-input::placeholder {
+  color: #f2ede9;
+  opacity: 1;
+}
+
+.income-select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #dda1d6;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #dda1d6;
+  outline: none;
+  width: 150px;
+}
+
+.income-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #dda1d6;
+  color: #65318F;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Chart Section Styles */
+.chart-container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #502a6e;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.chart-heading {
+  margin-bottom: 20px;
+  color: #f2ede9;
+}
+
+.chart-wrapper {
+  height: 400px;
+}
+
+/* Table Section Styles */
+.table-container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #502a6e;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-heading {
+  margin-bottom: 20px;
+  color: #f2ede9;
+}
+
+.income-table {
+  width: 100%;
+  color: #f2ede9;
+  font-weight: bold;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.income-table th,
+.income-table td {
+  padding: 10px;
+  border-bottom: 1px solid #dda1d6;
+}
+
+.income-table thead tr {
+  background-color: #65318F;
+  color: #dda1d6;
+}
+
+.table-row.even {
+  background-color: rgba(255, 255, 255, 0.1);
+}
