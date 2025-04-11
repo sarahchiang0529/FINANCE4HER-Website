@@ -21,9 +21,7 @@ import logo from "../assets/logos/logo1.png";
 import "../stylesheets/NavBar.css";
 
 const NavBar = () => {
-  // Get the current location from React Router
   const location = useLocation();
-  // Define "selected page" as any route other than "/" (adjust as needed)
   const isSelectedPage = location.pathname !== "/";
   
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +36,6 @@ const NavBar = () => {
       },
     });
 
-  // For React Router v5, we use "exact" with activeClassName
   const renderNavLink = (to, label) => (
     <NavItem>
       <NavLink
@@ -55,7 +52,6 @@ const NavBar = () => {
 
   return (
     <div className="nav-container">
-      {/* Conditionally apply the "custom-navbar--white" class when on a selected page */}
       <Navbar dark expand="md" className={`custom-navbar ${isSelectedPage ? "custom-navbar--white" : ""}`}>
         <Container fluid className="navbar-container">
           <NavbarBrand href="/" className="navbar-brand">
