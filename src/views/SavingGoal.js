@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import PageWrapper from "../components/PageWrapper";
 import "../stylesheets/SavingGoal.css";
 
-const SavingsGoalCard = ({ title, currentAmount, goalAmount, onUpdateCurrentAmount }) => {
+const SavingsGoalCard = ({ title, currentAmount, goalAmount, onUpdateCurrentAmount, onUpdateGoalAmount }) => {
   const progress = (currentAmount / goalAmount) * 100;
 
   return (
@@ -16,13 +17,26 @@ const SavingsGoalCard = ({ title, currentAmount, goalAmount, onUpdateCurrentAmou
       <div className="savings-goal-amount">
         ${currentAmount.toLocaleString()} / ${goalAmount.toLocaleString()}
       </div>
-      <div className="update-amount">
-        <label>Update Current Amount:</label>
-        <input
-          type="number"
-          value={currentAmount}
-          onChange={(e) => onUpdateCurrentAmount(parseFloat(e.target.value) || 0)}
-        />
+      <div className="update-amount-row">
+        <div className="update-input-group">
+          <label>Current</label>
+          <input
+            className="savings-input"
+            type="text"
+            value={currentAmount}
+            onChange={(e) => onUpdateCurrentAmount(parseFloat(e.target.value) || 0)}
+          />
+        </div>
+        <div className="update-input-group">
+          <label>Goal</label>
+          <input
+            className="savings-input"
+            type="text"
+            value={goalAmount}
+            onChange={(e) => onUpdateGoalAmount(parseFloat(e.target.value) || 0)}
+          />
+        </div>
+        <button className="update-button">Update</button>
       </div>
     </div>
   );
@@ -69,7 +83,7 @@ const AddGoalPopup = ({ isOpen, onClose, onAddGoal }) => {
           <div>
             <label>Goal Amount:</label>
             <input
-              type="number"
+              type="text"
               value={goalAmount}
               onChange={(e) => setGoalAmount(e.target.value)}
               required
@@ -103,28 +117,37 @@ const SavingGoal = () => {
     setGoals(updatedGoals);
   };
 
+  const updateGoalAmount = (index, newGoalAmount) => {
+    const updatedGoals = [...goals];
+    updatedGoals[index].goalAmount = newGoalAmount;
+    setGoals(updatedGoals);
+  };
+
   return (
-    <div className="saving-goal-container">
-      <div className="savings-content">
-        {goals.map((goal, index) => (
-          <SavingsGoalCard
-            key={index}
-            title={goal.title}
-            currentAmount={goal.currentAmount}
-            goalAmount={goal.goalAmount}
-            onUpdateCurrentAmount={(newAmount) => updateCurrentAmount(index, newAmount)}
-          />
-        ))}
-        <div className="add-goal-container">
-          <AddGoalButton onClick={() => setIsPopupOpen(true)} />
+    <PageWrapper> 
+      <div className="saving-goal-container">
+        <div className="savings-content">
+          {goals.map((goal, index) => (
+            <SavingsGoalCard
+              key={index}
+              title={goal.title}
+              currentAmount={goal.currentAmount}
+              goalAmount={goal.goalAmount}
+              onUpdateCurrentAmount={(newAmount) => updateCurrentAmount(index, newAmount)}
+              onUpdateGoalAmount={(newGoalAmount) => updateGoalAmount(index, newGoalAmount)}
+            />
+          ))}
+          <div className="add-goal-container">
+            <AddGoalButton onClick={() => setIsPopupOpen(true)} />
+          </div>
         </div>
+        <AddGoalPopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          onAddGoal={addGoal}
+        />
       </div>
-      <AddGoalPopup
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        onAddGoal={addGoal}
-      />
-    </div>
+    </PageWrapper>
   );
 };
 

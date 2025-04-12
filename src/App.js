@@ -7,13 +7,14 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
-import { useAuth0 } from "@auth0/auth0-react";
-import history from "./utils/history";
 import Expenses from "./views/Expenses";
 import Income from "./views/Income";
 import Dashboard from "./views/Dashboard";
 import SavingGoal from "./views/SavingGoal";
 import LearningResources from "./views/LearningResources";
+
+import { useAuth0 } from "@auth0/auth0-react";
+import history from "./utils/history";
 
 // styles
 import "./App.css";
@@ -35,19 +36,21 @@ const App = () => {
 
   return (
     <Router history={history}>
-      <div id="app" className="d-flex flex-column h-100">
+      <div className="page-wrapper">
         <NavBar />
-        <Container className="flex-grow-1 mt-5" style={{ paddingTop: "100px" }}>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/expenses" component={Expenses} />
-            <Route path="/income" component={Income} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/saving-goals" component={SavingGoal} />
-            <Route path="/learning-resources" component={LearningResources} />
-          </Switch>
-        </Container>
+        <main className="page-content">
+          <Container>
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/expenses" component={Expenses} />
+              <Route path="/income" component={Income} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/saving-goals" component={SavingGoal} />
+              <Route path="/learning-resources" component={LearningResources} />
+            </Switch>
+          </Container>
+        </main>
         <Footer />
       </div>
     </Router>

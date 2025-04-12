@@ -4,66 +4,71 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #65318F; 
-    color: #dda1d6; 
+    background-color: #65318F;
+    color: #dda1d6;
     min-height: 100vh;
     padding: 20px;
-}
+  }
   
-/* Input Section Styles */
-.input-container {
+  /* Input Section Styles */
+  .input-container {
     width: 100%;
     max-width: 800px;
     background-color: #502a6e;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
+    margin-bottom: 30px;
+  }
   
-.input-heading {
+  .input-heading {
     margin-bottom: 20px;
     color: #f2ede9;
-}
+  }
   
-.add-expense {
+  .add-expense {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-}
+  }
   
-.expense-input {
+  /* Input Fields with Ellipsis */
+  .expense-input,
+  .description-input,
+  .expense-select {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #dda1d6;
     background-color: rgba(255, 255, 255, 0.1);
     color: #f2ede9;
     outline: none;
-    width: 150px;
-}
   
-.description-input {
+    /* Ellipsis behavior */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .expense-input {
+    width: 150px;
+  }
+  
+  .description-input {
     width: 200px;
-}
-
-.expense-input::placeholder,
-.description-input::placeholder {
+  }
+  
+  .expense-select {
+    width: 150px;
+  }
+  
+  .expense-input::placeholder,
+  .description-input::placeholder {
     color: #f2ede9;
     opacity: 1;
-}
+  }
   
-.expense-select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #dda1d6;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #dda1d6;
-    outline: none;
-    width: 150px;
-}
-  
-.expense-button {
+  .expense-button {
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
@@ -71,62 +76,63 @@
     color: #65318F;
     font-weight: bold;
     cursor: pointer;
-}
-
-/* Chart Section Styles */
-.chart-container {
+  }
+  
+  /* Chart Section Styles */
+  .chart-container {
     width: 100%;
     max-width: 800px;
     background-color: #502a6e;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
+    margin-bottom: 30px;
+  }
   
-.chart-heading {
+  .chart-heading {
     margin-bottom: 20px;
     color: #f2ede9;
-}
+  }
   
-.chart-wrapper {
+  .chart-wrapper {
     height: 400px;
-}
+  }
   
-/* Table Section Styles */
-.table-container {
+  /* Table Section Styles */
+  .table-container {
     width: 100%;
     max-width: 800px;
     background-color: #502a6e;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  }
   
-.table-heading {
+  .table-heading {
     margin-bottom: 20px;
     color: #f2ede9;
-}
+  }
   
-.expenses-table {
+  .expenses-table {
     width: 100%;
     color: #f2ede9;
     font-weight: bold;
     text-align: left;
     border-collapse: collapse;
-}
+  }
   
-.expenses-table th,
-.expenses-table td {
-    padding: 10px;
+  .expenses-table th,
+  .expenses-table td {
+    padding: 15px;
     border-bottom: 1px solid #dda1d6;
-}
+  }
   
-.expenses-table thead tr {
+  .expenses-table thead tr {
     background-color: #65318F;
     color: #dda1d6;
-}
+  }
   
-.table-row.even {
+  .table-row.even {
     background-color: rgba(255, 255, 255, 0.1);
-}
+  }
+  

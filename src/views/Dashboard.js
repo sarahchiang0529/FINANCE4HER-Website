@@ -1,23 +1,29 @@
 import React from "react";
 import "../stylesheets/Dashboard.css";
-import { Box, Button } from '@mui/material';
-import { white } from '@mui/material/colors';
-
-
+import { Box, Button } from "@mui/material";
+import PageWrapper from "../components/PageWrapper";
 
 const Dashboard = () => {
   return (
-    <div className="label">
-      <div className="text-wrapper">EmpowerHERTo</div>
-      <Box sx={{ pt: 15, ml: 60 }}>
-        <Button className="custom-btn" variant="outlined" size="large" sx={{ mr: 20 }}>Monthly Earnings</Button>
-        <Button className="custom-btn" variant="outlined" size="large" sx={{ mr: 20 }}>Monthly Expenses</Button>
-        <Button className="custom-btn" variant="outlined" size="large">Points and Progress</Button>
-      </Box>
-    </div>
-    
-    
+    <PageWrapper>
+      <div className="label">
+        <div className="label-content">
+          <div className="text-wrapper">EmpowerHERTo</div>
+          <Box className="dashboard-buttons">
+            <Button className="custom-btn" variant="outlined" size="large">
+              MONTHLY EARNINGS
+            </Button>
+            <Button className="custom-btn" variant="outlined" size="large">
+              MONTHLY EXPENSES
+            </Button>
+            <Button className="custom-btn" variant="outlined" size="large">
+              POINTS AND PROGRESS
+            </Button>
+          </Box>
+        </div>
+      </div>
+    </PageWrapper>
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

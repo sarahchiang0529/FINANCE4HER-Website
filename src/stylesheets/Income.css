@@ -1,4 +1,4 @@
-/* Income Page Container f2ede9 */
+/* Income Page Container */
 .income-container {
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .input-heading {
@@ -33,14 +33,24 @@
   gap: 10px;
 }
 
+/* Input Fields with Ellipsis */
 .income-input,
-.description-input {
+.description-input,
+.income-select {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #dda1d6;
   background-color: rgba(255, 255, 255, 0.1);
-  color: #f2ede9; 
+  color: #f2ede9;
   outline: none;
+
+  /* Truncate long input text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.income-input {
   width: 150px;
 }
 
@@ -48,20 +58,14 @@
   width: 200px;
 }
 
+.income-select {
+  width: 150px;
+}
+
 .income-input::placeholder,
 .description-input::placeholder {
   color: #f2ede9;
   opacity: 1;
-}
-
-.income-select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #dda1d6;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #dda1d6;
-  outline: none;
-  width: 150px;
 }
 
 .income-button {
@@ -82,7 +86,7 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .chart-heading {
@@ -119,7 +123,7 @@
 
 .income-table th,
 .income-table td {
-  padding: 10px;
+  padding: 15px;
   border-bottom: 1px solid #dda1d6;
 }
 

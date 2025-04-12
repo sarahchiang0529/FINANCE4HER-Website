@@ -16,7 +16,7 @@
   
   /* Each pink box */
   .rectangle {
-    background: #dda1d6;
+    background: #502a6e;
     border-radius: 20px;
     width: 309px;
     height: 388px;
@@ -37,7 +37,7 @@
     font-family: "Inter-SemiBold", sans-serif;
     font-size: 20px;
     font-weight: 600;
-    color: #000;
+    color: #f2ede9;
     text-align: center;
   }
   

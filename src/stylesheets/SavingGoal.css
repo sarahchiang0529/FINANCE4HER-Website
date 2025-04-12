@@ -1,184 +1,219 @@
+/* Base styles */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: "Inter", sans-serif;
-  }
-  
-  .saving-goal-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    background-color: #65318f;
-  }
-  
-  /* Header */
-  .header {
-    width: 100%;
-    height: 104px;
-    background-color: #65318f;
-    padding: 35px 54px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-width: 1000px;
-    box-sizing: border-box;
-  }
-  
-  .header-logo {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 10px;
-    height: 30px;
-    align-items: center;
-  }
-  
-  .nav-link {
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-    padding: 0 15px;
-    cursor: pointer;
-    text-decoration: none;
-    height: 30px;
-    line-height: 30px;
-    display: block;
-    transition: opacity 0.2s;
-  }
-  
-  .nav-link:hover {
-    opacity: 0.8;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #65318f;
-    min-width: 250px;
-    height: 100%;
-    border-right: 1px solid #f8cf5f;
-  }
-  
-  .sidebar-logo {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    background-color: #d9d9d9;
-    margin: 12px 0;
-    overflow: hidden;
-  }
-  
-  .sidebar-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .sidebar-button {
-    width: 100%;
-    height: 62px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-    border: none;
-    background: none;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .sidebar-settings {
-    height: 24px;
-  }
-  
-  /* Savings Goal Card */
-  .savings-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 20px;
-    gap: 20px;
-  }
-  
-  .savings-card {
-    background-color: #d99dd9;
-    border-radius: 10px;
-    padding: 20px;
-    min-width: 300px;
-    width: 100%;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .savings-card-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #000;
-  }
-  
-  .savings-progress-bar {
-    height: 20px;
-    background-color: #e4d8ed;
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .savings-progress-fill {
-    height: 100%;
-    background-color: #e9d436;
-    border-radius: 20px;
-  }
-  
-  .savings-goal-amount {
-    text-align: right;
-    font-size: 20px;
-    color: #000;
-    margin-top: 10px;
-  }
-  
-  /* Add Goal Button */
-  .add-goal-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    background-color: #d99dd9;
-    border-radius: 10px;
-  }
-  
-  .add-goal-button {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: #65318f;
-    border: none;
-    color: #dda1d6;
-    font-size: 48px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s, background-color 0.2s;
-  }
-  
-  .add-goal-button:hover {
-    transform: scale(1.05);
-    background-color: #7a3caa;
-  }  
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #65318F;
+  color: #f2ede9;
+  padding: 50px;
+}
+
+/* Main Container */
+.saving-goal-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Goal Cards Wrapper */
+.savings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ✅ Individual Goal Card (Fixed) */
+.savings-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Allow full width children */
+  justify-content: flex-start;
+
+  background-color: #502a6e;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Title */
+.savings-card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* ✅ Progress Bar (ensure full width) */
+.savings-progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #f2ede9;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.savings-progress-fill {
+  height: 100%;
+  background-color: #dda1d6;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+/* Amount Display */
+.savings-goal-amount {
+  font-size: 16px;
+  font-weight: 500;
+  text-align: right;
+  margin-bottom: 16px;
+  color: #f2ede9;
+}
+
+/* Update Section */
+.update-amount-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+/* Each input group */
+.update-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.update-input-group label {
+  font-size: 14px;
+  color: #f2ede9;
+}
+
+/* Input styling */
+.savings-input {
+  padding: 10px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid #dda1d6;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f2ede9;
+  outline: none;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.savings-input::placeholder {
+  color: #f2ede9;
+  opacity: 0.8;
+}
+
+/* Update Button */
+.update-button {
+  padding: 10px 20px;
+  height: 42px;
+  align-self: flex-end;
+  background-color: #dda1d6;
+  color: #502a6e;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Add Goal Button Section */
+.add-goal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #502a6e;
+  border-radius: 16px;
+  margin-top: 20px;
+}
+
+.add-goal-button {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #65318f;
+  border: none;
+  color: #dda1d6;
+  font-size: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.add-goal-button:hover {
+  transform: scale(1.05);
+  background-color: #7a3caa;
+}
+
+/* Popup Styling */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: #502a6e;
+  padding: 30px;
+  border-radius: 16px;
+  width: 400px;
+  max-width: 90%;
+  color: #f2ede9;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.popup-content input {
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 10px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid #dda1d6;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f2ede9;
+  font-size: 14px;
+}
+
+.popup-content button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  background-color: #dda1d6;
+  border: none;
+  color: #502a6e;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background-color: #f2ede9;
+}
