@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <PageWrapper>
       <div className="label">
-        <div className="label-content">
+        <div className="dashboard-section">
           <div className="text-wrapper">EmpowerHERTo</div>
           <Box className="dashboard-buttons">
             <Button className="custom-btn" variant="outlined" size="large">
