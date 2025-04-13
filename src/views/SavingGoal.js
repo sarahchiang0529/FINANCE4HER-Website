@@ -45,13 +45,9 @@ const SavingsGoalCard = ({ title, currentAmount, goalAmount, onUpdateCurrentAmou
 const AddGoalButton = ({ onClick }) => {
   return (
     <button className="add-goal-button" onClick={onClick}>
-      +
+      + Add Goal
     </button>
   );
-};
-
-AddGoalButton.defaultProps = {
-  onClick: () => console.log('Add goal button clicked'),
 };
 
 const AddGoalPopup = ({ isOpen, onClose, onAddGoal }) => {
@@ -124,7 +120,7 @@ const SavingGoal = () => {
   };
 
   return (
-    <PageWrapper> 
+    <PageWrapper>
       <div className="saving-goal-container">
         <div className="savings-content">
           {goals.map((goal, index) => (
