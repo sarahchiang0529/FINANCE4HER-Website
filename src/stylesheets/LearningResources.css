@@ -1,43 +1,67 @@
+/* Page background */
 .desktop-5-learning-resources {
-    background: #65318f;
-    min-height: 100vh; /* or 1024px if you prefer a fixed height */
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  
-  /* Container to hold the four squares side by side */
+  background: #65318f;
+  min-height: calc(100vh - 120px); 
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* Wrapper */
+.squares-wrapper {
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Grid layout */
+.squares-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  justify-items: center;
+}
+
+/* Individual Square */
+.rectangle {
+  background: #502a6e;
+  border-radius: 20px;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.rectangle:active {
+  background-color: #44235c;
+}
+
+/* Title */
+.rectangle-title {
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #f2ede9;
+  text-align: center;
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
   .squares-container {
-    display: flex;
-    gap: 2rem;           /* spacing between squares */
-    padding: 2rem;       /* outer padding from the purple background */
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  /* Each pink box */
-  .rectangle {
-    background: #502a6e;
-    border-radius: 20px;
-    width: 309px;
-    height: 388px;
-  
-    /* 
-      Use flex to center the title horizontally, 
-      and place it at the top with some padding
-    */
-    display: flex;
-    align-items: flex-start; 
-    justify-content: center;
-    padding-top: 1.5rem; /* push the title down from the top edge */
-    position: relative;
+}
+
+@media (max-width: 600px) {
+  .squares-container {
+    grid-template-columns: 1fr;
   }
-  
-  /* The text inside the pink box, near the top center */
-  .rectangle-title {
-    font-family: "Inter-SemiBold", sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: #f2ede9;
-    text-align: center;
-  }
-  
+}
