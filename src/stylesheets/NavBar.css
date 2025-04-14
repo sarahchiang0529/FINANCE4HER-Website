@@ -1,3 +1,4 @@
+/* Custom Navbar */
 .custom-navbar {
   position: fixed;
   top: 0;
@@ -14,6 +15,7 @@
   backface-visibility: hidden;
 }
 
+/* Navbar inner layout */
 .navbar-container {
   display: flex;
   align-items: center;
@@ -22,10 +24,11 @@
   justify-content: space-between;
 }
 
+/* Brand logo */
 .navbar-brand {
   display: flex;
   align-items: center;
-  margin-left: 0 !important; 
+  margin-left: 0 !important;
 }
 
 .navbar-logo {
@@ -36,12 +39,13 @@
   display: block;
 }
 
+/* Navigation links */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2rem;  
+  gap: 1rem;
   flex-wrap: nowrap;
-  margin-left: auto; 
+  margin-left: auto;
 }
 
 .nav-link {
@@ -49,26 +53,31 @@
   font-family: "Inter-SemiBold", sans-serif !important;
   font-size: 0.95rem !important;
   text-decoration: none;
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-  white-space: nowrap;
+  transition: color 0.2s ease;
   cursor: pointer;
+  padding: 8px 12px;
 }
 
+/* No hover underline or color change */
 .nav-link:hover {
-  color: #f2ede9 !important;
-  text-decoration: underline;
+  color: #dda1d6 !important;
+  text-decoration: none;
 }
 
+/* Click = text turns darker pink */
+.nav-link:active {
+  color: #cc94c2 !important;
+}
+
+/* Active link or focus = no underline */
 .nav-link.active-link,
 .nav-link.active-link:focus,
 .nav-link.active-link:hover {
-  color: #f2ede9 !important;
-  font-weight: 500;
-  text-decoration: underline !important;
-  transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+  color: #dda1d6 !important;
+  text-decoration: none !important;
 }
 
-/* User profile image */
+/* User profile avatar */
 .nav-user-profile {
   width: 40px;
   height: 40px;
@@ -83,6 +92,7 @@
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
+/* Caret triangle */
 .dropdown-profile {
   display: flex;
   align-items: center;
@@ -97,7 +107,6 @@
   border-right: 5px solid transparent;
   border-top: 5px solid #dda1d6;
   margin-left: 0.4rem;
-  margin-top: 0;
   align-self: center;
 }
 
@@ -107,7 +116,7 @@
     flex-direction: column;
     align-items: center;
   }
-  
+
   .nav-links {
     margin-left: 0;
     flex-direction: column;
