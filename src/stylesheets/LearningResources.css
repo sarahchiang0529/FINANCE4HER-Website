@@ -1,67 +1,96 @@
-/* Page background */
-.desktop-5-learning-resources {
-  background: #65318f;
-  min-height: calc(100vh - 120px); 
+/* Base styles */
+html,
+body {
+  height: 100%;
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  padding: 40px 20px;
-  box-sizing: border-box;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #f8eeff;
 }
 
-/* Wrapper */
-.squares-wrapper {
+/* Container */
+.learning-resources-container {
   max-width: 1200px;
-  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px; /* Removed top/bottom padding as it's handled by page-content */
 }
 
-/* Grid layout */
-.squares-container {
+/* Page header */
+.page-header {
+  margin-bottom: 20px; /* Reduced from 24px */
+}
+
+/* Page title */
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 8px 0 0 0;
+}
+
+/* Card styles */
+.resource-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+/* Resources grid */
+.resources-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  justify-items: center;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
-/* Individual Square */
-.rectangle {
-  background: #502a6e;
-  border-radius: 20px;
-  width: 250px;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.rectangle:active {
-  background-color: #44235c;
-}
-
-/* Title */
-.rectangle-title {
-  font-family: "Inter-SemiBold", sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #f2ede9;
-  text-align: center;
-}
-
-/* Responsive tweaks */
-@media (max-width: 1024px) {
-  .squares-container {
+@media (min-width: 640px) {
+  .resources-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 600px) {
-  .squares-container {
-    grid-template-columns: 1fr;
+@media (min-width: 1024px) {
+  .resources-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
+}
+
+.resource-item {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.resource-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.resource-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.resource-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.resource-description {
+  font-size: 14px;
+  color: #666;
 }
