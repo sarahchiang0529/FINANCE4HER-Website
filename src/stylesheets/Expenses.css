@@ -1,121 +1,308 @@
-/* Expenses Page Container */
+/* Base styles */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #f8eeff;
+}
+
+/* Container */
 .expenses-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Page header */
+.page-header {
+  margin-bottom: 20px; 
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 8px 0 0 0;
+}
+
+/* Card styles */
+.expense-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #666;
+  margin: -12px 0 16px 0;
+}
+
+/* Form styles */
+.form-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.form-subtitle {
+  font-size: 15px;
+  color: #666;
+  margin: 8px 0 32px 0;
+}
+
+.expense-form {
+  width: 100%;
+}
+
+.form-group {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #65318F;
-  color: #dda1d6;
-  min-height: 100vh;
-  padding: 20px;
+  gap: 24px;
 }
 
-/* Shared Card Container */
-.input-container {
-  width: 100%;
-  max-width: 800px;
-  background-color: #502a6e;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-}
-
-/* Title Styles */
-.input-title,
-.chart-title,
-.table-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #f2ede9;
-  margin-bottom: 20px;
-}
-
-/* Input Row */
-.add-expense {
+.input-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+  gap: 24px;
+  width: 100%;
 }
 
-/* Unified Input Field Styling */
-.form-input {
-  width: 180px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #dda1d6;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f2ede9;
+.input-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.input-field.full-width {
+  width: 100%;
+}
+
+.input-field label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.input-field input,
+.input-field select {
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #999;
+  background-color: white;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+.input-field input:focus,
+.input-field select:focus {
   outline: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.2s ease;
+  border-color: #a94caf;
+  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
 }
 
-.form-input::placeholder {
-  color: #f2ede9;
+.input-field input.has-value,
+.input-field select.has-value {
+  color: #000;
+}
+
+.input-with-icon input {
+  padding-left: 30px;
+}
+
+/* Style for date input - fix double calendar icon */
+input[type="date"] {
+  padding-right: 10px;
+  background-image: none;
+}
+
+/* For browsers that don't show the calendar icon natively */
+input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 1;
 }
 
-.form-input:focus {
-  background-color: rgba(221, 161, 214, 0.25);
-  border: 1px solid #dda1d6;
-  outline: none;
+/* Style for select dropdown */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 8px) center;
+  background-size: 16px;
+  padding-right: 30px;
 }
 
-/* Add Button Styling */
-.expense-button {
-  padding: 10px 20px;
-  height: 42px;
-  align-self: flex-end;
-  background-color: #dda1d6;
-  color: #502a6e;
+/* Button container for centering */
+.button-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 180px; /* Fixed width for button container */
+}
+
+/* Add button */
+.add-button {
+  height: 48px;
+  width: 160px; /* Fixed width for button */
+  padding: 0;
+  background-color: #a94caf;
+  color: white;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s;
 }
 
-.expense-button:active {
-  background-color: #cc94c2;
+.add-button:hover {
+  background-color: #953b9a;
 }
 
-.expense-button:focus,
-.expense-button:focus-visible {
-  outline: none;
-  box-shadow: none;
-  border: none;
+.button-icon {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
 }
 
-/* Chart */
+/* Placeholder styling */
+input::placeholder {
+  color: #999;
+}
+
+/* Grid layout for chart and table */
+.expenses-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .expenses-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Chart styles */
+.chart-container {
+  position: relative;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
 .chart-wrapper {
-  height: 400px;
-}
-
-/* Table Styling */
-.expenses-table {
+  position: relative;
+  height: 350px;
   width: 100%;
-  color: #f2ede9;
-  font-weight: bold;
-  text-align: left;
-  border-collapse: collapse;
+  margin: 0 auto;
 }
 
-.expenses-table th,
-.expenses-table td {
-  padding: 15px;
-  border-bottom: 1px solid #dda1d6;
+/* Expenses list */
+.expenses-list {
+  display: flex;
+  flex-direction: column;
 }
 
-.expenses-table thead tr {
-  background-color: #65318F;
-  color: #dda1d6;
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-.table-row.even {
-  background-color: rgba(255, 255, 255, 0.1);
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.expense-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px; /* Slightly larger emoji size */
+}
+
+.expense-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.expense-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.expense-details {
+  text-align: right;
+}
+
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ef4444;
+}
+
+.expense-date {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Media queries for responsive form layout */
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .button-container {
+    width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+  }
 }
