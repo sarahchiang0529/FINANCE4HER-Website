@@ -7,14 +7,13 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
+import { useAuth0 } from "@auth0/auth0-react";
+import history from "./utils/history";
 import Expenses from "./views/Expenses";
 import Income from "./views/Income";
 import Dashboard from "./views/Dashboard";
 import SavingGoal from "./views/SavingGoal";
 import LearningResources from "./views/LearningResources";
-
-import { useAuth0 } from "@auth0/auth0-react";
-import history from "./utils/history";
 
 // styles
 import "./App.css";
@@ -39,7 +38,7 @@ const App = () => {
       <div className="page-wrapper">
         <NavBar />
         <main className="page-content">
-          <Container>
+          <Container className="mt-5" style={{ paddingTop: "100px" }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/profile" component={Profile} />
