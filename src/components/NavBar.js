@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { NavLink as RouterNavLink, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+"use client"
+
+import { useState } from "react"
+import { NavLink as RouterNavLink, useLocation } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   Collapse,
   Container,
@@ -15,47 +17,41 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-} from "reactstrap";
-import { useAuth0 } from "@auth0/auth0-react";
-import logo from "../assets/logos/logo1.png";
-import "../stylesheets/NavBar.css";
+} from "reactstrap"
+import { useAuth0 } from "@auth0/auth0-react"
+import logo from "../assets/logos/logo1.png"
+import "../stylesheets/NavBar.css"
 
 const NavBar = () => {
-  const location = useLocation();
-  const isSelectedPage = location.pathname !== "/";
-  
-  const [isOpen, setIsOpen] = useState(false);
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const location = useLocation()
+  const isSelectedPage = location.pathname !== "/"
 
-  const toggle = () => setIsOpen(!isOpen);
+  const [isOpen, setIsOpen] = useState(false)
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0()
+
+  const toggle = () => setIsOpen(!isOpen)
 
   const logoutWithRedirect = () =>
     logout({
       logoutParams: {
         returnTo: window.location.origin,
       },
-    });
+    })
 
   const renderNavLink = (to, label) => (
     <NavItem>
-      <NavLink
-        tag={RouterNavLink}
-        to={to}
-        exact
-        activeClassName="active-link"
-        className="nav-link"
-      >
+      <NavLink tag={RouterNavLink} to={to} exact activeClassName="active-link" className="nav-link">
         {label}
       </NavLink>
     </NavItem>
-  );
+  )
 
   return (
     <div className="nav-container">
       <Navbar dark expand="md" className={`custom-navbar ${isSelectedPage ? "custom-navbar--white" : ""}`}>
         <Container fluid className="navbar-container">
           <NavbarBrand href="/" className="navbar-brand">
-            <img src={logo} alt="App Logo" className="navbar-logo" />
+            <img src={logo || "/placeholder.svg"} alt="App Logo" className="navbar-logo" />
           </NavbarBrand>
 
           <NavbarToggler onClick={toggle} />
@@ -87,7 +83,7 @@ const NavBar = () => {
                   <DropdownToggle nav>
                     <div className="dropdown-profile">
                       <img
-                        src={user.picture}
+                        src={user.picture || "/placeholder.svg"}
                         alt="Profile"
                         className="nav-user-profile rounded-circle"
                         width="40"
@@ -117,7 +113,7 @@ const NavBar = () => {
         </Container>
       </Navbar>
     </div>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar

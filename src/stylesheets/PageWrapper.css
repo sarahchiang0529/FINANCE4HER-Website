@@ -2,46 +2,12 @@
 .page-wrapper {
   min-height: 100vh;
   background-color: #f8eeff;
-}
-
-.nav-bar {
-  background-color: #65318f;
-  color: white;
-  padding: 0 20px;
-  height: 64px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
-.nav-links {
-  display: flex;
-  gap: 24px;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.nav-link.active {
-  color: #dda1d6;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.logo-icon {
-  width: 32px;
-  height: 32px;
-}
-
-.logo-text {
-  font-weight: 700;
-  font-size: 18px;
+.page-content {
+  flex: 1;
+  padding-top: 64px; /* To account for fixed navbar */
+  padding-bottom: 20px; /* Add some space before footer */
 }

@@ -8,12 +8,12 @@ import { Plus } from "lucide-react"
 
 function Expenses() {
   const [expenses, setExpenses] = useState([
-    { category: "Food", value: 200, description: "Groceries", date: "Apr 14, 2025" },
-    { category: "Transport", value: 150, description: "Bus pass", date: "Apr 12, 2025" },
-    { category: "Entertainment", value: 100, description: "Movie tickets", date: "Apr 10, 2025" },
-    { category: "Utilities", value: 250, description: "Electricity bill", date: "Apr 5, 2025" },
-    { category: "Shopping", value: 85, description: "New clothes", date: "Apr 3, 2025" },
-    { category: "Transport", value: 123, description: "food", date: "Apr 15, 2025" },
+    { category: "Food", value: 45.0, description: "Groceries", date: "Apr 14, 2025" },
+    { category: "Transport", value: 15.5, description: "Bus fare", date: "Apr 13, 2025" },
+    { category: "Utilities", value: 60.0, description: "Electricity bill", date: "Apr 12, 2025" },
+    { category: "Entertainment", value: 30.0, description: "Movie", date: "Apr 10, 2025" },
+    { category: "Food", value: 55.0, description: "Dinner", date: "Mar 15, 2025" },
+    { category: "Transport", value: 20.0, description: "Taxi", date: "Mar 10, 2025" },
   ])
 
   const [newExpense, setNewExpense] = useState({
@@ -55,7 +55,7 @@ function Expenses() {
 
     setExpenses((prev) => [...prev, newEntry])
 
-    // Reset fields
+    // Reset input fields
     setNewExpense({
       amount: "",
       description: "",
@@ -64,20 +64,20 @@ function Expenses() {
     })
   }
 
-  // Get category icon based on type
+  // Retrieve icon based on expense category
   const getCategoryIcon = (category) => {
     switch (category) {
       case "Food":
         return "🍽️"
       case "Transport":
         return "🚌"
-      case "Entertainment":
-        return "🎬"
       case "Utilities":
         return "💡"
+      case "Entertainment":
+        return "🎬"
       case "Shopping":
         return "🛍️"
-      default:
+      case "Other":
         return "📋"
     }
   }
@@ -88,13 +88,13 @@ function Expenses() {
         {/* Expenses header section */}
         <div className="page-header">
           <h1 className="page-title">Expenses</h1>
-          <p className="page-subtitle">Track and manage your spending</p>
+          <p className="page-subtitle">Track your spending habits</p>
         </div>
 
+        {/* Expenses form */}
         <div className="expense-card">
           <h2 className="form-title">Add Expense</h2>
           <p className="form-subtitle">Record a new expense transaction</p>
-
           <div className="expense-form">
             <div className="form-group">
               <div className="input-row">
@@ -115,15 +115,21 @@ function Expenses() {
 
                 <div className="input-field">
                   <label htmlFor="category">Category</label>
-                  <select id="category" name="category" value={newExpense.category} onChange={handleInputChange}>
+                  <select
+                    id="category"
+                    name="category"
+                    value={newExpense.category}
+                    onChange={handleInputChange}
+                  >
                     <option value="" disabled>
                       Select
                     </option>
                     <option value="Food">Food</option>
                     <option value="Transport">Transport</option>
-                    <option value="Entertainment">Entertainment</option>
                     <option value="Utilities">Utilities</option>
+                    <option value="Entertainment">Entertainment</option>
                     <option value="Shopping">Shopping</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -164,31 +170,33 @@ function Expenses() {
           </div>
         </div>
 
+        {/* Grid layout: Chart and Log */}
         <div className="expenses-grid">
           {/* Chart Section */}
           <div className="expense-card">
-            <h2 className="card-title">Expense Chart</h2>
-            <p className="card-description">Breakdown of your spending categories</p>
-            <ChartComponent data={expenses} type="expense" />
+            <h2 className="card-title">Expenses Chart</h2>
+            <p className="card-description">Spending breakdown</p>
+            <ChartComponent data={expenses} type="expenses" />
           </div>
 
-          {/* Table Section */}
+          {/* Expense Log Section */}
           <div className="expense-card">
-            <h2 className="card-title">Spending Log</h2>
+            <h2 className="card-title">Expense Log</h2>
             <p className="card-description">Your recent expense transactions</p>
             <div className="expenses-list">
-              {expenses.map((expense, index) => (
+              {/* Only show the first 6 items */}
+              {expenses.slice(0, 6).map((entry, index) => (
                 <div key={index} className="expense-item">
                   <div className="expense-info">
-                    <div className="expense-icon">{getCategoryIcon(expense.category)}</div>
+                    <div className="expense-icon">{getCategoryIcon(entry.category)}</div>
                     <div>
-                      <div className="expense-category">{expense.category}</div>
-                      <div className="expense-description">{expense.description}</div>
+                      <div className="expense-category">{entry.category}</div>
+                      <div className="expense-description">{entry.description}</div>
                     </div>
                   </div>
                   <div className="expense-details">
-                    <div className="expense-amount">-${expense.value.toFixed(2)}</div>
-                    <div className="expense-date">{expense.date}</div>
+                    <div className="expense-amount">-${entry.value.toFixed(2)}</div>
+                    <div className="expense-date">{entry.date}</div>
                   </div>
                 </div>
               ))}

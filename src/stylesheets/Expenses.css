@@ -8,26 +8,22 @@ body {
   background-color: #f8eeff;
 }
 
-/* Container */
+/* Container & Page Header */
 .expenses-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
 }
-
-/* Page header */
-.page-header {
-  margin-bottom: 20px; 
+.expenses-container .page-header {
+  margin-bottom: 20px;
 }
-
-.page-title {
+.expenses-container .page-title {
   font-size: 36px;
   font-weight: 700;
   margin: 0;
   color: #000;
 }
-
-.page-subtitle {
+.expenses-container .page-subtitle {
   font-size: 18px;
   color: #666;
   margin: 8px 0 0 0;
@@ -41,18 +37,8 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 24px;
 }
-
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 16px 0;
-  color: #333;
-}
-
-.card-description {
-  font-size: 14px;
-  color: #666;
-  margin: -12px 0 16px 0;
+.expense-card:last-child {
+  margin-bottom: 0;
 }
 
 /* Form styles */
@@ -62,38 +48,31 @@ body {
   margin: 0;
   color: #000;
 }
-
 .form-subtitle {
   font-size: 15px;
   color: #666;
   margin: 8px 0 32px 0;
 }
-
 .expense-form {
   width: 100%;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-
 .input-row {
   display: flex;
   gap: 24px;
   width: 100%;
 }
-
 .input-field {
   flex: 1;
   min-width: 0;
 }
-
 .input-field.full-width {
   width: 100%;
 }
-
 .input-field label {
   display: block;
   font-size: 16px;
@@ -101,11 +80,9 @@ body {
   margin-bottom: 8px;
   color: #000;
 }
-
 .input-with-icon {
   position: relative;
 }
-
 .input-icon {
   position: absolute;
   left: 12px;
@@ -113,7 +90,6 @@ body {
   transform: translateY(-50%);
   color: #999;
 }
-
 .input-field input,
 .input-field select {
   width: 100%;
@@ -127,35 +103,26 @@ body {
   box-sizing: border-box;
   appearance: none;
 }
-
 .input-field input:focus,
 .input-field select:focus {
   outline: none;
   border-color: #a94caf;
   box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
 }
-
 .input-field input.has-value,
 .input-field select.has-value {
   color: #000;
 }
-
 .input-with-icon input {
   padding-left: 30px;
 }
-
-/* Style for date input - fix double calendar icon */
 input[type="date"] {
   padding-right: 10px;
   background-image: none;
 }
-
-/* For browsers that don't show the calendar icon natively */
 input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 1;
 }
-
-/* Style for select dropdown */
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -164,18 +131,16 @@ select {
   padding-right: 30px;
 }
 
-/* Button container for centering */
+/* Button styles */
 .button-container {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 180px; /* Fixed width for button container */
+  width: 180px;
 }
-
-/* Add button */
 .add-button {
   height: 48px;
-  width: 160px; /* Fixed width for button */
+  width: 160px;
   padding: 0;
   background-color: #a94caf;
   color: white;
@@ -189,119 +154,117 @@ select {
   cursor: pointer;
   transition: background-color 0.2s;
 }
-
 .add-button:hover {
   background-color: #953b9a;
 }
-
 .button-icon {
   margin-right: 8px;
   width: 18px;
   height: 18px;
 }
-
-/* Placeholder styling */
 input::placeholder {
   color: #999;
 }
 
-/* Grid layout for chart and table */
+/* Grid layout: stretch both cards */
 .expenses-grid {
   display: grid;
-  grid-template-columns: 1fr;
   gap: 24px;
+  grid-template-columns: 1fr;
 }
-
 @media (min-width: 768px) {
   .expenses-grid {
     grid-template-columns: 1fr 1fr;
+    align-items: stretch; /* Cards match in height */
+  }
+
+  /* Each card is a flex container so content aligns properly */
+  .expenses-grid .expense-card {
+    display: flex;
+    flex-direction: column;
   }
 }
 
 /* Chart styles */
 .chart-container {
-  position: relative;
-  height: 350px;
+  /* Let the chart expand to fill available space */
+  flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
-
 .chart-wrapper {
-  position: relative;
-  height: 350px;
+  flex: 1;
   width: 100%;
   margin: 0 auto;
 }
 
-/* Expenses list */
+/* Log styles */
+.expense-log {
+  /* Matches the chart container's available space */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
 .expenses-list {
   display: flex;
   flex-direction: column;
 }
-
 .expense-item {
   display: flex;
   justify-content: space-between;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
 }
-
 .expense-item:last-child {
   border-bottom: none;
 }
-
 .expense-info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
 .expense-icon {
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px; /* Slightly larger emoji size */
+  font-size: 20px;
 }
-
 .expense-category {
   font-size: 14px;
   font-weight: 500;
   color: #333;
 }
-
 .expense-description {
   font-size: 12px;
   color: #666;
 }
-
 .expense-details {
   text-align: right;
 }
-
 .expense-amount {
   font-size: 14px;
   font-weight: 500;
   color: #ef4444;
 }
-
 .expense-date {
   font-size: 12px;
   color: #666;
 }
 
-/* Media queries for responsive form layout */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .input-row {
     flex-direction: column;
     gap: 16px;
   }
-
   .button-container {
     width: 100%;
   }
-
   .add-button {
     width: 100%;
   }

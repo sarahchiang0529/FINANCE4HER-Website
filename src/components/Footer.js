@@ -1,19 +1,16 @@
-import React from "react";
-import { NavLink as RouterNavLink } from "react-router-dom";
-import "../stylesheets/Footer.css";
+import { Container, Navbar } from "reactstrap"
+import "../stylesheets/Footer.css"
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="footer__container">
-        <div className="footer__bottom">
-          <span className="footer__copy">
-            &copy; 2024 EmpowHERto.org, All Rights Reserved.
-          </span>
-        </div>
-      </div>
-    </footer>
-  );
-};
+    <div className="footer-wrapper">
+      <Navbar dark className="custom-navbar footer-navbar">
+        <Container fluid className="navbar-container">
+          <span className="footer__copy">&copy; 2024 EmpowHERto.org, All Rights Reserved.</span>
+        </Container>
+      </Navbar>
+    </div>
+  )
+}
 
-export default Footer;
+export default Footer

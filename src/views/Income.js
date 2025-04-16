@@ -10,8 +10,10 @@ function Income() {
   const [income, setIncome] = useState([
     { category: "Salary", value: 2000.0, description: "Monthly salary", date: "Apr 15, 2025" },
     { category: "Government Benefit", value: 186.0, description: "Unemployment benefit", date: "Apr 10, 2025" },
-    { category: "Investments", value: 540.0, description: "Stock dividends", date: "Apr 5, 2025" },
-    { category: "Other", value: 73.0, description: "Freelance work", date: "Apr 1, 2025" },
+    { category: "Investments", value: 540.0, description: "Stock dividends", date: "Apr 05, 2025" },
+    { category: "Other", value: 73.0, description: "Freelance work", date: "Apr 01, 2025" },
+    { category: "Salary", value: 2100.0, description: "Monthly salary", date: "Mar 15, 2025" },
+    { category: "Other", value: 50.0, description: "Tutoring", date: "Mar 10, 2025" },
   ])
 
   const [newIncome, setNewIncome] = useState({
@@ -53,7 +55,7 @@ function Income() {
 
     setIncome((prev) => [...prev, newEntry])
 
-    // Reset fields
+    // Reset input fields
     setNewIncome({
       amount: "",
       description: "",
@@ -62,7 +64,7 @@ function Income() {
     })
   }
 
-  // Get category icon based on type
+  // Retrieve icon based on income category
   const getCategoryIcon = (category) => {
     switch (category) {
       case "Salary":
@@ -73,8 +75,6 @@ function Income() {
         return "📈"
       case "Other":
         return "💰"
-      default:
-        return "💵"
     }
   }
 
@@ -87,10 +87,10 @@ function Income() {
           <p className="page-subtitle">Track and manage your income sources</p>
         </div>
 
+        {/* Income form */}
         <div className="income-card">
           <h2 className="form-title">Add Income</h2>
           <p className="form-subtitle">Record a new income transaction</p>
-
           <div className="income-form">
             <div className="form-group">
               <div className="input-row">
@@ -111,7 +111,12 @@ function Income() {
 
                 <div className="input-field">
                   <label htmlFor="category">Category</label>
-                  <select id="category" name="category" value={newIncome.category} onChange={handleInputChange}>
+                  <select
+                    id="category"
+                    name="category"
+                    value={newIncome.category}
+                    onChange={handleInputChange}
+                  >
                     <option value="" disabled>
                       Select
                     </option>
@@ -159,6 +164,7 @@ function Income() {
           </div>
         </div>
 
+        {/* Grid layout: Chart and Log */}
         <div className="income-grid">
           {/* Chart Section */}
           <div className="income-card">
@@ -167,23 +173,24 @@ function Income() {
             <ChartComponent data={income} type="income" />
           </div>
 
-          {/* Table Section */}
+          {/* Income Log Section */}
           <div className="income-card">
             <h2 className="card-title">Income Log</h2>
             <p className="card-description">Your recent income transactions</p>
             <div className="income-list">
-              {income.map((income, index) => (
+              {/* Only show the first 6 items */}
+              {income.slice(0, 6).map((entry, index) => (
                 <div key={index} className="income-item">
                   <div className="income-info">
-                    <div className="income-icon">{getCategoryIcon(income.category)}</div>
+                    <div className="income-icon">{getCategoryIcon(entry.category)}</div>
                     <div>
-                      <div className="income-category">{income.category}</div>
-                      <div className="income-description">{income.description}</div>
+                      <div className="income-category">{entry.category}</div>
+                      <div className="income-description">{entry.description}</div>
                     </div>
                   </div>
                   <div className="income-details">
-                    <div className="income-amount">+${income.value.toFixed(2)}</div>
-                    <div className="income-date">{income.date}</div>
+                    <div className="income-amount">+${entry.value.toFixed(2)}</div>
+                    <div className="income-date">{entry.date}</div>
                   </div>
                 </div>
               ))}
