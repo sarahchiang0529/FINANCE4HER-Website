@@ -79,15 +79,25 @@ body {
 }
 .input-icon {
   position: absolute;
-  left: 12px;
+  left: 0px;
   top: 50%;
   transform: translateY(-50%);
+  font-size: 16px;
   color: #999;
+  pointer-events: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
 }
+
 .input-field input,
 .input-field select {
   width: 100%;
   height: 48px;
+  left: 12px;
+
   padding: 12px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -108,8 +118,16 @@ body {
   color: #000;
 }
 .input-with-icon input {
-  padding-left: 30px;
+  padding-left: 44px;
+  height: 48px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #000;
+  background-color: white;
+  box-sizing: border-box;
 }
+
 input[type="date"] {
   padding-right: 10px;
   background-image: none;

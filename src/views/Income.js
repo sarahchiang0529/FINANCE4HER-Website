@@ -22,7 +22,7 @@ function Income() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setNewIncome((prev) => ({
+    setNewIncome(prev => ({
       ...prev,
       [name]: value,
     }))
@@ -30,7 +30,7 @@ function Income() {
 
   const handleAddIncome = () => {
     const { amount, description, category, date } = newIncome
-    const numericAmount = Number.parseFloat(amount)
+    const numericAmount = parseFloat(amount)
 
     if (!amount || isNaN(numericAmount) || !description) {
       alert("Please enter a valid amount and description.")
@@ -50,7 +50,7 @@ function Income() {
       date: formattedDate,
     }
 
-    setIncome((prev) => [...prev, newEntry])
+    setIncome(prev => [...prev, newEntry])
 
     setNewIncome({
       amount: "",
@@ -88,6 +88,7 @@ function Income() {
         <div className="income-form">
           <div className="form-group">
             <div className="input-row">
+              {/* Amount with icon */}
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
                 <div className="input-with-icon">
@@ -103,6 +104,7 @@ function Income() {
                 </div>
               </div>
 
+              {/* Category */}
               <div className="input-field">
                 <label htmlFor="category">Category</label>
                 <select
@@ -119,18 +121,19 @@ function Income() {
                 </select>
               </div>
 
+              {/* Date */}
               <div className="input-field">
                 <label htmlFor="date">Date</label>
                 <input
                   type="date"
                   id="date"
                   name="date"
-                  placeholder="yyyy-mm-dd"
                   value={newIncome.date}
                   onChange={handleInputChange}
                 />
               </div>
 
+              {/* Add Button */}
               <div className="button-container">
                 <button className="add-button" onClick={handleAddIncome}>
                   <Plus className="button-icon" />
@@ -139,6 +142,7 @@ function Income() {
               </div>
             </div>
 
+            {/* Description */}
             <div className="input-row description-row">
               <div className="input-field full-width">
                 <label htmlFor="description">Description</label>
@@ -190,3 +194,5 @@ function Income() {
 }
 
 export default Income
+
+
