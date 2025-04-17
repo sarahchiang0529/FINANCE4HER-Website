@@ -1,13 +1,5 @@
-/* Add this to your PageWrapper.css if it exists */
 .page-wrapper {
-  min-height: 100vh;
+  display: block;
   background-color: #f8eeff;
-  display: flex;
-  flex-direction: column;
-}
-
-.page-content {
-  flex: 1;
-  padding-top: 64px; /* To account for fixed navbar */
-  padding-bottom: 20px; /* Add some space before footer */
+  box-sizing: border-box;
 }

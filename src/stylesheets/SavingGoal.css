@@ -1,57 +1,358 @@
-/* Base styles */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+/* Base Container */
+.saving-goals-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
   font-family: "Inter", sans-serif;
   background-color: #f8eeff;
 }
 
-/* Container */
-.saving-goals-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px; 
-}
-
-/* Page header */
 .page-header {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .page-title {
   font-size: 36px;
   font-weight: 700;
-  margin: 0;
   color: #000;
+  margin: 0;
 }
 
 .page-subtitle {
   font-size: 18px;
   color: #666;
-  margin: 8px 0 0 0;
+  margin-top: 8px;
 }
 
-/* Card styles */
 .goals-card {
-  background: white;
+  background: #fff;
   border-radius: 12px;
-  padding: 32px;
+  padding: 24px;
+  margin-bottom: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 24px;
 }
 
-/* If you need additional styles for goals content */
-.card-title {
+.form-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.goal-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.input-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field.full-width {
+  flex: 100%;
+}
+
+.input-field input,
+.input-field select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.input-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  padding: 8px;
+  background: #eaeaea;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border: 1px solid #ccc;
+  border-right: none;
+}
+
+.input-with-icon input {
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+}
+
+.add-button {
+  background-color: #65318f;
+  color: white;
+  padding: 10px 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #4e2473;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 24px 0 16px;
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.goal-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.goal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.goal-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #666;
+}
+
+.category-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.goal-actions .icon-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #65318f;
+}
+
+.goal-title {
   font-size: 18px;
   font-weight: 600;
-  margin: 0 0 16px 0;
-  color: #333;
+  margin-bottom: 4px;
+  color: #000;
 }
 
-.card-description {
+.goal-description {
   font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.goal-progress-container {
+  margin: 12px 0;
+}
+
+.goal-progress-bar {
+  background: #eaeaea;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.goal-progress-fill {
+  height: 8px;
+  border-radius: 20px;
+  background: linear-gradient(to right, #f55c91, #b54fd1); /* rainbow-like gradient */
+  transition: width 0.3s ease-in-out;
+}
+
+.goal-progress-fill.completed {
+  background-color: #28a745;
+}
+
+.goal-progress-text {
+  font-size: 13px;
+  color: #444;
+  margin-top: 6px;
+}
+
+.goal-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.goal-detail {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.goal-detail-icon {
+  width: 20px;
+  height: 20px;
+  color: #65318f;
+}
+
+.goal-detail-label {
+  font-size: 12px;
   color: #666;
-  margin: -12px 0 16px 0;
+}
+
+.goal-detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.goal-detail-subtext {
+  font-size: 12px;
+  color: #999;
+}
+
+.goal-update-form {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.goal-update-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.goal-update-button {
+  background-color: #65318f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.completed-goals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-completed-button {
+  background: transparent;
+  border: 2px solid #65318f;
+  color: #65318f;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.completed-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #28a745;
+  font-weight: 500;
+}
+
+.completed-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.delete-completed-button {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.no-goals-message {
+  text-align: center;
+  color: #444;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.no-goals-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  color: #65318f;
+}
+
+.saving-tips-card {
+  margin-top: 40px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tip-item {
+  display: flex;
+  gap: 12px;
+}
+
+.tip-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: #65318f;
+}
+
+.tip-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.tip-description {
+  font-size: 14px;
+  color: #555;
+  margin: 4px 0 0;
 }

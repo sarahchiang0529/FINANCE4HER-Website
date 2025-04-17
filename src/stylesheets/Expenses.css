@@ -14,9 +14,6 @@ body {
   margin: 0 auto;
   padding: 0 16px;
 }
-.expenses-container .page-header {
-  margin-bottom: 20px;
-}
 .expenses-container .page-title {
   font-size: 36px;
   font-weight: 700;
@@ -36,9 +33,6 @@ body {
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 24px;
-}
-.expense-card:last-child {
-  margin-bottom: 0;
 }
 
 /* Form styles */
@@ -166,7 +160,7 @@ input::placeholder {
   color: #999;
 }
 
-/* Grid layout: stretch both cards */
+/* Grid layout: Chart and Log cards aligned */
 .expenses-grid {
   display: grid;
   gap: 24px;
@@ -175,10 +169,8 @@ input::placeholder {
 @media (min-width: 768px) {
   .expenses-grid {
     grid-template-columns: 1fr 1fr;
-    align-items: stretch; /* Cards match in height */
+    align-items: stretch;
   }
-
-  /* Each card is a flex container so content aligns properly */
   .expenses-grid .expense-card {
     display: flex;
     flex-direction: column;
@@ -187,7 +179,6 @@ input::placeholder {
 
 /* Chart styles */
 .chart-container {
-  /* Let the chart expand to fill available space */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -199,16 +190,10 @@ input::placeholder {
   margin: 0 auto;
 }
 
-/* Log styles */
-.expense-log {
-  /* Matches the chart container's available space */
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow-y: auto;
-}
+/* Log styles: fixed height so ~6 entries are visible, scroll enabled */
 .expenses-list {
+  height: 370px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }

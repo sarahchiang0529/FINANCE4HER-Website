@@ -14,11 +14,10 @@ import Income from "./views/Income";
 import Dashboard from "./views/Dashboard";
 import SavingGoal from "./views/SavingGoal";
 import LearningResources from "./views/LearningResources";
+import PointsRewards from "./views/PointsRewards";
 
-// styles
 import "./App.css";
 
-// fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
 initFontAwesome();
 
@@ -35,10 +34,9 @@ const App = () => {
 
   return (
     <Router history={history}>
-      <div className="page-wrapper">
         <NavBar />
         <main className="page-content">
-          <Container className="mt-5" style={{ paddingTop: "100px" }}>
+          <Container className="mt-5" style={{ paddingTop: "80px" ,paddingBottom: "40px" }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/profile" component={Profile} />
@@ -47,11 +45,11 @@ const App = () => {
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/saving-goals" component={SavingGoal} />
               <Route path="/learning-resources" component={LearningResources} />
+              <Route path="/points-rewards" component={PointsRewards} />
             </Switch>
           </Container>
         </main>
-        <Footer />
-      </div>
+      <Footer />
     </Router>
   );
 };

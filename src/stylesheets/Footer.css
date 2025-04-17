@@ -1,47 +1,15 @@
-/* Footer wrapper to position at bottom */
 .footer-wrapper {
   width: 100%;
-  margin-top: auto;
-  position: relative;
-}
-
-/* Footer navbar styling */
-.footer-navbar.custom-navbar {
-  position: relative !important; /* Override fixed position from navbar */
-  top: auto !important; /* Remove top positioning */
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1050;
+  height: 80px !important;
+  padding: 0 !important;
   background-color: #65328f;
   color: #dda1d6;
   display: flex;
-  align-items: center;
-  padding: 1rem 1rem !important;
-  font-family: "Inter-SemiBold", sans-serif;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-  backface-visibility: hidden;
-}
-
-/* Copyright */
-.footer__copy {
-  font-size: 0.95rem;
-  color: #dda1d6;
-  font-weight: 500;
-  margin: 0 auto;
+  align-items: center;      /* vertical centering */
+  justify-content: center;  /* horizontal centering */
   text-align: center;
-  width: 100%;
 }
 
-/* Responsive Layout */
-@media screen and (max-width: 768px) {
-  .footer-navbar .navbar-container {
-    padding: 0 1rem;
-  }
-}
-
-@media screen and (max-width: 350px) {
-  .footer-navbar .navbar-container {
-    padding: 0 0.5rem;
-  }
+.footer-wrapper p {
+  margin: 0;  /* remove default top/bottom margins */
 }

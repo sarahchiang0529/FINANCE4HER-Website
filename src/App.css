@@ -1,96 +1,22 @@
-/* Make sure page fills full viewport */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
-  background-color: #65318F;
   color: #f2ede9;
 }
 
-/* Full-page layout container */
 .page-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Expanding middle section */
 .page-content {
   flex-grow: 1;
-  padding: 20px 0;
 }
 
-/* Footer (already styled via Footer.css) */
-.footer {
-  background-color: #65328f;
-  color: #dda1d6;
-  padding: 2rem 0;
-  font-family: "Inter-SemiBold", sans-serif;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+.page-content .container {
+  padding-bottom: 20px !important;
 }
 
-.footer__container {
-  max-width: 1200px;
-  width: 100%;
-  padding: 0 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.footer__top {
-  width: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-}
-
-.footer__nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.footer__link {
-  color: #dda1d6;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-.footer__link:hover {
-  color: #f2ede9;
-  text-decoration: underline;
-}
-
-.footer__copy {
-  font-size: 0.85rem;
-  color: #f2ede9;
-  padding-bottom: 0.5rem;
-}
-
-/* Responsive */
-@media screen and (max-width: 768px) {
-  .footer__nav {
-    gap: 1rem;
-    flex-direction: column;
-  }
-
-  .footer__container {
-    padding: 1.5rem 1rem 4rem;
-  }
-}
-
-@media screen and (max-width: 350px) {
-  .footer__container {
-    padding: 1.5rem 0.5rem 4rem;
-  }
-}

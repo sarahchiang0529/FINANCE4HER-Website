@@ -1,11 +1,11 @@
-import "../stylesheets/PageWrapper.css"
+import "../stylesheets/PageWrapper.css";
 
 const PageWrapper = ({ children }) => {
   return (
     <div className="page-wrapper">
-      <div className="page-content">{children}</div>
+      <div className="main-content">{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default PageWrapper
+export default PageWrapper;

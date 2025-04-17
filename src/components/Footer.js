@@ -1,16 +1,11 @@
-import { Container, Navbar } from "reactstrap"
-import "../stylesheets/Footer.css"
+import "../stylesheets/Footer.css";
 
 const Footer = () => {
   return (
-    <div className="footer-wrapper">
-      <Navbar dark className="custom-navbar footer-navbar">
-        <Container fluid className="navbar-container">
-          <span className="footer__copy">&copy; 2024 EmpowHERto.org, All Rights Reserved.</span>
-        </Container>
-      </Navbar>
-    </div>
-  )
-}
+    <footer className="footer-wrapper">
+      <p>&copy; 2024 EmpowHERto.org, All Rights Reserved.</p>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;

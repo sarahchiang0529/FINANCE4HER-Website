@@ -12,15 +12,14 @@ body {
 .learning-resources-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px; /* Removed top/bottom padding as it's handled by page-content */
+  padding: 0 16px;
 }
 
 /* Page header */
 .page-header {
-  margin-bottom: 20px; /* Reduced from 24px */
+  margin-bottom: 20px;
 }
 
-/* Page title */
 .page-title {
   font-size: 36px;
   font-weight: 700;
@@ -34,63 +33,93 @@ body {
   margin: 8px 0 0 0;
 }
 
-/* Card styles */
-.resource-card {
-  background: white;
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 24px;
-}
-
-/* Resources grid */
-.resources-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
+/* Tabs Container */
+.tabs-container {
   margin-bottom: 32px;
 }
 
-@media (min-width: 640px) {
-  .resources-grid {
+.tabs {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  background-color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #65318f;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.tab:hover {
+  background-color: #f3e6fb;
+}
+
+.tab.active {
+  background-color: #e2c6ff;
+  border-color: #65318f;
+}
+
+.tab-label {
+  font-size: 14px;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Card Grid (2x4 Layout) */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .card-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 1024px) {
-  .resources-grid {
-    grid-template-columns: repeat(4, 1fr);
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-.resource-item {
+/* Individual Card Style */
+.resource-card {
   background: white;
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.resource-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.resource-card:hover {
+  transform: translateY(-4px);
 }
 
-.resource-icon {
-  font-size: 32px;
-  margin-bottom: 16px;
-}
-
-.resource-title {
-  font-size: 18px;
+.resource-card-title {
+  font-size: 16px;
   font-weight: 600;
-  margin: 0 0 8px 0;
-  color: #333;
+  color: #000;
+  margin-bottom: 8px;
 }
 
-.resource-description {
+.resource-card-description {
   font-size: 14px;
   color: #666;
 }

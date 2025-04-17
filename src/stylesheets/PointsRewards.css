@@ -1,0 +1,787 @@
+/* Base styles */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #f8eeff;
+}
+
+/* Container */
+.rewards-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px 16px;
+  position: relative;
+}
+
+/* Points Added Notification */
+.points-added-notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out forwards;
+  color: white;
+}
+
+/* Green for assets */
+.points-added-notification.asset {
+  background-color: #10b981;
+}
+
+/* Red for liabilities */
+.points-added-notification.liability {
+  background-color: #ef4444;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.points-added-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Page header */
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 8px 0 0 0;
+}
+
+/* Points Overview Card */
+.points-overview-card {
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(138, 75, 175, 0.2);
+}
+
+.points-overview-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.points-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.points-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.points-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.points-value {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.points-number {
+  font-size: 64px;
+  font-weight: 700;
+}
+
+.points-label {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.points-emoji {
+  font-size: 36px;
+}
+
+.progress-container {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 12px;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: white;
+  border-radius: 4px;
+  transition: width 0.5s ease-out;
+}
+
+.progress-text {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Health Score Card */
+.health-score-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  margin-bottom: 24px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.health-score-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .health-score-content {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.score-label {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.score-label.assets {
+  color: #10b981;
+}
+
+.score-label.liabilities {
+  color: #ef4444;
+}
+
+.score-label.total {
+  color: #8a4baf;
+}
+
+.score-value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.score-value.assets {
+  color: #10b981;
+}
+
+.score-value.liabilities {
+  color: #ef4444;
+}
+
+.score-value.total {
+  color: #8a4baf;
+  font-size: 36px;
+}
+
+.score-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.score-operator {
+  font-size: 24px;
+  font-weight: 700;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+/* Tabs */
+.tabs-container {
+  margin-bottom: 24px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab.active {
+  color: #8a4baf;
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #8a4baf;
+}
+
+.tab-content {
+  margin-bottom: 0px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  color: #333;
+}
+
+/* Rewards Grid */
+.rewards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+  .rewards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .rewards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Reward Card */
+.reward-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.reward-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.reward-card.locked {
+  opacity: 0.75;
+}
+
+.reward-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.reward-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.reward-badge.available {
+  background-color: #10b981;
+  color: white;
+}
+
+.reward-badge.locked {
+  background-color: transparent;
+  border: 1px solid #666;
+  color: #666;
+}
+
+.reward-points {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.reward-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.reward-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 16px 0;
+}
+
+.reward-icon-container {
+  height: 160px;
+  background: linear-gradient(to right, #f9e6f3, #f0e7fa);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.reward-icon-container.locked {
+  background: linear-gradient(to right, #f1f1f1, #e5e5e5);
+}
+
+.reward-icon {
+  width: 64px;
+  height: 64px;
+  color: #8a4baf;
+}
+
+.reward-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #8a4baf;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reward-button:hover {
+  background-color: #7a3b9f;
+}
+
+.reward-button.locked {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Bonus Card */
+.bonus-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bonus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bonus-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.bonus-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bonus-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bonus-icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bonus-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bonus-icon.trophy {
+  color: #eab308;
+}
+
+.bonus-icon.piggy {
+  color: #10b981;
+}
+
+.bonus-icon.trending {
+  color: #3b82f6;
+}
+
+.bonus-icon.zap {
+  color: #8a4baf;
+}
+
+.bonus-icon.users {
+  color: #6366f1;
+}
+
+.bonus-icon.message {
+  color: #ec4899;
+}
+
+.bonus-icon.award {
+  color: #f59e0b;
+}
+
+.bonus-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.bonus-description {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Points Buttons */
+.bonus-points-button,
+.asset-points-button,
+.liability-points-button {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.bonus-points-button {
+  color: #8a4baf;
+  background-color: #f9e6f3;
+  border: 1px solid #8a4baf;
+}
+
+.bonus-points-button:hover {
+  background-color: #8a4baf;
+  color: white;
+}
+
+.asset-points-button {
+  color: #10b981;
+  background-color: #ecfdf5;
+  border: 1px solid #10b981;
+}
+
+.asset-points-button:hover {
+  background-color: #10b981;
+  color: white;
+}
+
+.liability-points-button {
+  color: #ef4444;
+  background-color: #fef2f2;
+  border: 1px solid #ef4444;
+}
+
+.liability-points-button:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Assets and Liabilities */
+.assets-card,
+.liabilities-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px; 
+
+}
+
+.assets-list,
+.liabilities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.asset-item,
+.liability-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.asset-item:last-child,
+.liability-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.asset-info,
+.liability-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.asset-icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ecfdf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.liability-icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fef2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.asset-icon {
+  width: 20px;
+  height: 20px;
+  color: #10b981;
+}
+
+.liability-icon {
+  width: 20px;
+  height: 20px;
+  color: #ef4444;
+}
+
+.asset-title,
+.liability-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.asset-description,
+.liability-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.card-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.track-button {
+  padding: 12px 24px;
+  background-color: transparent;
+  color: #8a4baf;
+  border: 1px solid #8a4baf;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.track-button:hover {
+  background-color: #f9e6f3;
+}
+
+.liability-note {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin: 0;
+}
+
+/* Call to Action */
+.cta-card {
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  border-radius: 12px;
+  padding: 32px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(138, 75, 175, 0.2);
+}
+
+.cta-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+}
+
+.cta-description {
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 0 24px 0;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.cta-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cta-button.primary {
+  background-color: white;
+  color: #8a4baf;
+  border: none;
+}
+
+.cta-button.primary:hover {
+  background-color: #f0f0f0;
+}
+
+.cta-button.secondary {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.cta-button.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 28px;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+  }
+
+  .points-title {
+    font-size: 24px;
+  }
+
+  .points-number {
+    font-size: 48px;
+  }
+
+  .points-label {
+    font-size: 28px;
+  }
+
+  .card-title {
+    font-size: 20px;
+  }
+
+  .card-description {
+    font-size: 14px;
+  }
+
+  .cta-title {
+    font-size: 20px;
+  }
+
+  .cta-description {
+    font-size: 14px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cta-button {
+    width: 100%;
+  }
+}
