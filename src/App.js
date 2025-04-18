@@ -36,6 +36,7 @@ const App = () => {
     <Router history={history}>
         <NavBar />
         <main className="page-content">
+          <Container className="mt-5" style={{ paddingTop: "80px" ,paddingBottom: "40px" }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/profile" component={Profile} />
@@ -46,6 +47,7 @@ const App = () => {
               <Route path="/learning-resources" component={LearningResources} />
               <Route path="/points-rewards" component={PointsRewards} />
             </Switch>
+          </Container>
         </main>
       <Footer />
     </Router>

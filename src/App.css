@@ -1,40 +1,52 @@
-/* App.css */
-
-/* Base Reset & Layout */
-html, body {
+/* Main layout structure */
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
   background-color: #f8eeff;
-  color: #000;
-  box-sizing: border-box;
 }
 
-/* Main Layout Wrapper (replaces PageWrapper) */
-.page-wrapper {
+body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #f8eeff;
+  min-height: 100vh; /* Use viewport height to ensure full page height */
 }
 
-/* Content Section Between NavBar and Footer */
-.page-content {
-  flex-grow: 1;
-  padding-top: 100px;   /* Account for fixed navbar */
-  padding-bottom: 80px; /* Space for footer */
+/* Main content wrapper */
+.app-wrapper {
+  flex: 1 0 auto; /* This allows the content to grow but not shrink */
+  padding-bottom: 32px; /* Add padding at the bottom to create space before footer */
+  padding-top: 80px; /* Space for fixed navbar */
 }
 
-/* Optional inner padding for bootstrap container */
-.page-content .container {
-  padding-bottom: 20px !important;
-}
-
-/* Shared Page Header Section */
-.page-header {
-  margin-bottom: 24px;
+/* Container for page content */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 16px;
+  width: 100%;
+}
+
+/* Footer styles */
+.footer-wrapper {
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  width: 100%;
+  height: 80px !important;
+  padding: 0 !important;
+  background-color: #65328f;
+  color: #dda1d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: auto; /* Push footer to bottom when content is short */
+}
+
+/* Page header */
+.page-header {
+  margin-bottom: 32px;
 }
 
 .page-title {
@@ -47,60 +59,88 @@ html, body {
 .page-subtitle {
   font-size: 18px;
   color: #666;
-  margin-top: 8px;
+  margin: 8px 0 0 0;
 }
 
-/* Button Styles */
+/* Button styles */
 .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
   background: linear-gradient(to right, #e94caf, #8a4baf);
   color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(to right, #d03aa4, #6f3b97);
-}
-
-.btn-outline {
-  background-color: white;
-  color: #8a4baf;
-  border: 1px solid #8a4baf;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   transition: all 0.2s ease;
 }
 
-.btn-outline:hover {
-  background-color: #f8f0fb;
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-sm {
-  font-size: 14px;
-  padding: 8px 16px;
+  font-size: 12px;
+  padding: 6px 12px;
 }
 
-.btn-icon,
-.btn-icon-sm {
-  width: 18px;
-  height: 18px;
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
 }
 
-.btn-icon-sm {
-  width: 14px;
-  height: 14px;
+/* Card styles */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+.card-header {
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+/* Form styles */
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.form-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+/* Tabs container */
+.tabs-container {
+  margin-bottom: 24px;
 }
