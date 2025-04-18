@@ -1,6 +1,25 @@
+"use client"
+
 import { useState } from "react"
 import "../stylesheets/SavingGoal.css"
-import { PiggyBank, Plus, Calendar, DollarSign, Pencil, Trash2, CheckCircle, Award, Car, Home, Smartphone, Briefcase, Gift, Plane, BookOpen, Coffee } from 'lucide-react'
+import {
+  PiggyBank,
+  Plus,
+  Calendar,
+  DollarSign,
+  Pencil,
+  Trash2,
+  CheckCircle,
+  Award,
+  Car,
+  Home,
+  Smartphone,
+  Briefcase,
+  Gift,
+  Plane,
+  BookOpen,
+  Coffee,
+} from "lucide-react"
 
 function SavingGoals() {
   // State for goals
@@ -13,7 +32,7 @@ function SavingGoals() {
       deadline: "2025-08-15",
       category: "emergency",
       description: "3 months of expenses",
-      completed: false
+      completed: false,
     },
     {
       id: 2,
@@ -23,7 +42,7 @@ function SavingGoals() {
       deadline: "2025-10-01",
       category: "tech",
       description: "For school and projects",
-      completed: false
+      completed: false,
     },
     {
       id: 3,
@@ -33,7 +52,7 @@ function SavingGoals() {
       deadline: "2025-06-30",
       category: "travel",
       description: "Trip with friends",
-      completed: false
+      completed: false,
     },
     {
       id: 4,
@@ -43,8 +62,8 @@ function SavingGoals() {
       deadline: "2025-03-15",
       category: "entertainment",
       description: "Taylor Swift concert",
-      completed: true
-    }
+      completed: true,
+    },
   ])
 
   // State for new goal form
@@ -54,7 +73,7 @@ function SavingGoals() {
     current: "0",
     deadline: "",
     category: "",
-    description: ""
+    description: "",
   })
 
   // State for editing
@@ -64,9 +83,9 @@ function SavingGoals() {
   // Handle input change for new goal form
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setNewGoal(prev => ({
+    setNewGoal((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
@@ -80,16 +99,16 @@ function SavingGoals() {
     const goalToAdd = {
       id: Date.now(),
       name: newGoal.name,
-      target: parseFloat(newGoal.target),
-      current: parseFloat(newGoal.current) || 0,
+      target: Number.parseFloat(newGoal.target),
+      current: Number.parseFloat(newGoal.current) || 0,
       deadline: newGoal.deadline,
       category: newGoal.category,
       description: newGoal.description,
-      completed: false
+      completed: false,
     }
 
-    setGoals(prev => [...prev, goalToAdd])
-    
+    setGoals((prev) => [...prev, goalToAdd])
+
     // Reset form
     setNewGoal({
       name: "",
@@ -97,31 +116,33 @@ function SavingGoals() {
       current: "0",
       deadline: "",
       category: "",
-      description: ""
+      description: "",
     })
   }
 
   // Update goal progress
   const handleUpdateProgress = (id, amount) => {
-    setGoals(prev => prev.map(goal => {
-      if (goal.id === id) {
-        const newCurrent = goal.current + parseFloat(amount)
-        const completed = newCurrent >= goal.target
-        
-        return {
-          ...goal,
-          current: completed ? goal.target : newCurrent,
-          completed: completed
+    setGoals((prev) =>
+      prev.map((goal) => {
+        if (goal.id === id) {
+          const newCurrent = goal.current + Number.parseFloat(amount)
+          const completed = newCurrent >= goal.target
+
+          return {
+            ...goal,
+            current: completed ? goal.target : newCurrent,
+            completed: completed,
+          }
         }
-      }
-      return goal
-    }))
+        return goal
+      }),
+    )
   }
 
   // Delete goal
   const handleDeleteGoal = (id) => {
     if (window.confirm("Are you sure you want to delete this goal?")) {
-      setGoals(prev => prev.filter(goal => goal.id !== id))
+      setGoals((prev) => prev.filter((goal) => goal.id !== id))
     }
   }
 
@@ -162,28 +183,28 @@ function SavingGoals() {
 
   // Format date to be more readable
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' }
+    const options = { year: "numeric", month: "short", day: "numeric" }
     return new Date(dateString).toLocaleDateString(undefined, options)
   }
 
   // Filter goals based on completion status
-  const activeGoals = goals.filter(goal => !goal.completed)
-  const completedGoals = goals.filter(goal => goal.completed)
+  const activeGoals = goals.filter((goal) => !goal.completed)
+  const completedGoals = goals.filter((goal) => goal.completed)
 
   return (
-    <div className="saving-goals-container">
-      {/* Page header section */}
+    <div className="container">
+      {/* Page header section - Using global styles */}
       <div className="page-header">
         <h1 className="page-title">Saving Goals</h1>
         <p className="page-subtitle">Set and track your financial targets</p>
       </div>
 
-      {/* Add New Goal Card */}
-      <div className="goals-card">
+      {/* Add New Goal Card - Using global card styles */}
+      <div className="income-card">
         <h2 className="form-title">Add New Goal</h2>
         <p className="form-subtitle">Create a new saving target to work towards</p>
 
-        <div className="goal-form">
+        <div className="income-form">
           <div className="form-group">
             <div className="input-row">
               <div className="input-field">
@@ -243,13 +264,10 @@ function SavingGoals() {
 
               <div className="input-field">
                 <label htmlFor="category">Category*</label>
-                <select
-                  id="category"
-                  name="category"
-                  value={newGoal.category}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>Select a category</option>
+                <select id="category" name="category" value={newGoal.category} onChange={handleInputChange}>
+                  <option value="" disabled>
+                    Select a category
+                  </option>
                   <option value="emergency">Emergency Fund</option>
                   <option value="tech">Technology</option>
                   <option value="travel">Travel</option>
@@ -262,9 +280,10 @@ function SavingGoals() {
                 </select>
               </div>
 
-              <div className="button-container">
-                <button className="add-button" onClick={handleAddGoal}>
-                  <Plus className="button-icon" />
+              <div className="input-field">
+                <label>&nbsp;</label>
+                <button className="btn-primary" onClick={handleAddGoal}>
+                  <Plus className="btn-icon" />
                   Add Goal
                 </button>
               </div>
@@ -291,10 +310,10 @@ function SavingGoals() {
       <h2 className="section-title">Current Goals</h2>
       <div className="goals-grid">
         {activeGoals.length > 0 ? (
-          activeGoals.map(goal => {
+          activeGoals.map((goal) => {
             const progressPercentage = Math.min(Math.round((goal.current / goal.target) * 100), 100)
             const daysRemaining = getDaysRemaining(goal.deadline)
-            
+
             return (
               <div className="goal-card" key={goal.id}>
                 <div className="goal-card-header">
@@ -303,7 +322,10 @@ function SavingGoals() {
                     <span>{goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}</span>
                   </div>
                   <div className="goal-actions">
-                    <button className="icon-button" onClick={() => setEditingGoalId(goal.id === editingGoalId ? null : goal.id)}>
+                    <button
+                      className="icon-button"
+                      onClick={() => setEditingGoalId(goal.id === editingGoalId ? null : goal.id)}
+                    >
                       <Pencil className="icon-sm" />
                     </button>
                     <button className="icon-button" onClick={() => handleDeleteGoal(goal.id)}>
@@ -311,29 +333,28 @@ function SavingGoals() {
                     </button>
                   </div>
                 </div>
-                
+
                 <h3 className="goal-title">{goal.name}</h3>
                 {goal.description && <p className="goal-description">{goal.description}</p>}
-                
+
                 <div className="goal-progress-container">
                   <div className="goal-progress-bar">
-                    <div 
-                      className="goal-progress-fill" 
-                      style={{ width: `${progressPercentage}%` }}
-                    ></div>
+                    <div className="goal-progress-fill" style={{ width: `${progressPercentage}%` }}></div>
                   </div>
                   <div className="goal-progress-text">{progressPercentage}% Complete</div>
                 </div>
-                
+
                 <div className="goal-details">
                   <div className="goal-detail">
                     <DollarSign className="goal-detail-icon" />
                     <div>
                       <div className="goal-detail-label">Saved</div>
-                      <div className="goal-detail-value">${goal.current.toFixed(2)} of ${goal.target.toFixed(2)}</div>
+                      <div className="goal-detail-value">
+                        ${goal.current.toFixed(2)} of ${goal.target.toFixed(2)}
+                      </div>
                     </div>
                   </div>
-                  
+
                   <div className="goal-detail">
                     <Calendar className="goal-detail-icon" />
                     <div>
@@ -343,24 +364,24 @@ function SavingGoals() {
                     </div>
                   </div>
                 </div>
-                
+
                 {editingGoalId === goal.id && (
                   <div className="goal-update-form">
                     <div className="input-with-icon">
                       <span className="input-icon">$</span>
-                      <input 
-                        type="number" 
-                        placeholder="Amount" 
+                      <input
+                        type="number"
+                        placeholder="Amount"
                         id={`update-${goal.id}`}
                         className="goal-update-input"
                       />
                     </div>
-                    <button 
-                      className="goal-update-button"
+                    <button
+                      className="btn-primary btn-sm"
                       onClick={() => {
                         const amount = document.getElementById(`update-${goal.id}`).value
-                        if (amount && !isNaN(parseFloat(amount))) {
-                          handleUpdateProgress(goal.id, parseFloat(amount))
+                        if (amount && !isNaN(Number.parseFloat(amount))) {
+                          handleUpdateProgress(goal.id, Number.parseFloat(amount))
                           setEditingGoalId(null)
                         } else {
                           alert("Please enter a valid amount")
@@ -388,17 +409,14 @@ function SavingGoals() {
         <>
           <div className="completed-goals-header">
             <h2 className="section-title">Completed Goals</h2>
-            <button 
-              className="toggle-completed-button"
-              onClick={() => setShowCompleted(!showCompleted)}
-            >
+            <button className="toggle-completed-button" onClick={() => setShowCompleted(!showCompleted)}>
               {showCompleted ? "Hide" : "Show"}
             </button>
           </div>
-          
+
           {showCompleted && (
             <div className="goals-grid completed">
-              {completedGoals.map(goal => (
+              {completedGoals.map((goal) => (
                 <div className="goal-card completed" key={goal.id}>
                   <div className="goal-card-header">
                     <div className="goal-category">
@@ -410,17 +428,17 @@ function SavingGoals() {
                       <span>Completed</span>
                     </div>
                   </div>
-                  
+
                   <h3 className="goal-title">{goal.name}</h3>
                   {goal.description && <p className="goal-description">{goal.description}</p>}
-                  
+
                   <div className="goal-progress-container">
                     <div className="goal-progress-bar">
-                      <div className="goal-progress-fill completed" style={{ width: '100%' }}></div>
+                      <div className="goal-progress-fill completed" style={{ width: "100%" }}></div>
                     </div>
                     <div className="goal-progress-text">100% Complete</div>
                   </div>
-                  
+
                   <div className="goal-details">
                     <div className="goal-detail">
                       <DollarSign className="goal-detail-icon" />
@@ -429,7 +447,7 @@ function SavingGoals() {
                         <div className="goal-detail-value">${goal.target.toFixed(2)}</div>
                       </div>
                     </div>
-                    
+
                     <div className="goal-detail">
                       <Award className="goal-detail-icon" />
                       <div>
@@ -438,12 +456,9 @@ function SavingGoals() {
                       </div>
                     </div>
                   </div>
-                  
-                  <button 
-                    className="delete-completed-button"
-                    onClick={() => handleDeleteGoal(goal.id)}
-                  >
-                    <Trash2 className="button-icon-sm" />
+
+                  <button className="delete-completed-button" onClick={() => handleDeleteGoal(goal.id)}>
+                    <Trash2 className="btn-icon-sm" />
                     Remove
                   </button>
                 </div>

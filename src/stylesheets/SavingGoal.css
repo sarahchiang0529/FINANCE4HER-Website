@@ -1,121 +1,4 @@
-/* Base Container */
-.saving-goals-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px;
-  font-family: "Inter", sans-serif;
-  background-color: #f8eeff;
-}
-
-.page-header {
-  margin-bottom: 24px;
-}
-
-.page-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: #000;
-  margin: 0;
-}
-
-.page-subtitle {
-  font-size: 18px;
-  color: #666;
-  margin-top: 8px;
-}
-
-.goals-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.form-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.form-subtitle {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 16px;
-}
-
-.goal-form .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.input-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.input-field {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.input-field.full-width {
-  flex: 100%;
-}
-
-.input-field input,
-.input-field select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.input-with-icon {
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  padding: 8px;
-  background: #eaeaea;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  border: 1px solid #ccc;
-  border-right: none;
-}
-
-.input-with-icon input {
-  border-left: none;
-  border-radius: 0 8px 8px 0;
-}
-
-.add-button {
-  background-color: #65318f;
-  color: white;
-  padding: 10px 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.add-button:hover {
-  background-color: #4e2473;
-}
-
-.section-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin: 24px 0 16px;
-}
-
+/* Goals grid and cards */
 .goals-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -154,7 +37,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #65318f;
+  color: #8a4baf;
 }
 
 .goal-title {
@@ -170,6 +53,7 @@
   margin-bottom: 12px;
 }
 
+/* Progress bar */
 .goal-progress-container {
   margin: 12px 0;
 }
@@ -184,7 +68,7 @@
 .goal-progress-fill {
   height: 8px;
   border-radius: 20px;
-  background: linear-gradient(to right, #f55c91, #b54fd1); /* rainbow-like gradient */
+  background: linear-gradient(to right, #e94caf, #8a4baf); /* Matching the primary button gradient */
   transition: width 0.3s ease-in-out;
 }
 
@@ -198,6 +82,7 @@
   margin-top: 6px;
 }
 
+/* Goal details */
 .goal-details {
   display: flex;
   justify-content: space-between;
@@ -214,7 +99,7 @@
 .goal-detail-icon {
   width: 20px;
   height: 20px;
-  color: #65318f;
+  color: #8a4baf;
 }
 
 .goal-detail-label {
@@ -233,6 +118,7 @@
   color: #999;
 }
 
+/* Update form */
 .goal-update-form {
   margin-top: 12px;
   display: flex;
@@ -244,17 +130,10 @@
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  flex: 1;
 }
 
-.goal-update-button {
-  background-color: #65318f;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
+/* Completed goals */
 .completed-goals-header {
   display: flex;
   justify-content: space-between;
@@ -263,8 +142,8 @@
 
 .toggle-completed-button {
   background: transparent;
-  border: 2px solid #65318f;
-  color: #65318f;
+  border: 2px solid #8a4baf;
+  color: #8a4baf;
   border-radius: 6px;
   padding: 6px 12px;
   cursor: pointer;
@@ -311,21 +190,12 @@
   width: 40px;
   height: 40px;
   margin-bottom: 12px;
-  color: #65318f;
+  color: #8a4baf;
 }
 
+/* Tips section */
 .saving-tips-card {
   margin-top: 40px;
-  background: #fff;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.card-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
 }
 
 .tips-list {
@@ -342,7 +212,7 @@
 .tip-number {
   font-size: 18px;
   font-weight: 700;
-  color: #65318f;
+  color: #8a4baf;
 }
 
 .tip-title {
