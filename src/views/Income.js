@@ -88,7 +88,6 @@ function Income() {
         <div className="income-form">
           <div className="form-group">
             <div className="input-row">
-              {/* Amount with icon */}
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
                 <div className="input-with-icon">
@@ -104,7 +103,6 @@ function Income() {
                 </div>
               </div>
 
-              {/* Category */}
               <div className="input-field">
                 <label htmlFor="category">Category</label>
                 <select
@@ -121,7 +119,6 @@ function Income() {
                 </select>
               </div>
 
-              {/* Date */}
               <div className="input-field">
                 <label htmlFor="date">Date</label>
                 <input
@@ -133,17 +130,16 @@ function Income() {
                 />
               </div>
 
-              {/* Add Button */}
-              <div className="button-container">
-                <button className="add-button" onClick={handleAddIncome}>
-                  <Plus className="button-icon" />
+              <div className="input-field">
+                <label>&nbsp;</label>
+                <button className="btn-primary" onClick={handleAddIncome}>
+                  <Plus className="btn-icon" />
                   Add Income
                 </button>
               </div>
             </div>
 
-            {/* Description */}
-            <div className="input-row description-row">
+            <div className="input-row">
               <div className="input-field full-width">
                 <label htmlFor="description">Description</label>
                 <input
@@ -164,7 +160,9 @@ function Income() {
         <div className="income-card">
           <h2 className="card-title">Income Chart</h2>
           <p className="card-description">Breakdown of your income sources</p>
-          <ChartComponent data={income} type="income" />
+          <div className="chart-wrapper">
+            <ChartComponent data={income} type="income" />
+          </div>
         </div>
 
         <div className="income-card">
@@ -194,5 +192,3 @@ function Income() {
 }
 
 export default Income
-
-

@@ -1,22 +1,106 @@
+/* App.css */
+
+/* Base Reset & Layout */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
-  color: #f2ede9;
+  background-color: #f8eeff;
+  color: #000;
+  box-sizing: border-box;
 }
 
+/* Main Layout Wrapper (replaces PageWrapper) */
 .page-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: #f8eeff;
 }
 
+/* Content Section Between NavBar and Footer */
 .page-content {
   flex-grow: 1;
+  padding-top: 100px;   /* Account for fixed navbar */
+  padding-bottom: 80px; /* Space for footer */
 }
 
+/* Optional inner padding for bootstrap container */
 .page-content .container {
   padding-bottom: 20px !important;
 }
 
+/* Shared Page Header Section */
+.page-header {
+  margin-bottom: 24px;
+  padding: 0 16px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, #d03aa4, #6f3b97);
+}
+
+.btn-outline {
+  background-color: white;
+  color: #8a4baf;
+  border: 1px solid #8a4baf;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: #f8f0fb;
+}
+
+.btn-sm {
+  font-size: 14px;
+  padding: 8px 16px;
+}
+
+.btn-icon,
+.btn-icon-sm {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-icon-sm {
+  width: 14px;
+  height: 14px;
+}

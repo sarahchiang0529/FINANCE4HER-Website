@@ -1,9 +1,9 @@
-import { useState } from "react"
-import ChartComponent from "../components/ChartComponent"
-import "../stylesheets/Expenses.css"
-import { Plus } from "lucide-react"
+  import { useState } from "react"
+  import ChartComponent from "../components/ChartComponent"
+  import "../stylesheets/Expenses.css"
+  import { Plus } from "lucide-react"
 
-function Expenses() {
+  function Expenses() {
   const [expenses, setExpenses] = useState([
     { category: "Food", value: 45.0, description: "Groceries", date: "Apr 14, 2025" },
     { category: "Transport", value: 15.5, description: "Bus fare", date: "Apr 13, 2025" },
@@ -79,13 +79,11 @@ function Expenses() {
 
   return (
     <div className="expenses-container">
-      {/* Expenses header section */}
       <div className="page-header">
         <h1 className="page-title">Expenses</h1>
         <p className="page-subtitle">Track your spending habits</p>
       </div>
 
-      {/* Expenses form */}
       <div className="expense-card">
         <h2 className="form-title">Add Expense</h2>
         <p className="form-subtitle">Record a new expense transaction</p>
@@ -130,21 +128,21 @@ function Expenses() {
                   type="date"
                   id="date"
                   name="date"
-                  placeholder="yyyy-mm-dd"
                   value={newExpense.date}
                   onChange={handleInputChange}
                 />
               </div>
 
-              <div className="button-container">
-                <button className="add-button" onClick={handleAddExpense}>
-                  <Plus className="button-icon" />
+              <div className="input-field">
+                <label>&nbsp;</label>
+                <button className="btn-primary" onClick={handleAddExpense}>
+                  <Plus className="btn-icon" />
                   Add Expense
                 </button>
               </div>
             </div>
 
-            <div className="input-row description-row">
+            <div className="input-row">
               <div className="input-field full-width">
                 <label htmlFor="description">Description</label>
                 <input
@@ -161,12 +159,13 @@ function Expenses() {
         </div>
       </div>
 
-      {/* Grid layout: Chart and Log */}
       <div className="expenses-grid">
         <div className="expense-card">
           <h2 className="card-title">Expenses Chart</h2>
           <p className="card-description">Breakdown of your spendings</p>
-          <ChartComponent data={expenses} type="expenses" />
+          <div className="chart-wrapper">
+            <ChartComponent data={expenses} type="expenses" />
+          </div>
         </div>
 
         <div className="expense-card">
@@ -193,6 +192,6 @@ function Expenses() {
       </div>
     </div>
   )
-}
+  }
 
-export default Expenses
+  export default Expenses

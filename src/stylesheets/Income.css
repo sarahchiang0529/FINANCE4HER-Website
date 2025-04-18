@@ -1,19 +1,11 @@
 /* Base styles */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: "Inter", sans-serif;
-  background-color: #f8eeff;
-}
-
-/* Container & Page Header */
 .income-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
 }
+
+/* Header */
 .income-container .page-title {
   font-size: 36px;
   font-weight: 700;
@@ -35,18 +27,13 @@ body {
   margin-bottom: 24px;
 }
 
-/* Form styles */
-.form-title {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0;
-  color: #000;
+/* Chart wrapper */
+.chart-wrapper {
+  height: 300px;
+  position: relative;
 }
-.form-subtitle {
-  font-size: 15px;
-  color: #666;
-  margin: 8px 0 32px 0;
-}
+
+/* Form */
 .income-form {
   width: 100%;
 }
@@ -85,19 +72,18 @@ body {
   font-size: 16px;
   color: #999;
   pointer-events: none;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 20px;
 }
-
+.input-with-icon input {
+  padding-left: 44px;
+}
 .input-field input,
 .input-field select {
   width: 100%;
   height: 48px;
-  left: 12px;
-
   padding: 12px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -105,7 +91,6 @@ body {
   color: #999;
   background-color: white;
   box-sizing: border-box;
-  appearance: none;
 }
 .input-field input:focus,
 .input-field select:focus {
@@ -113,72 +98,16 @@ body {
   border-color: #a94caf;
   box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
 }
-.input-field input.has-value,
-.input-field select.has-value {
-  color: #000;
-}
-.input-with-icon input {
-  padding-left: 44px;
-  height: 48px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 16px;
-  color: #000;
-  background-color: white;
-  box-sizing: border-box;
-}
-
-input[type="date"] {
-  padding-right: 10px;
-  background-image: none;
-}
 input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 1;
 }
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
   background-position: calc(100% - 8px) center;
   background-size: 16px;
   padding-right: 30px;
 }
 
-/* Button styles */
-.button-container {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  width: 180px;
-}
-.add-button {
-  height: 48px;
-  width: 160px;
-  padding: 0;
-  background-color: #a94caf;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.add-button:hover {
-  background-color: #953b9a;
-}
-.button-icon {
-  margin-right: 8px;
-  width: 18px;
-  height: 18px;
-}
-input::placeholder {
-  color: #999;
-}
-
-/* Grid layout: Chart and Log cards aligned */
+/* Grid */
 .income-grid {
   display: grid;
   gap: 24px;
@@ -195,20 +124,7 @@ input::placeholder {
   }
 }
 
-/* Chart styles */
-.chart-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.chart-wrapper {
-  flex: 1;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Log styles: fixed height so ~6 entries are visible, scroll enabled */
+/* Log List */
 .income-list {
   height: 370px;
   overflow-y: auto;
@@ -220,9 +136,6 @@ input::placeholder {
   justify-content: space-between;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
-}
-.income-item:last-child {
-  border-bottom: none;
 }
 .income-info {
   display: flex;
@@ -257,18 +170,4 @@ input::placeholder {
 .income-date {
   font-size: 12px;
   color: #666;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .input-row {
-    flex-direction: column;
-    gap: 16px;
-  }
-  .button-container {
-    width: 100%;
-  }
-  .add-button {
-    width: 100%;
-  }
 }
