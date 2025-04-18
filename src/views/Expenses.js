@@ -3,7 +3,7 @@
   import "../stylesheets/Expenses.css"
   import { Plus } from "lucide-react"
 
-  function Expenses() {
+function Expenses() {
   const [expenses, setExpenses] = useState([
     { category: "Food", value: 45.0, description: "Groceries", date: "Apr 14, 2025" },
     { category: "Transport", value: 15.5, description: "Bus fare", date: "Apr 13, 2025" },
@@ -70,6 +70,8 @@
         return "🎬"
       case "Shopping":
         return "🛍️"
+      case "Utilities":
+        return "💡"
       case "Other":
         return "📋"
       default:
@@ -81,7 +83,7 @@
     <div className="expenses-container">
       <div className="page-header">
         <h1 className="page-title">Expenses</h1>
-        <p className="page-subtitle">Track your spending habits</p>
+        <p className="page-subtitle">Track and manage your spending</p>
       </div>
 
       <div className="expense-card">
@@ -107,30 +109,22 @@
 
               <div className="input-field">
                 <label htmlFor="category">Category</label>
-                <select
-                  id="category"
-                  name="category"
-                  value={newExpense.category}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>Select</option>
+                <select id="category" name="category" value={newExpense.category} onChange={handleInputChange}>
+                  <option value="" disabled>
+                    Select
+                  </option>
                   <option value="Food">Food</option>
                   <option value="Transport">Transport</option>
                   <option value="Entertainment">Entertainment</option>
                   <option value="Shopping">Shopping</option>
+                  <option value="Utilities">Utilities</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
               <div className="input-field">
                 <label htmlFor="date">Date</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={newExpense.date}
-                  onChange={handleInputChange}
-                />
+                <input type="date" id="date" name="date" value={newExpense.date} onChange={handleInputChange} />
               </div>
 
               <div className="input-field">
@@ -162,14 +156,12 @@
       <div className="expenses-grid">
         <div className="expense-card">
           <h2 className="card-title">Expenses Chart</h2>
-          <p className="card-description">Breakdown of your spendings</p>
-          <div className="chart-wrapper">
-            <ChartComponent data={expenses} type="expenses" />
-          </div>
+          <p className="card-description">Breakdown of your spending</p>
+          <ChartComponent data={expenses} type="expenses" />
         </div>
 
         <div className="expense-card">
-          <h2 className="card-title">Expense Log</h2>
+          <h2 className="card-title">Expenses Log</h2>
           <p className="card-description">Your recent expense transactions</p>
           <div className="expenses-list">
             {expenses.map((entry, index) => (
@@ -192,6 +184,6 @@
       </div>
     </div>
   )
-  }
+}
 
-  export default Expenses
+export default Expenses

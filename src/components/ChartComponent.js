@@ -1,23 +1,19 @@
-"use client"
+import { useEffect, useRef } from "react"
 import { Pie } from "react-chartjs-2"
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js"
+import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend } from "chart.js"
+import "../stylesheets/ChartComponent.css";
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend)
 
 const ChartComponent = ({ data, type }) => {
-  // Colors
+  const chartRef = useRef(null)
+  const containerRef = useRef(null)
+
+  // Define colors as an array
   const colors = [
-    "rgba(77, 192, 181, 1)",  // teal
-    "rgba(52, 144, 220, 1)",  // blue
-    "rgba(246, 173, 85, 1)",  // yellow/orange
+    "rgba(77, 192, 181, 1)", // teal
+    "rgba(52, 144, 220, 1)", // blue
+    "rgba(246, 173, 85, 1)", // yellow/orange
     "rgba(159, 122, 234, 1)", // purple
     "rgba(245, 101, 101, 1)", // red/orange
   ]
@@ -32,6 +28,7 @@ const ChartComponent = ({ data, type }) => {
     }
     return acc
   }, [])
+
   const totalValue = groupedData.reduce((acc, item) => acc + item.value, 0)
 
   // Labels
@@ -56,7 +53,7 @@ const ChartComponent = ({ data, type }) => {
       // Amount
       ctx.font = "bold 28px Inter, sans-serif"
       ctx.fillStyle = "#333"
-      ctx.fillText(`$${totalValue.toFixed(2)}`, width / 2, centerY + 20)
+      ctx.fillText(`$${totalValue.toFixed(2)}`, width / 2, centerY + 10)
       ctx.save()
     },
   }
@@ -69,6 +66,9 @@ const ChartComponent = ({ data, type }) => {
   // Register new plugin
   ChartJS.register(centerTextPlugin)
 
+  // Assign colors to categories (sequentially from the array)
+  const backgroundColors = groupedData.map((_, index) => colors[index % colors.length])
+
   // Chart data
   const chartData = {
     labels: groupedData.map((item) => item.category),
@@ -76,7 +76,7 @@ const ChartComponent = ({ data, type }) => {
       {
         label: chartLabel,
         data: groupedData.map((item) => item.value),
-        backgroundColor: groupedData.map((_, i) => colors[i % colors.length]),
+        backgroundColor: backgroundColors,
         borderColor: "white",
         borderWidth: 2,
       },
@@ -86,9 +86,9 @@ const ChartComponent = ({ data, type }) => {
   // Chart options
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // Important for filling container height
+    maintainAspectRatio: false,
     layout: {
-      padding: 0, // Remove extra padding so it doesn't shrink
+      padding: 0,
     },
     plugins: {
       legend: {
@@ -117,9 +117,29 @@ const ChartComponent = ({ data, type }) => {
     cutout: "70%", // Donut hole size
   }
 
+  // Handle resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartRef.current && containerRef.current) {
+        // Force chart update on resize
+        chartRef.current.update()
+      }
+    }
+
+    // Add resize listener
+    window.addEventListener("resize", handleResize)
+
+    // Clean up
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
   return (
-    <div className="chart-wrapper">
-      <Pie data={chartData} options={options} />
+    <div className="chart-wrapper" ref={containerRef}>
+      <div className="chart-container">
+        <Pie ref={chartRef} data={chartData} options={options} />
+      </div>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ChartComponent from "../components/ChartComponent"
+import ChartComponent from "../components/ChartComponent";
 import "../stylesheets/Income.css"
 import { Plus } from "lucide-react"
 
@@ -22,7 +22,7 @@ function Income() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setNewIncome(prev => ({
+    setNewIncome((prev) => ({
       ...prev,
       [name]: value,
     }))
@@ -30,7 +30,7 @@ function Income() {
 
   const handleAddIncome = () => {
     const { amount, description, category, date } = newIncome
-    const numericAmount = parseFloat(amount)
+    const numericAmount = Number.parseFloat(amount)
 
     if (!amount || isNaN(numericAmount) || !description) {
       alert("Please enter a valid amount and description.")
@@ -50,7 +50,7 @@ function Income() {
       date: formattedDate,
     }
 
-    setIncome(prev => [...prev, newEntry])
+    setIncome((prev) => [...prev, newEntry])
 
     setNewIncome({
       amount: "",
@@ -105,13 +105,10 @@ function Income() {
 
               <div className="input-field">
                 <label htmlFor="category">Category</label>
-                <select
-                  id="category"
-                  name="category"
-                  value={newIncome.category}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>Select</option>
+                <select id="category" name="category" value={newIncome.category} onChange={handleInputChange}>
+                  <option value="" disabled>
+                    Select
+                  </option>
                   <option value="Salary">Salary</option>
                   <option value="Government Benefit">Government Benefit</option>
                   <option value="Investments">Investments</option>
@@ -121,13 +118,7 @@ function Income() {
 
               <div className="input-field">
                 <label htmlFor="date">Date</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={newIncome.date}
-                  onChange={handleInputChange}
-                />
+                <input type="date" id="date" name="date" value={newIncome.date} onChange={handleInputChange} />
               </div>
 
               <div className="input-field">
@@ -160,9 +151,7 @@ function Income() {
         <div className="income-card">
           <h2 className="card-title">Income Chart</h2>
           <p className="card-description">Breakdown of your income sources</p>
-          <div className="chart-wrapper">
-            <ChartComponent data={income} type="income" />
-          </div>
+          <ChartComponent data={income} type="income" />
         </div>
 
         <div className="income-card">

@@ -25,12 +25,22 @@
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Chart wrapper */
-.chart-wrapper {
-  height: 300px;
-  position: relative;
+/* Card title and description */
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #666;
+  margin: 8px 0 24px 0;
 }
 
 /* Form */
@@ -66,11 +76,12 @@
 }
 .input-icon {
   position: absolute;
-  left: 0px;
   top: 50%;
+  left: 0px;
   transform: translateY(-50%);
   font-size: 16px;
   color: #999;
+  back: #999;
   pointer-events: none;
   display: flex;
   align-items: center;
