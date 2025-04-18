@@ -10,66 +10,60 @@ import {
   Legend,
 } from "chart.js"
 
+// Register chart components
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend)
 
+// Center text plugin
+const centerTextPlugin = {
+  id: "centerText",
+  afterDraw: (chart) => {
+    const { width, height, ctx } = chart;
+    const centerY = height / 2;
+
+    const total = chart.config.data.datasets[0].data.reduce((a, b) => a + b, 0);
+    const totalLabel = chart.config.options.plugins.centerText?.label || "Total";
+    const displayValue = `$${total.toFixed(2)}`;
+
+    ctx.save();
+    ctx.font = "14px Inter, sans-serif";
+    ctx.fillStyle = "#666";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(totalLabel, width / 2, centerY - 20);
+
+    ctx.font = "bold 28px Inter, sans-serif";
+    ctx.fillStyle = "#333";
+    ctx.fillText(displayValue, width / 2, centerY + 20);
+    ctx.restore();
+  }
+};
+
+// Register plugin once
+if (!ChartJS.registry.plugins.get("centerText")) {
+  ChartJS.register(centerTextPlugin);
+}
+
 const ChartComponent = ({ data, type }) => {
-  // Colors
   const colors = [
-    "rgba(77, 192, 181, 1)",  // teal
-    "rgba(52, 144, 220, 1)",  // blue
-    "rgba(246, 173, 85, 1)",  // yellow/orange
-    "rgba(159, 122, 234, 1)", // purple
-    "rgba(245, 101, 101, 1)", // red/orange
-  ]
+    "rgba(77, 192, 181, 1)",
+    "rgba(52, 144, 220, 1)",
+    "rgba(246, 173, 85, 1)",
+    "rgba(159, 122, 234, 1)",
+    "rgba(245, 101, 101, 1)",
+  ];
 
-  // Group data
   const groupedData = data.reduce((acc, item) => {
-    const existingCategory = acc.find((g) => g.category === item.category)
+    const existingCategory = acc.find((g) => g.category === item.category);
     if (existingCategory) {
-      existingCategory.value += item.value
+      existingCategory.value += item.value;
     } else {
-      acc.push({ category: item.category, value: item.value })
+      acc.push({ category: item.category, value: item.value });
     }
-    return acc
-  }, [])
-  const totalValue = groupedData.reduce((acc, item) => acc + item.value, 0)
+    return acc;
+  }, []);
 
-  // Labels
-  const chartLabel = type === "income" ? "Income" : "Expenses"
-  const totalLabel = type === "income" ? "Total Income" : "Total Expenses"
+  const chartLabel = type === "income" ? "Income" : "Expenses";
 
-  // Center text plugin
-  const centerTextPlugin = {
-    id: "centerText",
-    beforeDraw: (chart) => {
-      const { width, height, ctx } = chart
-      ctx.restore()
-      const centerY = height / 2
-
-      // Title
-      ctx.font = "14px Inter, sans-serif"
-      ctx.textAlign = "center"
-      ctx.textBaseline = "middle"
-      ctx.fillStyle = "#666"
-      ctx.fillText(totalLabel, width / 2, centerY - 20)
-
-      // Amount
-      ctx.font = "bold 28px Inter, sans-serif"
-      ctx.fillStyle = "#333"
-      ctx.fillText(`$${totalValue.toFixed(2)}`, width / 2, centerY + 20)
-      ctx.save()
-    },
-  }
-
-  // Unregister existing plugin
-  const existingPlugin = ChartJS.registry.plugins.get("centerText")
-  if (existingPlugin) {
-    ChartJS.unregister(existingPlugin)
-  }
-  // Register new plugin
-  ChartJS.register(centerTextPlugin)
-
-  // Chart data
   const chartData = {
     labels: groupedData.map((item) => item.category),
     datasets: [
@@ -81,15 +75,13 @@ const ChartComponent = ({ data, type }) => {
         borderWidth: 2,
       },
     ],
-  }
+  };
 
-  // Chart options
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // Important for filling container height
-    layout: {
-      padding: 0, // Remove extra padding so it doesn't shrink
-    },
+    maintainAspectRatio: false,
+    cutout: "70%",
+    layout: { padding: 0 },
     plugins: {
       legend: {
         position: "top",
@@ -107,21 +99,23 @@ const ChartComponent = ({ data, type }) => {
       tooltip: {
         callbacks: {
           label: (ctx) => {
-            const label = ctx.label || ""
-            const value = ctx.raw || 0
-            return `${label}: $${value.toFixed(2)}`
+            const label = ctx.label || "";
+            const value = ctx.raw || 0;
+            return `${label}: $${value.toFixed(2)}`;
           },
         },
       },
+      centerText: {
+        label: type === "income" ? "Total Income" : "Total Expenses",
+      },
     },
-    cutout: "70%", // Donut hole size
-  }
+  };
 
   return (
     <div className="chart-wrapper">
       <Pie data={chartData} options={options} />
     </div>
-  )
-}
+  );
+};
 
-export default ChartComponent
+export default ChartComponent;

@@ -1,7 +1,10 @@
+"use client"
+
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import ChartComponent from "../components/ChartComponent"
 import "../stylesheets/Income.css"
-import { Plus } from "lucide-react"
+import { Plus, ArrowRight } from "lucide-react"
 
 function Income() {
   const [income, setIncome] = useState([
@@ -22,7 +25,7 @@ function Income() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setNewIncome(prev => ({
+    setNewIncome((prev) => ({
       ...prev,
       [name]: value,
     }))
@@ -30,7 +33,7 @@ function Income() {
 
   const handleAddIncome = () => {
     const { amount, description, category, date } = newIncome
-    const numericAmount = parseFloat(amount)
+    const numericAmount = Number.parseFloat(amount)
 
     if (!amount || isNaN(numericAmount) || !description) {
       alert("Please enter a valid amount and description.")
@@ -50,7 +53,7 @@ function Income() {
       date: formattedDate,
     }
 
-    setIncome(prev => [...prev, newEntry])
+    setIncome((prev) => [...prev, newEntry])
 
     setNewIncome({
       amount: "",
@@ -90,8 +93,8 @@ function Income() {
             <div className="input-row">
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
-                <div className="input-with-icon">
-                  <span className="input-icon">$</span>
+                <div className="currency-input-container">
+                  <div className="currency-symbol">$</div>
                   <input
                     type="text"
                     id="amount"
@@ -99,19 +102,17 @@ function Income() {
                     placeholder="0.00"
                     value={newIncome.amount}
                     onChange={handleInputChange}
+                    className="currency-input"
                   />
                 </div>
               </div>
 
               <div className="input-field">
                 <label htmlFor="category">Category</label>
-                <select
-                  id="category"
-                  name="category"
-                  value={newIncome.category}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>Select</option>
+                <select id="category" name="category" value={newIncome.category} onChange={handleInputChange}>
+                  <option value="" disabled>
+                    Select
+                  </option>
                   <option value="Salary">Salary</option>
                   <option value="Government Benefit">Government Benefit</option>
                   <option value="Investments">Investments</option>
@@ -121,13 +122,7 @@ function Income() {
 
               <div className="input-field">
                 <label htmlFor="date">Date</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={newIncome.date}
-                  onChange={handleInputChange}
-                />
+                <input type="date" id="date" name="date" value={newIncome.date} onChange={handleInputChange} />
               </div>
 
               <div className="input-field">
@@ -184,6 +179,14 @@ function Income() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* View All button */}
+          <div className="view-all-container">
+            <Link to="/income-log" className="view-all-button">
+              <span>View All</span>
+              <ArrowRight className="view-all-icon" size={16} />
+            </Link>
           </div>
         </div>
       </div>
