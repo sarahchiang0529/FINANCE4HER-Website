@@ -133,23 +133,7 @@
   flex: 1;
 }
 
-/* Completed goals */
-.completed-goals-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.toggle-completed-button {
-  background: transparent;
-  border: 2px solid #8a4baf;
-  color: #8a4baf;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
+/* Completed badge */
 .completed-badge {
   display: flex;
   align-items: center;
@@ -163,19 +147,7 @@
   height: 18px;
 }
 
-.delete-completed-button {
-  background-color: #ff4d4f;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  margin-top: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
+/* No goals message */
 .no-goals-message {
   text-align: center;
   color: #444;
@@ -193,36 +165,49 @@
   color: #8a4baf;
 }
 
-/* Tips section */
-.saving-tips-card {
-  margin-top: 40px;
+/* Tabs Container */
+.tabs-container {
+  margin-bottom: 24px;
 }
 
-.tips-list {
+.tabs {
   display: flex;
-  flex-direction: column;
   gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
-.tip-item {
+.tab {
   display: flex;
-  gap: 12px;
-}
-
-.tip-number {
-  font-size: 18px;
-  font-weight: 700;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  background-color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
   color: #8a4baf;
-}
-
-.tip-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.tip-description {
+  cursor: pointer;
+  transition: all 0.2s ease;
   font-size: 14px;
-  color: #555;
-  margin: 4px 0 0;
+}
+
+.tab:hover {
+  background-color: #f3e6fb;
+}
+
+.tab.active {
+  background-color: #e2c6ff;
+  border-color: #8a4baf;
+}
+
+.tab-label {
+  font-size: 14px;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
 }

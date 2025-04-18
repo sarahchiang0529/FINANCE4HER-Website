@@ -1,38 +1,3 @@
-/* Base styles */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: "Inter", sans-serif;
-  background-color: #f8eeff;
-}
-
-/* Container */
-.learning-resources-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
-/* Page header */
-.page-header {
-  margin-bottom: 20px;
-}
-
-.page-title {
-  font-size: 36px;
-  font-weight: 700;
-  margin: 0;
-  color: #000;
-}
-
-.page-subtitle {
-  font-size: 18px;
-  color: #666;
-  margin: 8px 0 0 0;
-}
-
 /* Tabs Container */
 .tabs-container {
   margin-bottom: 32px;
@@ -54,7 +19,7 @@ body {
   background-color: #fff;
   border-radius: 8px;
   font-weight: 500;
-  color: #65318f;
+  color: #8a4baf;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
@@ -66,7 +31,7 @@ body {
 
 .tab.active {
   background-color: #e2c6ff;
-  border-color: #65318f;
+  border-color: #8a4baf;
 }
 
 .tab-label {

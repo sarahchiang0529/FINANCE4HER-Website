@@ -2,24 +2,7 @@
 
 import { useState } from "react"
 import "../stylesheets/SavingGoal.css"
-import {
-  PiggyBank,
-  Plus,
-  Calendar,
-  DollarSign,
-  Pencil,
-  Trash2,
-  CheckCircle,
-  Award,
-  Car,
-  Home,
-  Smartphone,
-  Briefcase,
-  Gift,
-  Plane,
-  BookOpen,
-  Coffee,
-} from "lucide-react"
+import { PiggyBank, Plus, Calendar, DollarSign, Pencil, Trash2, CheckCircle, Award, Car, Home, Smartphone, Briefcase, Gift, Plane, BookOpen, Coffee, Target, CheckSquare } from 'lucide-react'
 
 function SavingGoals() {
   // State for goals
@@ -76,9 +59,9 @@ function SavingGoals() {
     description: "",
   })
 
-  // State for editing
+  // State for editing and active tab
   const [editingGoalId, setEditingGoalId] = useState(null)
-  const [showCompleted, setShowCompleted] = useState(false)
+  const [activeTab, setActiveTab] = useState("Current Goals")
 
   // Handle input change for new goal form
   const handleInputChange = (e) => {
@@ -118,6 +101,11 @@ function SavingGoals() {
       category: "",
       description: "",
     })
+
+    // Switch to Current Goals tab if we're on Completed Goals
+    if (activeTab === "Completed Goals") {
+      setActiveTab("Current Goals")
+    }
   }
 
   // Update goal progress
@@ -127,6 +115,11 @@ function SavingGoals() {
         if (goal.id === id) {
           const newCurrent = goal.current + Number.parseFloat(amount)
           const completed = newCurrent >= goal.target
+
+          // If goal becomes completed and we're on Current Goals tab, switch to Completed Goals
+          if (completed && !goal.completed && activeTab === "Current Goals") {
+            setTimeout(() => setActiveTab("Completed Goals"), 500)
+          }
 
           return {
             ...goal,
@@ -190,6 +183,12 @@ function SavingGoals() {
   // Filter goals based on completion status
   const activeGoals = goals.filter((goal) => !goal.completed)
   const completedGoals = goals.filter((goal) => goal.completed)
+
+  // Tab configuration
+  const tabs = [
+    { title: "Current Goals", icon: <Target size={20} /> },
+    { title: "Completed Goals", icon: <CheckSquare size={20} /> },
+  ]
 
   return (
     <div className="container">
@@ -306,167 +305,177 @@ function SavingGoals() {
         </div>
       </div>
 
-      {/* Active Goals Section */}
-      <h2 className="section-title">Current Goals</h2>
-      <div className="goals-grid">
-        {activeGoals.length > 0 ? (
-          activeGoals.map((goal) => {
-            const progressPercentage = Math.min(Math.round((goal.current / goal.target) * 100), 100)
-            const daysRemaining = getDaysRemaining(goal.deadline)
-
-            return (
-              <div className="goal-card" key={goal.id}>
-                <div className="goal-card-header">
-                  <div className="goal-category">
-                    {getCategoryIcon(goal.category)}
-                    <span>{goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}</span>
-                  </div>
-                  <div className="goal-actions">
-                    <button
-                      className="icon-button"
-                      onClick={() => setEditingGoalId(goal.id === editingGoalId ? null : goal.id)}
-                    >
-                      <Pencil className="icon-sm" />
-                    </button>
-                    <button className="icon-button" onClick={() => handleDeleteGoal(goal.id)}>
-                      <Trash2 className="icon-sm" />
-                    </button>
-                  </div>
-                </div>
-
-                <h3 className="goal-title">{goal.name}</h3>
-                {goal.description && <p className="goal-description">{goal.description}</p>}
-
-                <div className="goal-progress-container">
-                  <div className="goal-progress-bar">
-                    <div className="goal-progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-                  </div>
-                  <div className="goal-progress-text">{progressPercentage}% Complete</div>
-                </div>
-
-                <div className="goal-details">
-                  <div className="goal-detail">
-                    <DollarSign className="goal-detail-icon" />
-                    <div>
-                      <div className="goal-detail-label">Saved</div>
-                      <div className="goal-detail-value">
-                        ${goal.current.toFixed(2)} of ${goal.target.toFixed(2)}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="goal-detail">
-                    <Calendar className="goal-detail-icon" />
-                    <div>
-                      <div className="goal-detail-label">Deadline</div>
-                      <div className="goal-detail-value">{formatDate(goal.deadline)}</div>
-                      <div className="goal-detail-subtext">{daysRemaining} days left</div>
-                    </div>
-                  </div>
-                </div>
-
-                {editingGoalId === goal.id && (
-                  <div className="goal-update-form">
-                    <div className="input-with-icon">
-                      <span className="input-icon">$</span>
-                      <input
-                        type="number"
-                        placeholder="Amount"
-                        id={`update-${goal.id}`}
-                        className="goal-update-input"
-                      />
-                    </div>
-                    <button
-                      className="btn-primary btn-sm"
-                      onClick={() => {
-                        const amount = document.getElementById(`update-${goal.id}`).value
-                        if (amount && !isNaN(Number.parseFloat(amount))) {
-                          handleUpdateProgress(goal.id, Number.parseFloat(amount))
-                          setEditingGoalId(null)
-                        } else {
-                          alert("Please enter a valid amount")
-                        }
-                      }}
-                    >
-                      Update Progress
-                    </button>
-                  </div>
-                )}
-              </div>
-            )
-          })
-        ) : (
-          <div className="no-goals-message">
-            <PiggyBank className="no-goals-icon" />
-            <p>You don't have any active saving goals yet.</p>
-            <p>Add your first goal above to start tracking your progress!</p>
-          </div>
-        )}
-      </div>
-
-      {/* Completed Goals Section */}
-      {completedGoals.length > 0 && (
-        <>
-          <div className="completed-goals-header">
-            <h2 className="section-title">Completed Goals</h2>
-            <button className="toggle-completed-button" onClick={() => setShowCompleted(!showCompleted)}>
-              {showCompleted ? "Hide" : "Show"}
+      {/* Tabs for Current and Completed Goals */}
+      <div className="tabs-container">
+        <div className="tabs">
+          {tabs.map((tab) => (
+            <button
+              key={tab.title}
+              className={`tab ${activeTab === tab.title ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.title)}
+            >
+              {tab.icon}
+              <span className="tab-label">{tab.title}</span>
             </button>
-          </div>
+          ))}
+        </div>
 
-          {showCompleted && (
-            <div className="goals-grid completed">
-              {completedGoals.map((goal) => (
-                <div className="goal-card completed" key={goal.id}>
-                  <div className="goal-card-header">
-                    <div className="goal-category">
-                      {getCategoryIcon(goal.category)}
-                      <span>{goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}</span>
-                    </div>
-                    <div className="completed-badge">
-                      <CheckCircle className="completed-icon" />
-                      <span>Completed</span>
-                    </div>
-                  </div>
+        <div className="tab-content">
+          {activeTab === "Current Goals" && (
+            <div className="goals-grid">
+              {activeGoals.length > 0 ? (
+                activeGoals.map((goal) => {
+                  const progressPercentage = Math.min(Math.round((goal.current / goal.target) * 100), 100)
+                  const daysRemaining = getDaysRemaining(goal.deadline)
 
-                  <h3 className="goal-title">{goal.name}</h3>
-                  {goal.description && <p className="goal-description">{goal.description}</p>}
-
-                  <div className="goal-progress-container">
-                    <div className="goal-progress-bar">
-                      <div className="goal-progress-fill completed" style={{ width: "100%" }}></div>
-                    </div>
-                    <div className="goal-progress-text">100% Complete</div>
-                  </div>
-
-                  <div className="goal-details">
-                    <div className="goal-detail">
-                      <DollarSign className="goal-detail-icon" />
-                      <div>
-                        <div className="goal-detail-label">Saved</div>
-                        <div className="goal-detail-value">${goal.target.toFixed(2)}</div>
+                  return (
+                    <div className="goal-card" key={goal.id}>
+                      <div className="goal-card-header">
+                        <div className="goal-category">
+                          {getCategoryIcon(goal.category)}
+                          <span>{goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}</span>
+                        </div>
+                        <div className="goal-actions">
+                          <button
+                            className="icon-button"
+                            onClick={() => setEditingGoalId(goal.id === editingGoalId ? null : goal.id)}
+                          >
+                            <Pencil className="btn-icon-sm" />
+                          </button>
+                          <button className="icon-button" onClick={() => handleDeleteGoal(goal.id)}>
+                            <Trash2 className="btn-icon-sm" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="goal-detail">
-                      <Award className="goal-detail-icon" />
-                      <div>
-                        <div className="goal-detail-label">Achievement</div>
-                        <div className="goal-detail-value">Goal Reached!</div>
+                      <h3 className="goal-title">{goal.name}</h3>
+                      {goal.description && <p className="goal-description">{goal.description}</p>}
+
+                      <div className="goal-progress-container">
+                        <div className="goal-progress-bar">
+                          <div className="goal-progress-fill" style={{ width: `${progressPercentage}%` }}></div>
+                        </div>
+                        <div className="goal-progress-text">{progressPercentage}% Complete</div>
                       </div>
-                    </div>
-                  </div>
 
-                  <button className="delete-completed-button" onClick={() => handleDeleteGoal(goal.id)}>
-                    <Trash2 className="btn-icon-sm" />
-                    Remove
-                  </button>
+                      <div className="goal-details">
+                        <div className="goal-detail">
+                          <DollarSign className="goal-detail-icon" />
+                          <div>
+                            <div className="goal-detail-label">Saved</div>
+                            <div className="goal-detail-value">
+                              ${goal.current.toFixed(2)} of ${goal.target.toFixed(2)}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="goal-detail">
+                          <Calendar className="goal-detail-icon" />
+                          <div>
+                            <div className="goal-detail-label">Deadline</div>
+                            <div className="goal-detail-value">{formatDate(goal.deadline)}</div>
+                            <div className="goal-detail-subtext">{daysRemaining} days left</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {editingGoalId === goal.id && (
+                        <div className="goal-update-form">
+                          <div className="input-with-icon">
+                            <span className="input-icon">$</span>
+                            <input
+                              type="number"
+                              placeholder="Amount"
+                              id={`update-${goal.id}`}
+                              className="goal-update-input"
+                            />
+                          </div>
+                          <button
+                            className="btn-primary btn-sm"
+                            onClick={() => {
+                              const amount = document.getElementById(`update-${goal.id}`).value
+                              if (amount && !isNaN(Number.parseFloat(amount))) {
+                                handleUpdateProgress(goal.id, Number.parseFloat(amount))
+                                setEditingGoalId(null)
+                              } else {
+                                alert("Please enter a valid amount")
+                              }
+                            }}
+                          >
+                            Update Progress
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })
+              ) : (
+                <div className="no-goals-message">
+                  <PiggyBank className="no-goals-icon" />
+                  <p>You don't have any active saving goals yet.</p>
+                  <p>Add your first goal above to start tracking your progress!</p>
                 </div>
-              ))}
+              )}
             </div>
           )}
-        </>
-      )}
+
+          {activeTab === "Completed Goals" && (
+            <div className="goals-grid">
+              {completedGoals.length > 0 ? (
+                completedGoals.map((goal) => (
+                  <div className="goal-card completed" key={goal.id}>
+                    <div className="goal-card-header">
+                      <div className="goal-category">
+                        {getCategoryIcon(goal.category)}
+                        <span>{goal.category.charAt(0).toUpperCase() + goal.category.slice(1)}</span>
+                      </div>
+                      <div className="goal-actions">
+                        <button className="icon-button" onClick={() => handleDeleteGoal(goal.id)}>
+                          <Trash2 className="btn-icon-sm" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <h3 className="goal-title">{goal.name}</h3>
+                    {goal.description && <p className="goal-description">{goal.description}</p>}
+
+                    <div className="goal-progress-container">
+                      <div className="goal-progress-bar">
+                        <div className="goal-progress-fill completed" style={{ width: "100%" }}></div>
+                      </div>
+                      <div className="goal-progress-text">100% Complete</div>
+                    </div>
+
+                    <div className="goal-details">
+                      <div className="goal-detail">
+                        <DollarSign className="goal-detail-icon" />
+                        <div>
+                          <div className="goal-detail-label">Saved</div>
+                          <div className="goal-detail-value">${goal.target.toFixed(2)}</div>
+                        </div>
+                      </div>
+
+                      <div className="goal-detail">
+                        <Award className="goal-detail-icon" />
+                        <div>
+                          <div className="goal-detail-label">Achievement</div>
+                          <div className="goal-detail-value">Goal Reached!</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="no-goals-message">
+                  <Award className="no-goals-icon" />
+                  <p>You haven't completed any goals yet.</p>
+                  <p>Keep working on your current goals to see them here!</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

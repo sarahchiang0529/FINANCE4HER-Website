@@ -2,21 +2,7 @@
 
 import { useState, useEffect } from "react"
 import "../stylesheets/PointsRewards.css"
-import {
-  Award,
-  Gift,
-  TrendingUp,
-  Calendar,
-  CheckCircle,
-  PiggyBank,
-  DollarSign,
-  BookOpen,
-  CreditCard,
-  AlertCircle,
-  Zap,
-  Users,
-  MessageSquare,
-} from "lucide-react"
+import { Award, Gift, TrendingUp, Calendar, CheckCircle, PiggyBank, DollarSign, BookOpen, CreditCard, AlertCircle, Zap, Users, MessageSquare } from 'lucide-react'
 
 function PointsRewards() {
   const [currentPoints, setCurrentPoints] = useState(105)
@@ -68,7 +54,7 @@ function PointsRewards() {
   };  
 
   return (
-    <div className="rewards-container">
+    <div className="container">
       {showPointsAdded && (
         <div className={`points-added-notification ${showPointsAdded.type}`}>
           <span>{showPointsAdded.points > 0 ? `+${showPointsAdded.points}` : showPointsAdded.points} points!</span>
@@ -162,7 +148,7 @@ function PointsRewards() {
                   <Gift className="reward-icon" />
                 </div>
                 <button
-                  className="reward-button"
+                  className="btn-primary"
                   onClick={() => redeemReward("amazon10", 50)}
                   disabled={redeemedRewards.includes("amazon10")}
                 >
@@ -182,7 +168,7 @@ function PointsRewards() {
                   <TrendingUp className="reward-icon" />
                 </div>
                 <button
-                  className="reward-button"
+                  className="btn-primary"
                   onClick={() => redeemReward("raffle100", 100)}
                   disabled={redeemedRewards.includes("raffle100")}
                 >
@@ -204,7 +190,7 @@ function PointsRewards() {
                   <Calendar className="reward-icon" />
                 </div>
                 <button
-                  className={`reward-button ${currentPoints < 200 ? "locked" : ""}`}
+                  className={`btn-primary ${currentPoints < 200 ? "locked" : ""}`}
                   onClick={() => redeemReward("empowerherMerch", 200)}
                   disabled={currentPoints < 200 || redeemedRewards.includes("empowerherMerch")}
                 >
