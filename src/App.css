@@ -18,7 +18,7 @@ body {
 .app-wrapper {
   flex: 1 0 auto; /* This allows the content to grow but not shrink */
   padding-bottom: 32px; /* Add padding at the bottom to create space before footer */
-  padding-top: 112px; /* Space for fixed navbar */
+  padding-top: 80px; /* Space for fixed navbar */
 }
 
 /* Container for page content */
