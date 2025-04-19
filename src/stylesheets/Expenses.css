@@ -76,19 +76,25 @@
 }
 .input-icon {
   position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
+  top: 0;
+  left: 0;
+  height: 100%;
   font-size: 16px;
-  color: #999;
+  color: #666;
   pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
+  width: 32px;
+  background-color: #f0f0f0;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-right: 1px solid #e0e0e0;
 }
+
 .input-with-icon input {
-  padding-left: 44px;
+  padding-left: 40px;
+  text-align: left;
 }
 .input-field input,
 .input-field select {
