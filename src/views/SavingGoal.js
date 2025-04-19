@@ -199,107 +199,105 @@ function SavingGoal() {
         <p className="page-subtitle">Set and track your financial targets</p>
       </div>
 
-      <div className="goal-form-container">
-        <div className="goal-card">
-          <h2 className="form-title">Add New Goal</h2>
-          <p className="form-subtitle">Create a new saving target to work towards</p>
-          <div className="goal-form">
-            <div className="form-group">
-              <div className="input-row">
-                <div className="input-field">
-                  <label htmlFor="name">Goal Name</label>
+      <div className="goal-card">
+        <h2 className="form-title">Add New Goal</h2>
+        <p className="form-subtitle">Create a new saving target to work towards</p>
+        <div className="goal-form">
+          <div className="form-group">
+            <div className="input-row">
+              <div className="input-field">
+                <label htmlFor="name">Goal Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Goal"
+                  value={newGoal.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="targetAmount">Target Amount</label>
+                <div className="input-with-icon">
+                  <div className="input-icon">$</div>
                   <input
                     type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Goal"
-                    value={newGoal.name}
+                    id="targetAmount"
+                    name="targetAmount"
+                    placeholder="0.00"
+                    value={newGoal.targetAmount}
                     onChange={handleInputChange}
                     required
                   />
-                </div>
-
-                <div className="input-field">
-                  <label htmlFor="targetAmount">Target Amount</label>
-                  <div className="input-with-icon">
-                    <div className="input-icon">$</div>
-                    <input
-                      type="text"
-                      id="targetAmount"
-                      name="targetAmount"
-                      placeholder="0.00"
-                      value={newGoal.targetAmount}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="input-field">
-                  <label htmlFor="currentAmount">Starting Amount</label>
-                  <div className="input-with-icon">
-                    <div className="input-icon">$</div>
-                    <input
-                      type="text"
-                      id="currentAmount"
-                      name="currentAmount"
-                      placeholder="0.00"
-                      value={newGoal.currentAmount}
-                      onChange={handleInputChange}
-                    />
-                  </div>
                 </div>
               </div>
 
-              <div className="input-row">
-                <div className="input-field">
-                  <label htmlFor="targetDate">Target Date</label>
-                  <input
-                    type="date"
-                    id="targetDate"
-                    name="targetDate"
-                    value={newGoal.targetDate}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                <div className="input-field">
-                  <label htmlFor="category">Category</label>
-                  <select id="category" name="category" value={newGoal.category} onChange={handleInputChange} required>
-                    <option value="" disabled>
-                      Select a category
-                    </option>
-                    <option value="Emergency">Emergency</option>
-                    <option value="Tech">Tech</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Home">Home</option>
-                    <option value="Education">Education</option>
-                  </select>
-                </div>
-
-                <div className="input-field">
-                  <label>&nbsp;</label>
-                  <button className="btn-primary" onClick={handleAddGoal}>
-                    <Plus className="btn-icon" />
-                    Add Goal
-                  </button>
-                </div>
-              </div>
-
-              <div className="input-row">
-                <div className="input-field full-width">
-                  <label htmlFor="description">Description</label>
+              <div className="input-field">
+                <label htmlFor="currentAmount">Starting Amount</label>
+                <div className="input-with-icon">
+                  <div className="input-icon">$</div>
                   <input
                     type="text"
-                    id="description"
-                    name="description"
-                    placeholder="Description"
-                    value={newGoal.description}
+                    id="currentAmount"
+                    name="currentAmount"
+                    placeholder="0.00"
+                    value={newGoal.currentAmount}
                     onChange={handleInputChange}
-                    required
                   />
                 </div>
+              </div>
+            </div>
+
+            <div className="input-row">
+              <div className="input-field">
+                <label htmlFor="targetDate">Target Date</label>
+                <input
+                  type="date"
+                  id="targetDate"
+                  name="targetDate"
+                  value={newGoal.targetDate}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="category">Category</label>
+                <select id="category" name="category" value={newGoal.category} onChange={handleInputChange} required>
+                  <option value="" disabled>
+                    Select a category
+                  </option>
+                  <option value="Emergency">Emergency</option>
+                  <option value="Tech">Tech</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Home">Home</option>
+                  <option value="Education">Education</option>
+                </select>
+              </div>
+
+              <div className="input-field">
+                <label>&nbsp;</label>
+                <button className="btn-primary" onClick={handleAddGoal}>
+                  <Plus className="btn-icon" />
+                  Add Goal
+                </button>
+              </div>
+            </div>
+
+            <div className="input-row">
+              <div className="input-field full-width">
+                <label htmlFor="description">Description</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  value={newGoal.description}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
             </div>
           </div>
@@ -469,7 +467,7 @@ function SavingGoal() {
 
                         <div className="edit-actions">
                           <button className="btn-secondary" onClick={cancelEditGoal}>
-                            Cancel
+                            Discard Changes
                           </button>
                           <button className="btn-primary" onClick={saveEditGoal}>
                             Save Changes
