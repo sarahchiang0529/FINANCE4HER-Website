@@ -37,6 +37,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin-bottom: 0; 
+  padding-bottom: 0; 
 }
 .input-row {
   display: flex;
@@ -129,6 +131,7 @@ input[type="number"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
+  margin-bottom: 0; 
 }
 
 .goals-grid .goal-card {
@@ -190,7 +193,7 @@ input[type="number"] {
 
 /* Progress bar */
 .goal-progress-container {
-  margin: 12px 0 24px 0;
+  margin: 12px 0 24px 0; 
 }
 
 .goal-progress-bar {
@@ -203,7 +206,7 @@ input[type="number"] {
 .goal-progress-fill {
   height: 10px;
   border-radius: 6px;
-  background: linear-gradient(to right, #e94caf, #8a4baf); /* Matching the primary button gradient */
+  background: linear-gradient(to right, #e94caf, #8a4baf); 
   transition: width 0.3s ease-in-out;
 }
 
@@ -223,7 +226,7 @@ input[type="number"] {
   justify-content: space-between;
   gap: 12px;
   margin-top: 0; 
-  margin-bottom: 24px;
+  margin-bottom: 24px; 
   flex-wrap: wrap;
 }
 
@@ -305,7 +308,7 @@ input[type="number"] {
 
 /* Tabs Container */
 .tabs-container {
-  margin-bottom: 24px;
+  margin-bottom: 0; 
 }
 
 .tabs {
@@ -384,19 +387,19 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: #f5f5f5;
-  color: #333;
+  background: #9ca3af; 
+  color: white; 
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  border: none; 
   cursor: pointer;
   transition: all 0.2s ease;
   height: 48px;
 }
 
 .btn-secondary:hover {
-  background: #e0e0e0;
+  background: #6b7280; 
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -491,7 +494,8 @@ input[type="number"] {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-
+  padding: 0;
+  margin-bottom: 0; 
 }
 
 .edit-actions .btn-secondary,
@@ -505,20 +509,69 @@ input[type="number"] {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
 }
 
+/* Hide the default checkbox */
 .checkbox-field input[type="checkbox"] {
-  width: 16px; 
-  height: 16px;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
   margin: 0;
-  cursor: pointer;
 }
 
+/* Create custom checkbox */
 .checkbox-label {
   font-size: 16px;
   color: #333;
-  white-space: nowrap; 
-  line-height: 16px; 
+  white-space: nowrap;
+  line-height: 16px;
+  padding-left: 28px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Custom checkbox design */
+.checkbox-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #8a4baf;
+  border-radius: 4px;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+/* Checkbox checked state */
+.checkbox-field input[type="checkbox"]:checked + .checkbox-label::before {
+  background-color: #8a4baf;
+}
+
+/* Checkmark */
+.checkbox-field input[type="checkbox"]:checked + .checkbox-label::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Focus state */
+.checkbox-field input[type="checkbox"]:focus + .checkbox-label::before {
+  box-shadow: 0 0 0 2px rgba(138, 75, 175, 0.3);
+}
+
+/* Hover state */
+.checkbox-label:hover::before {
+  border-color: #e94caf;
 }
 
 /* Goal content and button container */
@@ -532,6 +585,7 @@ input[type="number"] {
 .goal-completion-toggle {
   margin-top: auto;
   padding-top: 0;
+  padding-bottom: 0; 
   text-align: center;
 }
 
@@ -583,13 +637,6 @@ input[type="number"] {
   font-weight: 600;
   margin: 0 0 8px 0;
   color: #333;
-}
-
-/* Secondary button hover effect to match primary button */
-.btn-secondary:hover {
-  background: #e0e0e0;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {
