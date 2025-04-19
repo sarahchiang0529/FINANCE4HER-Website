@@ -24,6 +24,7 @@
   border-radius: 12px;
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -323,7 +324,7 @@ input[type="number"] {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  border: 2px solid transparent;
+  border: none;
   background-color: #fff;
   border-radius: 8px;
   font-weight: 500;
@@ -339,7 +340,6 @@ input[type="number"] {
 
 .tab.active {
   background-color: #e2c6ff;
-  border-color: #8a4baf;
 }
 
 .tab-label {
@@ -637,6 +637,12 @@ input[type="number"] {
   font-weight: 600;
   margin: 0 0 8px 0;
   color: #333;
+}
+
+.form-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 24px 0;
 }
 
 @media (max-width: 768px) {

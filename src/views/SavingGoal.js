@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import "../stylesheets/SavingGoal.css"
 import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle, X } from "lucide-react"
@@ -193,7 +195,7 @@ function SavingGoal() {
   const filteredGoals = goals.filter((goal) => (activeTab === "current" ? !goal.completed : goal.completed))
 
   return (
-    <div className="goals-container">
+    <div className="container">
       <div className="page-header">
         <h1 className="page-title">Saving Goals</h1>
         <p className="page-subtitle">Set and track your financial targets</p>
