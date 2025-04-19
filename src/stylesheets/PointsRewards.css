@@ -297,10 +297,16 @@
   color: white;
 }
 
+/* Add this new style for locked badge */
 .reward-badge.locked {
-  background-color: transparent;
-  border: 1px solid #666;
-  color: #666;
+  background-color: #9ca3af;
+  color: white;
+}
+
+/* Added redeemed badge style */
+.reward-badge.redeemed {
+  background-color: #9ca3af;
+  color: white;
 }
 
 .reward-points {
@@ -335,10 +341,23 @@
   background: linear-gradient(to right, #f1f1f1, #e5e5e5);
 }
 
+.reward-icon-container.redeemed {
+  background: linear-gradient(to right, #f1f1f1, #e5e5e5);
+}
+
 .reward-icon {
   width: 64px;
   height: 64px;
   color: #8a4baf;
+}
+
+/* Added redeemed icon style */
+.reward-icon.redeemed {
+  color: #9ca3af;
+}
+
+.reward-icon.locked {
+  color: #9ca3af;
 }
 
 .reward-button {
@@ -360,6 +379,51 @@
 
 .reward-button.locked {
   background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  height: 48px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Added redeemed button style */
+.btn-primary.redeemed {
+  background: #9ca3af;
+  cursor: default;
+}
+
+.btn-primary.redeemed:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-primary.locked {
+  background: #ccc;
   cursor: not-allowed;
 }
 

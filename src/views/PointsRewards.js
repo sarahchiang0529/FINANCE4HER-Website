@@ -1,26 +1,37 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import "../stylesheets/PointsRewards.css"
 import { Award, Gift, TrendingUp, Calendar, CheckCircle, PiggyBank, DollarSign, BookOpen, CreditCard, AlertCircle, Zap, Users, MessageSquare } from 'lucide-react'
 
 function PointsRewards() {
   const [currentPoints, setCurrentPoints] = useState(105)
-  const [nextMilestone, setNextMilestone] = useState(150)
-  const [pointsToNextMilestone, setPointsToNextMilestone] = useState(nextMilestone - currentPoints)
-  const [progressPercentage, setProgressPercentage] = useState((currentPoints / nextMilestone) * 100)
+  const [pointsToNextMilestone, setPointsToNextMilestone] = useState(0)
+  const [progressPercentage, setProgressPercentage] = useState(0)
   const [showPointsAdded, setShowPointsAdded] = useState(null)
   const [weeklyAssets, setWeeklyAssets] = useState(35)
   const [weeklyLiabilities, setWeeklyLiabilities] = useState(7)
   const [weeklyScore, setWeeklyScore] = useState(weeklyAssets - weeklyLiabilities)
   const [activeTab, setActiveTab] = useState("rewards")
-  const [redeemedRewards, setRedeemedRewards] = useState([]);
+  const [redeemedRewards, setRedeemedRewards] = useState([])
 
+  // Calculate next milestone and progress
   useEffect(() => {
-    setPointsToNextMilestone(nextMilestone - currentPoints)
-    setProgressPercentage((currentPoints / nextMilestone) * 100)
+    // Define the reward tiers inside the effect
+    const REWARD_TIERS = [50, 100, 200]
+    const MAX_PROGRESS = 200
+
+    // Find the next milestone
+    const next = REWARD_TIERS.find((tier) => tier > currentPoints) || REWARD_TIERS[REWARD_TIERS.length - 1]
+
+    // Calculate points to next milestone
+    setPointsToNextMilestone(next > currentPoints ? next - currentPoints : 0)
+
+    // Calculate progress percentage (capped at 200 points)
+    const pointsForProgress = Math.min(currentPoints, MAX_PROGRESS)
+    setProgressPercentage((pointsForProgress / MAX_PROGRESS) * 100)
+
+    // Update weekly score
     setWeeklyScore(weeklyAssets - weeklyLiabilities)
-  }, [currentPoints, nextMilestone, weeklyAssets, weeklyLiabilities])
+  }, [currentPoints, weeklyAssets, weeklyLiabilities])
 
   const addPoints = (points) => {
     setCurrentPoints((prev) => prev + points)
@@ -36,22 +47,47 @@ function PointsRewards() {
     }, 2000)
   }
 
-  const redeemReward = (rewardId, cost) => {
+  const redeemReward = (rewardId, requiredPoints, tierLevel) => {
+    // Check if already redeemed
     if (redeemedRewards.includes(rewardId)) {
-      alert("✅ You've already redeemed this reward.");
-      return;
+      alert("✅ You've already redeemed this reward.")
+      return
     }
-  
-    if (currentPoints >= cost) {
-      setCurrentPoints((prev) => prev - cost);
-      setRedeemedRewards((prev) => [...prev, rewardId]);
-      setShowPointsAdded({ points: -cost, type: "redeem", timestamp: Date.now() });
-      setTimeout(() => setShowPointsAdded(null), 2000);
-      alert(`🎉 You redeemed ${cost} points!`);
-    } else {
-      alert(`❌ You need ${cost - currentPoints} more points to redeem this reward.`);
+
+    // Check if user has enough points
+    if (currentPoints < requiredPoints) {
+      alert(`❌ You need ${requiredPoints - currentPoints} more points to unlock this reward.`)
+      return
     }
-  };  
+
+    // Check if previous tiers are unlocked
+    if (tierLevel > 1) {
+      // For tier 2, check if tier 1 is redeemed
+      if (tierLevel === 2 && !redeemedRewards.includes("amazon10")) {
+        alert("❌ You need to redeem the previous tier reward first.")
+        return
+      }
+      // For tier 3, check if tier 2 is redeemed
+      if (tierLevel === 3 && !redeemedRewards.includes("raffle100")) {
+        alert("❌ You need to redeem the previous tier reward first.")
+        return
+      }
+    }
+
+    // Add to redeemed rewards without deducting points
+    setRedeemedRewards((prev) => [...prev, rewardId])
+    setShowPointsAdded({ points: 0, type: "redeem", timestamp: Date.now() })
+    setTimeout(() => setShowPointsAdded(null), 2000)
+    alert(`🎉 You've redeemed this reward!`)
+  }
+
+  // Helper function to check if a reward is available based on previous tier redemption
+  const isRewardAvailable = (tierLevel) => {
+    if (tierLevel === 1) return true
+    if (tierLevel === 2) return redeemedRewards.includes("amazon10")
+    if (tierLevel === 3) return redeemedRewards.includes("raffle100")
+    return false
+  }
 
   return (
     <div className="container">
@@ -63,9 +99,7 @@ function PointsRewards() {
 
       <div className="page-header">
         <h1 className="page-title">Rewards & Points</h1>
-        <p className="page-subtitle">
-          Track your financial health score and earn rewards for good financial habits
-        </p>
+        <p className="page-subtitle">Track your financial health score and earn rewards for good financial habits</p>
       </div>
 
       <div className="points-overview-card">
@@ -84,9 +118,11 @@ function PointsRewards() {
               <div className="progress-fill" style={{ width: `${progressPercentage}%` }} />
             </div>
           </div>
-          <p className="progress-text">
-            {pointsToNextMilestone} more points until your next reward tier
-          </p>
+          {pointsToNextMilestone > 0 ? (
+            <p className="progress-text">{pointsToNextMilestone} more points until your next reward tier</p>
+          ) : (
+            <p className="progress-text">You've reached the maximum reward tier!</p>
+          )}
         </div>
       </div>
 
@@ -120,94 +156,147 @@ function PointsRewards() {
 
       <div className="tabs-container">
         <div className="tabs">
-          {['rewards', 'assets', 'liabilities', 'bonus'].map((tab) => (
-            <button
-              key={tab}
-              className={`tab ${activeTab === tab ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab)}
-            >
+          {["rewards", "assets", "liabilities", "bonus"].map((tab) => (
+            <button key={tab} className={`tab ${activeTab === tab ? "active" : ""}`} onClick={() => setActiveTab(tab)}>
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
         </div>
-        
-        {/* Reward Cards */}
-        {activeTab === 'rewards' && (
+
+        {activeTab === "rewards" && (
           <div className="tab-content">
             <div className="rewards-grid">
-
-              {/* Reward Card 1 */}
+              {/* Reward Card 1 - Tier 1 */}
               <div className="reward-card">
                 <div className="reward-card-header">
-                  <div className="reward-badge available">Available</div>
+                  <div className={`reward-badge ${redeemedRewards.includes("amazon10") ? "redeemed" : "available"}`}>
+                    {redeemedRewards.includes("amazon10") ? "Redeemed" : "Available"}
+                  </div>
                   <div className="reward-points">50 Points</div>
                 </div>
                 <h3 className="reward-title">$10 Amazon Gift Card</h3>
                 <p className="reward-description">Redeem your points for an Amazon gift card</p>
-                <div className="reward-icon-container">
-                  <Gift className="reward-icon" />
+                <div className={`reward-icon-container ${redeemedRewards.includes("amazon10") ? "redeemed" : ""}`}>
+                  <Gift className={`reward-icon ${redeemedRewards.includes("amazon10") ? "redeemed" : ""}`} />
                 </div>
                 <button
-                  className="btn-primary"
-                  onClick={() => redeemReward("amazon10", 50)}
-                  disabled={redeemedRewards.includes("amazon10")}
+                  className={`btn-primary ${redeemedRewards.includes("amazon10") ? "redeemed" : ""}`}
+                  onClick={() => redeemReward("amazon10", 50, 1)}
+                  disabled={redeemedRewards.includes("amazon10") || currentPoints < 50}
                 >
-                  {redeemedRewards.includes("amazon10") ? "Redeemed" : "Redeem Reward"}
+                  {redeemedRewards.includes("amazon10")
+                    ? "Redeemed"
+                    : currentPoints < 50
+                      ? `Need ${50 - currentPoints} More Points`
+                      : "Redeem Reward"}
                 </button>
               </div>
 
-              {/* Reward Card 2 */}
+              {/* Reward Card 2 - Tier 2 */}
               <div className="reward-card">
                 <div className="reward-card-header">
-                  <div className="reward-badge available">Available</div>
+                  <div
+                    className={`reward-badge ${
+                      redeemedRewards.includes("raffle100")
+                        ? "redeemed"
+                        : !isRewardAvailable(2)
+                          ? "locked"
+                          : "available"
+                    }`}
+                  >
+                    {redeemedRewards.includes("raffle100")
+                      ? "Redeemed"
+                      : !isRewardAvailable(2)
+                        ? "Locked"
+                        : "Available"}
+                  </div>
                   <div className="reward-points">100 Points</div>
                 </div>
                 <h3 className="reward-title">$100 Gift Card Raffle Entry</h3>
                 <p className="reward-description">Get entered into a raffle for a $100 gift card</p>
-                <div className="reward-icon-container">
-                  <TrendingUp className="reward-icon" />
+                <div
+                  className={`reward-icon-container ${
+                    redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                  }`}
+                >
+                  <TrendingUp
+                    className={`reward-icon ${
+                      redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                    }`}
+                  />
                 </div>
                 <button
-                  className="btn-primary"
-                  onClick={() => redeemReward("raffle100", 100)}
-                  disabled={redeemedRewards.includes("raffle100")}
+                  className={`btn-primary ${
+                    redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                  }`}
+                  onClick={() => redeemReward("raffle100", 100, 2)}
+                  disabled={redeemedRewards.includes("raffle100") || !isRewardAvailable(2) || currentPoints < 100}
                 >
-                  {redeemedRewards.includes("raffle100") ? "Redeemed" : "Redeem Reward"}
+                  {redeemedRewards.includes("raffle100")
+                    ? "Redeemed"
+                    : !isRewardAvailable(2)
+                      ? "Unlock Previous Tier First"
+                      : currentPoints < 100
+                        ? `Need ${100 - currentPoints} More Points`
+                        : "Redeem Reward"}
                 </button>
               </div>
 
-              {/* Reward Card 3 (locked) */}
-              <div className={`reward-card ${currentPoints < 200 ? "locked" : ""}`}>
+              {/* Reward Card 3 - Tier 3 */}
+              <div className="reward-card">
                 <div className="reward-card-header">
-                  <div className={`reward-badge ${currentPoints < 200 ? "locked" : "available"}`}>
-                    {currentPoints < 200 ? "Locked" : "Available"}
+                  <div
+                    className={`reward-badge ${
+                      redeemedRewards.includes("empowerherMerch")
+                        ? "redeemed"
+                        : !isRewardAvailable(3)
+                          ? "locked"
+                          : "available"
+                    }`}
+                  >
+                    {redeemedRewards.includes("empowerherMerch")
+                      ? "Redeemed"
+                      : !isRewardAvailable(3)
+                        ? "Locked"
+                        : "Available"}
                   </div>
                   <div className="reward-points">200 Points</div>
                 </div>
                 <h3 className="reward-title">EmpowerHERto Merch</h3>
                 <p className="reward-description">Tote bag, T-shirt, or notebook with our logo</p>
-                <div className={`reward-icon-container ${currentPoints < 200 ? "locked" : ""}`}>
-                  <Calendar className="reward-icon" />
+                <div
+                  className={`reward-icon-container ${
+                    redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                  }`}
+                >
+                  <Calendar
+                    className={`reward-icon ${
+                      redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                    }`}
+                  />
                 </div>
                 <button
-                  className={`btn-primary ${currentPoints < 200 ? "locked" : ""}`}
-                  onClick={() => redeemReward("empowerherMerch", 200)}
-                  disabled={currentPoints < 200 || redeemedRewards.includes("empowerherMerch")}
+                  className={`btn-primary ${
+                    redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                  }`}
+                  onClick={() => redeemReward("empowerherMerch", 200, 3)}
+                  disabled={redeemedRewards.includes("empowerherMerch") || !isRewardAvailable(3) || currentPoints < 200}
                 >
                   {redeemedRewards.includes("empowerherMerch")
                     ? "Redeemed"
-                    : currentPoints < 200
-                      ? `Need ${200 - currentPoints} More Points`
-                      : "Redeem Reward"}
+                    : !isRewardAvailable(3)
+                      ? "Unlock Previous Tier First"
+                      : currentPoints < 200
+                        ? `Need ${200 - currentPoints} More Points`
+                        : "Redeem Reward"}
                 </button>
               </div>
-
             </div>
           </div>
         )}
- 
+
         {/* Asset Items */}
-        {activeTab === 'assets' && (
+        {activeTab === "assets" && (
           <div className="tab-content">
             <div className="assets-card">
               <div className="card-header">
@@ -218,15 +307,60 @@ function PointsRewards() {
               </div>
               <div className="assets-list">
                 {[
-                  { action: "Savings in Bank or Cash Jar", points: 10, description: "Any amount saved at the end of each week", icon: <PiggyBank className="asset-icon" /> },
-                  { action: "Emergency Fund Started", points: 10, description: "Even if it's small, the habit matters", icon: <DollarSign className="asset-icon" /> },
-                  { action: "Budget Created & Followed This Week", points: 5, description: "Weekly budget check‑in", icon: <CheckCircle className="asset-icon" /> },
-                  { action: "Weekly Allowance/Job Income Earned", points: 2, description: "Must track where it came from", icon: <DollarSign className="asset-icon" /> },
-                  { action: "Completed Finance 4 HER Module", points: 10, description: "Learning = value!", icon: <BookOpen className="asset-icon" /> },
-                  { action: "Paid a Phone Bill or Personal Expense", points: 5, description: "Showing responsibility", icon: <CreditCard className="asset-icon" /> },
-                  { action: "Money Made from Hustle", points: 5, description: "Must be able to show proof (e.g. hair, art, tutoring)", icon: <Zap className="asset-icon" /> },
-                  { action: "Added to Savings This Week", points: 3, description: "Any amount counts", icon: <PiggyBank className="asset-icon" /> },
-                  { action: "No‑Spend Day", points: 1, description: "Tracked using the app (once a week)", icon: <Calendar className="asset-icon" /> },
+                  {
+                    action: "Savings in Bank or Cash Jar",
+                    points: 10,
+                    description: "Any amount saved at the end of each week",
+                    icon: <PiggyBank className="asset-icon" />,
+                  },
+                  {
+                    action: "Emergency Fund Started",
+                    points: 10,
+                    description: "Even if it's small, the habit matters",
+                    icon: <DollarSign className="asset-icon" />,
+                  },
+                  {
+                    action: "Budget Created & Followed This Week",
+                    points: 5,
+                    description: "Weekly budget check‑in",
+                    icon: <CheckCircle className="asset-icon" />,
+                  },
+                  {
+                    action: "Weekly Allowance/Job Income Earned",
+                    points: 2,
+                    description: "Must track where it came from",
+                    icon: <DollarSign className="asset-icon" />,
+                  },
+                  {
+                    action: "Completed Finance 4 HER Module",
+                    points: 10,
+                    description: "Learning = value!",
+                    icon: <BookOpen className="asset-icon" />,
+                  },
+                  {
+                    action: "Paid a Phone Bill or Personal Expense",
+                    points: 5,
+                    description: "Showing responsibility",
+                    icon: <CreditCard className="asset-icon" />,
+                  },
+                  {
+                    action: "Money Made from Hustle",
+                    points: 5,
+                    description: "Must be able to show proof (e.g. hair, art, tutoring)",
+                    icon: <Zap className="asset-icon" />,
+                  },
+                  {
+                    action: "Added to Savings This Week",
+                    points: 3,
+                    description: "Any amount counts",
+                    icon: <PiggyBank className="asset-icon" />,
+                  },
+                  {
+                    action: "No‑Spend Day",
+                    points: 1,
+                    description: "Tracked using the app (once a week)",
+                    icon: <Calendar className="asset-icon" />,
+                  },
                 ].map((item, i) => (
                   <div key={i} className="asset-item">
                     <div className="asset-info">
@@ -236,10 +370,7 @@ function PointsRewards() {
                         <div className="asset-description">{item.description}</div>
                       </div>
                     </div>
-                    <button
-                      className="asset-points-button"
-                      onClick={() => addPoints(item.points)}
-                    >
+                    <button className="asset-points-button" onClick={() => addPoints(item.points)}>
                       +{item.points} points
                     </button>
                   </div>
@@ -250,14 +381,12 @@ function PointsRewards() {
         )}
 
         {/* Liability Items */}
-        {activeTab === 'liabilities' && (
+        {activeTab === "liabilities" && (
           <div className="tab-content">
             <div className="liabilities-card">
               <div className="card-header">
                 <h3 className="card-title">Liabilities - Things That Take Value Away</h3>
-                <p className="card-description">
-                  These help identify spending habits that affect financial growth
-                </p>
+                <p className="card-description">These help identify spending habits that affect financial growth</p>
               </div>
               <div className="liabilities-list">
                 {[
@@ -306,10 +435,7 @@ function PointsRewards() {
                         <div className="liability-description">{item.description}</div>
                       </div>
                     </div>
-                    <button
-                      className="liability-points-button"
-                      onClick={() => addPoints(-item.points)}
-                    >
+                    <button className="liability-points-button" onClick={() => addPoints(-item.points)}>
                       -{item.points} points
                     </button>
                   </div>
@@ -325,14 +451,12 @@ function PointsRewards() {
         )}
 
         {/* Bonus Rewards */}
-        {activeTab === 'bonus' && (
+        {activeTab === "bonus" && (
           <div className="tab-content">
             <div className="bonus-card">
               <div className="card-header">
                 <h3 className="card-title">Community Activity Rewards</h3>
-                <p className="card-description">
-                  Earn bonus points by helping others and participating
-                </p>
+                <p className="card-description">Earn bonus points by helping others and participating</p>
               </div>
               <div className="bonus-list">
                 {[
@@ -363,10 +487,7 @@ function PointsRewards() {
                         <div className="bonus-description">{item.description}</div>
                       </div>
                     </div>
-                    <button
-                      className="asset-points-button"
-                      onClick={() => addPoints(item.points)}
-                    >
+                    <button className="asset-points-button" onClick={() => addPoints(item.points)}>
                       +{item.points} points
                     </button>
                   </div>
