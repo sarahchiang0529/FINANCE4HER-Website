@@ -1,7 +1,9 @@
+"use client"
+
 import { useEffect, useRef } from "react"
 import { Pie } from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend } from "chart.js"
-import "../stylesheets/ChartComponent.css";
+import "../stylesheets/ChartComponent.css"
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend)
 
@@ -94,6 +96,7 @@ const ChartComponent = ({ data, type }) => {
       legend: {
         position: "top",
         align: "center",
+        onClick: null, // Disable legend click functionality
         labels: {
           usePointStyle: true,
           pointStyle: "circle",
