@@ -29,6 +29,13 @@ body {
   width: 100%;
 }
 
+/* Content container with proper spacing */
+.content-container {
+  margin-top: 5rem;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
 /* Footer styles */
 .footer-wrapper {
   flex-shrink: 0; /* Prevent footer from shrinking */

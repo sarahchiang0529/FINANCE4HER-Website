@@ -15,6 +15,7 @@ import Dashboard from "./views/Dashboard";
 import SavingGoal from "./views/SavingGoal";
 import LearningResources from "./views/LearningResources";
 import PointsRewards from "./views/PointsRewards";
+import FAQ from "./views/FAQ";
 
 import "./App.css";
 
@@ -36,7 +37,7 @@ const App = () => {
     <Router history={history}>
         <NavBar />
         <main className="page-content">
-          <Container className="mt-5" style={{ paddingTop: "80px" ,paddingBottom: "40px" }}>
+          <Container className="content-container">
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/profile" component={Profile} />
@@ -46,6 +47,7 @@ const App = () => {
               <Route path="/saving-goals" component={SavingGoal} />
               <Route path="/learning-resources" component={LearningResources} />
               <Route path="/points-rewards" component={PointsRewards} />
+              <Route path="/faq" component={FAQ} />
             </Switch>
           </Container>
         </main>
