@@ -167,29 +167,6 @@ function FAQ() {
           )}
         </div>
       </div>
-
-      <div className="faq-categories">
-        <div className="category-card">
-          <div className="category-icon">💰</div>
-          <h3>Banking Basics</h3>
-          <p>Learn about accounts, interest, and banking services</p>
-        </div>
-        <div className="category-card">
-          <div className="category-icon">📊</div>
-          <h3>Budgeting</h3>
-          <p>Create and manage your personal budget</p>
-        </div>
-        <div className="category-card">
-          <div className="category-icon">💳</div>
-          <h3>Credit & Debt</h3>
-          <p>Understand credit scores and managing debt</p>
-        </div>
-        <div className="category-card">
-          <div className="category-icon">📈</div>
-          <h3>Investing</h3>
-          <p>Start your investment journey</p>
-        </div>
-      </div>
     </div>
   )
 }
