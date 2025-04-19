@@ -245,8 +245,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* Ensure consistent spacing for both select and date inputs */
 .input-field select,
 .input-field input[type="date"] {
-  padding-left: 24px;
-  padding-right: 48px;
+  padding-left: 12px; 
+  padding-right: 32px;
 }
 
 /* Amount input with dollar sign styling */

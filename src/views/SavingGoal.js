@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import "../stylesheets/SavingGoal.css"
 import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle } from "lucide-react"
@@ -67,7 +69,7 @@ function SavingGoal() {
   const handleAddGoal = () => {
     const { name, targetAmount, currentAmount, targetDate, category, description } = newGoal
 
-    if (!name || !targetAmount || !targetDate || !category) {
+    if (!name || !targetAmount || !targetDate || !category || !description) {
       alert("Please fill in all required fields.")
       return
     }
@@ -98,7 +100,7 @@ function SavingGoal() {
   const getCategoryIcon = (category) => {
     switch (category) {
       case "Emergency":
-        return <Target size={20} />
+        return <div>🚨</div>
       case "Tech":
         return <div>💻</div>
       case "Travel":
@@ -108,7 +110,7 @@ function SavingGoal() {
       case "Education":
         return <div>📚</div>
       default:
-        return <DollarSign size={20} />
+        return <div>💲</div>
     }
   }
 
@@ -133,9 +135,10 @@ function SavingGoal() {
                   type="text"
                   id="name"
                   name="name"
-                  placeholder="e.g. New Laptop"
+                  placeholder="Goal"
                   value={newGoal.name}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
@@ -150,6 +153,7 @@ function SavingGoal() {
                     placeholder="0.00"
                     value={newGoal.targetAmount}
                     onChange={handleInputChange}
+                    required
                   />
                 </div>
               </div>
@@ -179,12 +183,13 @@ function SavingGoal() {
                   name="targetDate"
                   value={newGoal.targetDate}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
               <div className="input-field">
                 <label htmlFor="category">Category</label>
-                <select id="category" name="category" value={newGoal.category} onChange={handleInputChange}>
+                <select id="category" name="category" value={newGoal.category} onChange={handleInputChange} required>
                   <option value="" disabled>
                     Select a category
                   </option>
@@ -212,9 +217,10 @@ function SavingGoal() {
                   type="text"
                   id="description"
                   name="description"
-                  placeholder="Brief description of your goal"
+                  placeholder="Description"
                   value={newGoal.description}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -280,16 +286,10 @@ function SavingGoal() {
                     <div className="goal-detail">
                       <DollarSign className="goal-detail-icon" />
                       <div>
-                        <div className="goal-detail-label">Target</div>
-                        <div className="goal-detail-value">${goal.targetAmount.toFixed(2)}</div>
-                      </div>
-                    </div>
-
-                    <div className="goal-detail">
-                      <DollarSign className="goal-detail-icon" />
-                      <div>
-                        <div className="goal-detail-label">Current</div>
-                        <div className="goal-detail-value">${goal.currentAmount.toFixed(2)}</div>
+                        <div className="goal-detail-label">Saved</div>
+                        <div className="goal-detail-value">
+                          ${goal.currentAmount.toFixed(2)} of ${goal.targetAmount.toFixed(2)}
+                        </div>
                       </div>
                     </div>
 
