@@ -1,3 +1,129 @@
+/* Base styles */
+.goals-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header */
+.goals-container .page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+.goals-container .page-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 8px 0 0 0;
+}
+
+/* Card styles */
+.goal-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form */
+.goal-form {
+  width: 100%;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.input-row {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+.input-field {
+  flex: 1;
+  min-width: 0;
+}
+.input-field.full-width {
+  width: 100%;
+}
+.input-field label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #000;
+}
+.input-field input,
+.input-field select {
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+  box-sizing: border-box;
+}
+.input-field input:focus,
+.input-field select:focus {
+  outline: none;
+  border-color: #a94caf;
+  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+}
+
+/* Remove spinner buttons from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Input with icon styles */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+  border-color: #a94caf;
+  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  font-size: 16px;
+  color: #666;
+  background-color: #f0f0f0;
+  border-right: 1px solid #e0e0e0;
+}
+
+.input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  padding-left: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+}
+
 /* Goals grid and cards */
 .goals-grid {
   display: grid;
@@ -5,12 +131,8 @@
   gap: 24px;
 }
 
-.goal-card {
-  background: #fff;
-  border-radius: 12px;
+.goals-grid .goal-card {
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  position: relative;
 }
 
 .goal-card-header {
@@ -31,6 +153,9 @@
 .category-icon {
   width: 20px;
   height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .goal-actions .icon-button {
@@ -38,6 +163,7 @@
   border: none;
   cursor: pointer;
   color: #8a4baf;
+  padding: 4px;
 }
 
 .goal-title {
@@ -66,8 +192,8 @@
 }
 
 .goal-progress-fill {
-  height: 8px;
-  border-radius: 20px;
+  height: 10px;
+  border-radius: 6px;
   background: linear-gradient(to right, #e94caf, #8a4baf); /* Matching the primary button gradient */
   transition: width 0.3s ease-in-out;
 }
@@ -212,30 +338,30 @@
   box-shadow: none;
 }
 
-/* Input with icon styles for saving goals */
-.input-with-icon {
-  position: relative;
-}
-
-.input-icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  font-size: 16px;
-  color: #666;
-  pointer-events: none;
-  display: flex;
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  background-color: #f0f0f0;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  border-right: 1px solid #e0e0e0;
+  padding: 8px 16px;
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 48px;
 }
 
-.input-with-icon input {
-  padding-left: 40px;
-  text-align: left;
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
 }

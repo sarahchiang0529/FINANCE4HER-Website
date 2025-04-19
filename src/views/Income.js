@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ChartComponent from "../components/ChartComponent";
+import ChartComponent from "../components/ChartComponent"
 import "../stylesheets/Income.css"
 import { Plus } from "lucide-react"
 
@@ -91,7 +91,7 @@ function Income() {
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
                 <div className="input-with-icon">
-                  <span className="input-icon">$</span>
+                  <div className="input-icon">$</div>
                   <input
                     type="text"
                     id="amount"
