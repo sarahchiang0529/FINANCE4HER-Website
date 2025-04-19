@@ -17,8 +17,8 @@ body {
 /* Main content wrapper */
 .app-wrapper {
   flex: 1 0 auto; /* This allows the content to grow but not shrink */
-  padding-bottom: 32px; /* Add padding at the bottom to create space before footer */
   padding-top: 80px; /* Space for fixed navbar */
+  padding-bottom: 0; /* Remove bottom padding */
 }
 
 /* Container for page content */
@@ -41,7 +41,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: auto; /* Push footer to bottom when content is short */
+  margin-top: 0; /* Remove margin top */
 }
 
 /* Page header */
@@ -106,7 +106,7 @@ body {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 24px;
+  margin-bottom: 0; /* Remove bottom margin */
 }
 
 .card-header {
@@ -142,7 +142,7 @@ body {
 
 /* Tabs container */
 .tabs-container {
-  margin-bottom: 24px;
+  margin-bottom: 0; /* Remove bottom margin */
 }
 
 /* Global input with icon styles */
@@ -245,7 +245,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* Ensure consistent spacing for both select and date inputs */
 .input-field select,
 .input-field input[type="date"] {
-  padding-left: 12px; 
+  padding-left: 12px;
   padding-right: 32px;
 }
 
@@ -268,4 +268,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .input-field .input-with-icon input {
   padding-left: 12px;
   text-align: left;
+}
+
+/* Form group - remove bottom gap */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
