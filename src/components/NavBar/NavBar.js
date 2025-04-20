@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { NavLink as RouterNavLink, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -20,7 +18,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react"
 import LoginButton from "./LoginButton"
 import logo from "../assets/logos/logo1.png"
-import "../stylesheets/NavBar.css"
+import "./NavBar.css"
 
 const NavBar = () => {
   const location = useLocation()

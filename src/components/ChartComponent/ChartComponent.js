@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { Pie } from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend } from "chart.js"
-import "../stylesheets/ChartComponent.css"
+import "./ChartComponent.css"
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend)
 
