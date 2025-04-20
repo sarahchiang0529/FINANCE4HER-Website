@@ -1,11 +1,9 @@
-"use client"
-
 import { useState } from "react"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react"
-import Loading from "../components/Loading"
-import { Mail, User, Edit, AlertCircle, Key } from "lucide-react"
-import "../stylesheets/Profile.css"
-import authConfig from "../auth_config.json"
+import Loading from "../../components/Common/Loading"  
+import { Mail, User, Edit, AlertCircle, Key } from 'lucide-react'
+import "./Profile.css" 
+import authConfig from "../../config/auth_config.js" 
 
 export const ProfileComponent = () => {
   const { user, getAccessTokenSilently, logout } = useAuth0()

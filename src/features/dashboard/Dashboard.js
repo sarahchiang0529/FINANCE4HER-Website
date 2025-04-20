@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom"
-import "../stylesheets/Dashboard.css"
+import "./Dashboard.css"
 import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp } from "lucide-react"
 
 const Dashboard = () => {

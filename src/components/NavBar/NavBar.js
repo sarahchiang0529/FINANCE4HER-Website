@@ -16,8 +16,8 @@ import {
   DropdownItem,
 } from "reactstrap"
 import { useAuth0 } from "@auth0/auth0-react"
-import LoginButton from "./LoginButton"
-import logo from "../assets/logos/logo1.png"
+import LoginButton from "../Common/LoginButton"
+import logo from "../../assets/logos/logo1.png"
 import "./NavBar.css"
 
 const NavBar = () => {

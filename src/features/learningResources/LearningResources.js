@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "../stylesheets/LearningResources.css"
+import "./LearningResources.css"
 import { BookOpen, FileText, Play, PlusCircle } from "lucide-react"
 
 const data = {

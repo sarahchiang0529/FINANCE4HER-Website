@@ -1,5 +1,4 @@
-import authConfig from "./auth_config.json"
-
+import authConfig from "./auth_config.json";
 export const auth0Config = {
   ...authConfig,
   audience: `https://${authConfig.domain}/api/v2/`,

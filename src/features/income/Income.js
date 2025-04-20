@@ -1,6 +1,6 @@
 import { useState } from "react"
-import ChartComponent from "../components/ChartComponent"
-import "../stylesheets/Income.css"
+import ChartComponent from "../../components/ChartComponent/ChartComponent"  
+import "./Income.css"
 import { Plus } from "lucide-react"
 
 function Income() {

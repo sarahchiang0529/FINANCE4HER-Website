@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import "../stylesheets/PointsRewards.css"
+import "./PointsRewards.css"
 import { Award, Gift, TrendingUp, Calendar, CheckCircle, PiggyBank, DollarSign, BookOpen, CreditCard, AlertCircle, Zap, Users, MessageSquare } from 'lucide-react'
 
 function PointsRewards() {

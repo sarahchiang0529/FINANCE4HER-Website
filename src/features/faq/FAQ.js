@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ChevronDown, ChevronUp, Search } from "lucide-react"
-import "../stylesheets/FAQ.css"
+import "./FAQ.css"
 
 function FAQ() {
   const [searchQuery, setSearchQuery] = useState("")

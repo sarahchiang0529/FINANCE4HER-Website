@@ -1,59 +1,59 @@
-import React from "react";
-import { Router, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
+import { Router, Route, Switch } from "react-router-dom"
+import { Container } from "reactstrap"
 
-import Loading from "./components/Loading";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import Home from "./views/Home";
-import Profile from "./views/Profile";
-import { useAuth0 } from "@auth0/auth0-react";
-import history from "./utils/history";
-import Expenses from "./views/Expenses";
-import Income from "./views/Income";
-import Dashboard from "./views/Dashboard";
-import SavingGoal from "./views/SavingGoal";
-import LearningResources from "./views/LearningResources";
-import PointsRewards from "./views/PointsRewards";
-import FAQ from "./views/FAQ";
+// Import components from their actual locations
+import Loading from "./components/Common/Loading"
+import NavBar from "./components/NavBar/NavBar"
+import Footer from "./components/Footer/Footer"
+import { useAuth0 } from "@auth0/auth0-react"
+import history from "./utils/history"
 
-import "./App.css";
+// Import feature components
+import Dashboard from "./features/dashboard/Dashboard"
+import Expenses from "./features/expenses/Expenses"
+import Income from "./features/income/Income"
+import SavingGoal from "./features/savingGoal/SavingGoal"
+import LearningResources from "./features/learningResources/LearningResources"
+import PointsRewards from "./features/pointsRewards/PointsRewards"
+import FAQ from "./features/faq/FAQ"
+import Home from "./features/home/Home" 
 
-import initFontAwesome from "./utils/initFontAwesome";
-initFontAwesome();
+import "./App.css"
+
+import initFontAwesome from "./utils/initFontAwesome"
+initFontAwesome()
 
 const App = () => {
-  const { isLoading, error } = useAuth0();
+  const { isLoading, error } = useAuth0()
 
   if (error) {
-    return <div>Oops... {error.message}</div>;
+    return <div>Oops... {error.message}</div>
   }
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
     <Router history={history}>
-        <NavBar />
-        <main className="page-content">
-          <Container className="content-container">
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/expenses" component={Expenses} />
-              <Route path="/income" component={Income} />
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/saving-goals" component={SavingGoal} />
-              <Route path="/learning-resources" component={LearningResources} />
-              <Route path="/points-rewards" component={PointsRewards} />
-              <Route path="/faq" component={FAQ} />
-            </Switch>
-          </Container>
-        </main>
+      <NavBar />
+      <main className="page-content">
+        <Container className="content-container">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/expenses" component={Expenses} />
+            <Route path="/income" component={Income} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/saving-goals" component={SavingGoal} />
+            <Route path="/learning-resources" component={LearningResources} />
+            <Route path="/points-rewards" component={PointsRewards} />
+            <Route path="/faq" component={FAQ} />
+          </Switch>
+        </Container>
+      </main>
       <Footer />
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

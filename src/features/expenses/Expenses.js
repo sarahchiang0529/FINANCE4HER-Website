@@ -1,7 +1,7 @@
-  import { useState } from "react"
-  import ChartComponent from "../components/ChartComponent"
-  import "../stylesheets/Expenses.css"
-  import { Plus } from "lucide-react"
+import { useState } from "react"
+import ChartComponent from "../../components/ChartComponent/ChartComponent" 
+import "./Expenses.css"  
+import { Plus } from "lucide-react"
 
 function Expenses() {
   const [expenses, setExpenses] = useState([

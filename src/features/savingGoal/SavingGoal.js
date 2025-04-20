@@ -1,7 +1,5 @@
-"use client"
-
 import { useState } from "react"
-import "../stylesheets/SavingGoal.css"
+import "./SavingGoal.css"
 import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle, X } from "lucide-react"
 
 function SavingGoal() {
