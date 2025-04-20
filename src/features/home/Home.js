@@ -1,23 +1,25 @@
-import { useHistory } from "react-router-dom";
-import { ArrowRight, BarChart3, CreditCard, DollarSign, PiggyBank } from "lucide-react";
+import { useHistory } from "react-router-dom"
+import { ArrowRight, BarChart3, CreditCard, DollarSign, PiggyBank } from "lucide-react"
 import "./Home.css"
 
 const Home = () => {
-  const history = useHistory();
+  const history = useHistory()
 
   return (
     <div className="home-container">
       <div className="hero-section">
         <h1 className="hero-title">Welcome to EmpowerHERTo</h1>
         <p className="hero-subtitle">
-          Your space to learn, grow, and take control of your financial future. Track your earnings, set savings
-          goals, and build healthy money habits—one step at a time.
+          Your space to learn, grow, and take control of your financial future. Track your earnings, set savings goals,
+          and build healthy money habits—one step at a time.
         </p>
         <div className="hero-buttons">
-          <button className="btn-primary" onClick={() => history.push("/dashboard")}>
-            Get Started
-            <ArrowRight className="btn-icon" />
-          </button>
+          <div className="button-wrapper">
+            <button className="btn-primary get-started-btn" onClick={() => history.push("/dashboard")}>
+              Get Started
+              <ArrowRight className="btn-icon" />
+            </button>
+          </div>
           <button className="btn-outline" onClick={() => history.push("/learning-resources")}>
             Explore Resources
           </button>
@@ -77,4 +79,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Home

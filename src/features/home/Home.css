@@ -1,13 +1,13 @@
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .hero-section {
   text-align: center;
   margin-bottom: 48px;
-  padding: 48px 0;
 }
 
 .hero-title {
@@ -32,6 +32,29 @@
   gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* Button wrapper to constrain width */
+.button-wrapper {
+  display: inline-block;
+  width: auto;
+}
+
+/* Special styling for the Get Started button */
+.get-started-btn {
+  width: auto !important; /* Override any width setting */
+  min-width: 160px !important; /* Set minimum width */
+  max-width: 200px !important; /* Set maximum width */
+  padding: 8px 20px !important; /* Slightly adjusted padding */
+  display: inline-flex !important; /* Use inline-flex for proper alignment */
+  align-items: center !important; /* Center items vertically */
+  justify-content: center !important; /* Center items horizontally */
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
 }
 
 /* Features grid */
