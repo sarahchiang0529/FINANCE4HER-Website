@@ -1,0 +1,73 @@
+.financial-overview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  
+  @media (min-width: 640px) {
+    .summary-cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .financial-overview-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1fr;
+    margin-top: 24px;
+  }
+  
+  @media (min-width: 768px) {
+    .financial-overview-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .income-icon {
+    background-color: rgba(46, 204, 113, 0.15);
+  }
+  
+  .expense-icon {
+    background-color: rgba(231, 76, 60, 0.15);
+  }
+  
+  .positive-icon {
+    background-color: rgba(46, 204, 113, 0.15);
+  }
+  
+  .negative-icon {
+    background-color: rgba(231, 76, 60, 0.15);
+  }
+  
+  .positive-balance {
+    color: #2ecc71;
+  }
+  
+  .negative-balance {
+    color: #e74c3c;
+  }
+  
+  .chart-container-wrapper {
+    height: 400px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .no-data-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+  }

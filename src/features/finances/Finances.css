@@ -1,0 +1,845 @@
+/* CSS Variables for consistent theming */
+:root {
+  --max-width: 1200px;
+  --border-radius: 12px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  /* Colors */
+  --color-bg: white;
+  --color-text: #333;
+  --color-text-light: #666;
+  --color-text-dark: #000;
+  --color-border: #e0e0e0;
+  --color-border-focus: #a94caf;
+  --color-focus-shadow: rgba(169, 76, 175, 0.1);
+  --color-primary: linear-gradient(to right, #e94caf, #8a4baf);
+  --color-secondary: #9ca3af;
+  --color-secondary-hover: #6b7280;
+  --color-income: #10b981;
+  --color-expense: #ef4444;
+
+  /* Tab colors */
+  --color-tab: #8a4baf;
+  --color-tab-hover: #f3e6fb;
+  --color-tab-active: #e2c6ff;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Chart heights */
+  --chart-height: 400px;
+  --mini-chart-height: 120px;
+}
+
+/* Base layout styles */
+.income-container,
+.expenses-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Typography */
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text-dark);
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: var(--color-text-light);
+  margin: var(--space-sm) 0 0 0;
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-text);
+}
+
+.form-subtitle {
+  font-size: 16px;
+  color: var(--color-text-light);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.card-description {
+  font-size: 16px;
+  color: var(--color-text-light);
+  margin: var(--space-sm) 0;
+}
+
+/* Card styles */
+.income-card,
+.expense-card {
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow);
+  margin-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chart containers */
+.chart-wrapper {
+  height: var(--chart-height) !important;
+  min-height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+  width: 100%;
+  margin: var(--space-md) 0 0 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-container {
+  height: 100% !important;
+  max-height: var(--chart-height) !important;
+  width: 100%;
+  position: relative;
+}
+
+.chart-container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--chart-height);
+  width: 100%;
+}
+
+/* Form styles */
+.income-form,
+.expense-form {
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.input-row {
+  display: flex;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.input-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.input-field.full-width {
+  width: 100%;
+}
+
+.input-field label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-dark);
+}
+
+/* Input with icon */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  font-size: 16px;
+  color: var(--color-text-light);
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: white;
+}
+
+/* Standard inputs and selects */
+.input-field input:not(.input-with-icon input),
+.input-field select {
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: white;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.input-field input:focus:not(.input-with-icon input),
+.input-field select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 48px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-secondary);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+}
+
+.btn-secondary:hover {
+  background: var(--color-secondary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-sm);
+}
+
+/* View selector */
+.view-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.view-tabs {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.view-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px var(--space-md);
+  border: none;
+  background-color: white;
+  border-radius: var(--space-sm);
+  font-weight: 500;
+  color: var(--color-tab);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.view-tab:hover {
+  background-color: var(--color-tab-hover);
+}
+
+.view-tab.active {
+  background-color: var(--color-tab-active);
+}
+
+/* Month selector */
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.selected-month {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.month-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-nav-button:hover {
+  background: var(--color-tab-hover);
+  border-color: var(--color-tab);
+}
+
+/* Grid layouts */
+.income-grid,
+.expenses-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+  margin-top: var(--space-lg);
+}
+
+/* Summary cards - completely revised for 1xN layout */
+.summary-cards {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px !important;
+  margin-top: var(--space-lg);
+  width: 100%;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+/* Update the summary-icon-wrapper to ensure perfect centering */
+.summary-icon-wrapper {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 8px auto !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  position: relative !important;
+}
+
+/* Force the summary icon to be perfectly centered */
+.summary-icon {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-size: 24px !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center !important;
+  line-height: 1 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Remove all background colors */
+.total-icon,
+.salary-icon,
+.food-icon,
+.investments-icon,
+.transport-icon,
+.government-icon,
+.entertainment-icon,
+.shopping-icon,
+.utilities-icon,
+.other-icon {
+  background-color: transparent !important;
+}
+
+/* Transaction lists */
+.income-list,
+.expenses-list {
+  height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+.income-item,
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 0;
+}
+
+.income-info,
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Keep the summary icon styling consistent */
+/* Keep transaction icons clean without backgrounds */
+.income-icon,
+.expense-icon,
+.category-icon {
+  background-color: transparent !important;
+  background: none !important;
+  box-shadow: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.income-category,
+.expense-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.income-description,
+.expense-description {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+.income-details,
+.expense-details {
+  text-align: right;
+}
+
+.income-amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-income);
+}
+
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-expense);
+}
+
+.income-date,
+.expense-date {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+/* Monthly view */
+.monthly-view {
+  margin-top: var(--space-lg);
+}
+
+.year-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  margin-bottom: var(--space-lg);
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--color-text);
+  text-align: center;
+  width: 100%;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: var(--color-text-light);
+  margin: 0;
+  text-align: center;
+}
+
+/* Monthly charts */
+.monthly-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.monthly-single-chart-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.single-month {
+  max-width: 180px;
+}
+
+.month-chart-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 160px;
+  max-width: 160px;
+  flex: 0 0 auto;
+}
+
+.month-chart {
+  width: 100%;
+  height: var(--mini-chart-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.month-chart .chart-wrapper,
+.monthly-chart-wrapper {
+  height: var(--mini-chart-height) !important;
+  min-height: var(--mini-chart-height) !important;
+  max-height: var(--mini-chart-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.month-total {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-top: var(--space-xs);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+/* Monthly details */
+.monthly-details-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  margin-top: var(--space-lg);
+  text-align: center;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.monthly-details-content {
+  width: 100%;
+  margin-top: var(--space-md);
+}
+
+.monthly-details-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.details-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background-color: #f9f0ff;
+  border-radius: var(--space-sm);
+}
+
+.details-label,
+.details-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.details-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: var(--space-md);
+}
+
+.details-category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px var(--space-md);
+  background-color: #f8f8f8;
+  border-radius: var(--space-sm);
+  transition: all 0.2s ease;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.category-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent !important;
+  background: none !important;
+  box-shadow: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.category-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.category-amount {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.monthly-details-chart {
+  height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+  margin-top: var(--space-lg);
+}
+
+.monthly-view .chart-wrapper {
+  height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+  width: 100%;
+  margin: 0;
+}
+
+.monthly-view .chart-container {
+  height: 100% !important;
+  max-height: var(--chart-height) !important;
+}
+
+/* Empty states */
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-text-light);
+  font-size: 16px;
+  text-align: center;
+}
+
+.empty-state-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 48px var(--space-xl);
+  box-shadow: var(--shadow);
+  margin-top: var(--space-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+}
+
+.empty-state-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--color-text);
+}
+
+.empty-state-message {
+  font-size: 16px;
+  color: var(--color-text-light);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Responsive styles */
+@media (min-width: 640px) {
+  .summary-cards {
+    grid-template-columns: none !important;
+    display: flex !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .income-grid,
+  .expenses-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .income-grid .income-card,
+  .expenses-grid .expense-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .summary-cards {
+    grid-template-columns: none !important;
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .view-selector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* On mobile, allow horizontal scrolling for summary cards */
+  .summary-cards {
+    display: flex !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .summary-card {
+    flex: 0 0 140px;
+  }
+}
+
+/* Ensure summary icons have no background */
+/* Update the summary-content to ensure proper centering */
+.summary-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Ensure the summary card is properly centered */
+.summary-card {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.summary-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--color-text) !important;
+  margin: 0 0 4px 0 !important;
+}
+
+.summary-value {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--color-text-dark) !important;
+  margin: 0 !important;
+}
+
+.summary-period {
+  font-size: 11px !important;
+  color: var(--color-text-light) !important;
+  margin: 2px 0 0 0 !important;
+}

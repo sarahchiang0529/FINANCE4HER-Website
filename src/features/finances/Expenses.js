@@ -1,58 +1,65 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
-import ChartComponent from "../../components/ChartComponent/ChartComponent"
-import MonthlyChartComponent from "../../components/MonthlyChartComponent/MonthlyChartComponent"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
-import "./Income.css"
+import ChartComponent from "../../components/Charts/ChartComponent";
+import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent";
+import "./Finances.css"
 
+// Register required Chart.js components for bar chart visualization
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-Object.keys(ChartJS.registry.plugins.items || {}).forEach((key) => {
-  if (key.toLowerCase().includes("centertext") || key.toLowerCase().includes("monthlytext")) {
-    ChartJS.unregister(ChartJS.registry.plugins.items[key])
-  }
-})
-
+// Define emoji icons for each expense category to improve visual recognition
 const CATEGORY_ICONS = {
-  Salary: "💼",
-  "Government Benefit": "🏛️",
-  Investments: "📈",
-  Other: "💰",
-  default: "💵",
+  Food: "🍽️",
+  Transport: "🚌",
+  Entertainment: "🎬",
+  Shopping: "🛍️",
+  Utilities: "💡",
+  Other: "📋",
+  default: "💸", // Fallback icon for undefined categories and Total Expenses
 }
 
-function Income() {
+function Expenses() {
+  // View state - controls which view is active (transactions or monthly summary)
   const [activeView, setActiveView] = useState("transactions")
+
+  // Date and filtering state - manages the currently selected month and date range for filtering
   const [selectedMonth, setSelectedMonth] = useState(new Date())
   const [dateRange, setDateRange] = useState({
-    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1), // First day of current month
+    end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Last day of current month
   })
 
-  const [income, setIncome] = useState([])
-  const [monthlySummaries, setMonthlySummaries] = useState([])
-  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null)
+  // Expense data state - stores all expense entries and derived data
+  const [expenses, setExpenses] = useState([]) // All expense transactions
+  const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
+  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
 
-  const [newIncome, setNewIncome] = useState({
+  // Form state - manages the new expense entry form
+  const [newExpense, setNewExpense] = useState({
     amount: "",
     description: "",
     category: "",
-    date: new Date().toISOString().split("T")[0],
+    date: new Date().toISOString().split("T")[0], // Default to today's date in YYYY-MM-DD format
   })
 
-  const monthlyDetailsRef = useRef(null)
+  // Refs - used for scrolling to elements
+  const monthlyDetailsRef = useRef(null) // Reference to monthly details section for smooth scrolling
 
-  // Generate monthly summaries from income data
+  // Generate monthly summaries from expense data whenever expense data changes
   useEffect(() => {
-    if (income.length === 0) {
+    if (expenses.length === 0) {
       setMonthlySummaries([])
       return
     }
 
-    const summaries = income.reduce((acc, item) => {
+    // Group expenses by month and calculate totals for each category
+    const summaries = expenses.reduce((acc, item) => {
       const date = new Date(item.date)
+      // Create a unique key for each month-year combination
       const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
 
+      // Initialize month data if it doesn't exist
       if (!acc[monthYear]) {
         acc[monthYear] = {
           month: new Date(date.getFullYear(), date.getMonth(), 1),
@@ -61,8 +68,10 @@ function Income() {
         }
       }
 
+      // Add item value to month total
       acc[monthYear].total += item.value
 
+      // Add item value to category total for the month
       if (!acc[monthYear].categories[item.category]) {
         acc[monthYear].categories[item.category] = 0
       }
@@ -71,34 +80,41 @@ function Income() {
       return acc
     }, {})
 
+    // Convert to array and sort by date (newest first) for display
     const summariesArray = Object.values(summaries).sort((a, b) => b.month - a.month)
     setMonthlySummaries(summariesArray)
-  }, [income])
+  }, [expenses])
 
-  // Filter income by selected month
-  const filteredIncome = useMemo(() => {
-    return income
+  // Filter expenses by selected date range and sort by date (newest first)
+  // Using useMemo to avoid recalculation on every render
+  const filteredExpenses = useMemo(() => {
+    return expenses
       .filter((item) => {
         const itemDate = new Date(item.date)
         return itemDate >= dateRange.start && itemDate <= dateRange.end
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-  }, [income, dateRange])
+  }, [expenses, dateRange])
 
+  // Prepare chart data from filtered expenses
+  // Using useMemo to avoid recalculation on every render
   const chartData = useMemo(() => {
-    return filteredIncome.map((item) => ({
+    return filteredExpenses.map((item) => ({
       category: item.category,
       value: item.value,
     }))
-  }, [filteredIncome])
+  }, [filteredExpenses])
 
-  // Calculate totals based on active view
+  // Calculate totals based on the active view (monthly or transactions)
+  // Using useMemo to avoid recalculation on every render
   const { currentViewTotal, categoryTotals } = useMemo(() => {
     if (activeView === "monthly") {
-      const allTimeTotals = income.reduce(
+      // For Monthly Summary view, calculate all-time totals from all expense entries
+      const allTimeTotals = expenses.reduce(
         (acc, item) => {
           acc.total += item.value
 
+          // Initialize category if it doesn't exist
           if (!acc.categories[item.category]) {
             acc.categories[item.category] = 0
           }
@@ -114,9 +130,11 @@ function Income() {
         categoryTotals: allTimeTotals.categories,
       }
     } else {
-      const monthlyTotal = filteredIncome.reduce((sum, item) => sum + item.value, 0)
+      // For Transactions view, use the filtered expenses (by selected month)
+      const monthlyTotal = filteredExpenses.reduce((sum, item) => sum + item.value, 0)
 
-      const catTotals = filteredIncome.reduce((acc, item) => {
+      // Calculate totals for each category in the filtered expenses
+      const catTotals = filteredExpenses.reduce((acc, item) => {
         if (!acc[item.category]) {
           acc[item.category] = 0
         }
@@ -129,45 +147,52 @@ function Income() {
         categoryTotals: catTotals,
       }
     }
-  }, [activeView, income, filteredIncome])
+  }, [activeView, expenses, filteredExpenses])
 
+  // Handle form input changes with useCallback to prevent unnecessary re-renders
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target
-    setNewIncome((prev) => ({
+    setNewExpense((prev) => ({
       ...prev,
       [name]: value,
     }))
   }, [])
 
-  // Add new income entry
-  const handleAddIncome = useCallback(() => {
-    const { amount, description, category, date } = newIncome
+  // Add new expense entry to the expenses state
+  // Validates form data and creates a new entry with unique ID
+  const handleAddExpense = useCallback(() => {
+    const { amount, description, category, date } = newExpense
     const numericAmount = Number.parseFloat(amount)
 
+    // Validate all required fields
     if (!amount || isNaN(numericAmount) || !category || !date || !description) {
       alert("Please fill in all required fields.")
       return
     }
 
+    // Create new expense entry with unique ID
     const newEntry = {
-      id: Date.now(),
+      id: Date.now(), // Use timestamp as unique ID
       category,
       value: numericAmount,
       description,
       date,
     }
 
-    setIncome((prev) => [newEntry, ...prev])
+    // Add new entry to the beginning of the expenses array
+    setExpenses((prev) => [newEntry, ...prev])
 
-    setNewIncome({
+    // Reset form fields after successful submission
+    setNewExpense({
       amount: "",
       description: "",
       category: "",
       date: new Date().toISOString().split("T")[0],
     })
-  }, [newIncome])
+  }, [newExpense])
 
-  // Navigate between months
+  // Handle month navigation (previous/next) in transactions view
+  // Updates selected month and date range for filtering
   const handleMonthChange = useCallback(
     (direction) => {
       const newMonth = new Date(selectedMonth)
@@ -178,18 +203,21 @@ function Income() {
       }
       setSelectedMonth(newMonth)
 
+      // Update date range for filtering based on new selected month
       setDateRange({
-        start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1),
-        end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0),
+        start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1), // First day of month
+        end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0), // Last day of month
       })
     },
     [selectedMonth],
   )
 
-  // Select a month for detailed view
+  // Handle month selection in monthly summary view
+  // Sets the selected month details and scrolls to the details section
   const handleMonthSelect = useCallback((summary) => {
     setSelectedMonthDetails(summary)
 
+    // Scroll to details section after a short delay to ensure render is complete
     setTimeout(() => {
       if (monthlyDetailsRef.current) {
         monthlyDetailsRef.current.scrollIntoView({
@@ -200,10 +228,13 @@ function Income() {
     }, 100)
   }, [])
 
+  // Utility function to get category icon based on category name
   const getCategoryIcon = useCallback((category) => {
+    // Return just the emoji without any wrapper or styling
     return CATEGORY_ICONS[category] || CATEGORY_ICONS.default
   }, [])
 
+  // Format date string to readable format (e.g., "Jan 1, 2023")
   const formatDate = useCallback((dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
@@ -213,23 +244,27 @@ function Income() {
     })
   }, [])
 
+  // Format date to month and year format (e.g., "January 2023")
   const formatMonthYear = useCallback((date) => {
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
   }, [])
 
-  const hasIncomeData = income.length > 0
+  // Check if there's any expense data to determine whether to show empty state
+  const hasExpenseData = expenses.length > 0
 
   return (
-    <div className="income-container">
+    <div className="expenses-container">
+      {/* Header Section */}
       <div className="page-header">
-        <h1 className="page-title">Income</h1>
-        <p className="page-subtitle">Track and manage your income sources</p>
+        <h1 className="page-title">Expenses</h1>
+        <p className="page-subtitle">Track and manage your spending</p>
       </div>
 
-      <div className="income-card">
-        <h2 className="form-title">Add Income</h2>
-        <p className="form-subtitle">Record a new income transaction</p>
-        <div className="income-form">
+      {/* Add Expense Form Section */}
+      <div className="expense-card">
+        <h2 className="form-title">Add Expense</h2>
+        <p className="form-subtitle">Record a new expense transaction</p>
+        <div className="expense-form">
           <div className="form-group">
             <div className="input-row">
               <div className="input-field">
@@ -241,7 +276,7 @@ function Income() {
                     id="amount"
                     name="amount"
                     placeholder="0.00"
-                    value={newIncome.amount}
+                    value={newExpense.amount}
                     onChange={handleInputChange}
                     required
                   />
@@ -250,27 +285,36 @@ function Income() {
 
               <div className="input-field">
                 <label htmlFor="category">Category</label>
-                <select id="category" name="category" value={newIncome.category} onChange={handleInputChange} required>
+                <select id="category" name="category" value={newExpense.category} onChange={handleInputChange} required>
                   <option value="" disabled>
                     Select
                   </option>
-                  <option value="Salary">Salary</option>
-                  <option value="Government Benefit">Government Benefit</option>
-                  <option value="Investments">Investments</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Utilities">Utilities</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
               <div className="input-field">
                 <label htmlFor="date">Date</label>
-                <input type="date" id="date" name="date" value={newIncome.date} onChange={handleInputChange} required />
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={newExpense.date}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
 
               <div className="input-field">
                 <label>&nbsp;</label>
-                <button className="btn-primary" onClick={handleAddIncome}>
+                <button className="btn-primary" onClick={handleAddExpense}>
                   <Plus className="btn-icon" />
-                  Add Income
+                  Add Expense
                 </button>
               </div>
             </div>
@@ -283,7 +327,7 @@ function Income() {
                   id="description"
                   name="description"
                   placeholder="Description"
-                  value={newIncome.description}
+                  value={newExpense.description}
                   onChange={handleInputChange}
                   required
                 />
@@ -293,18 +337,21 @@ function Income() {
         </div>
       </div>
 
-      {!hasIncomeData && (
+      {/* Empty State - Shown when no expense data exists */}
+      {!hasExpenseData && (
         <div className="empty-state-card">
           <div className="empty-state-icon">📊</div>
-          <h3 className="empty-state-title">No Income Data Yet</h3>
+          <h3 className="empty-state-title">No Expense Data Yet</h3>
           <p className="empty-state-message">
-            Start by adding your income transactions using the form above. Your income data will appear here.
+            Start by adding your expense transactions using the form above. Your expense data will appear here.
           </p>
         </div>
       )}
 
-      {hasIncomeData && (
+      {/* Expense Data Display - Only shown when expense data exists */}
+      {hasExpenseData && (
         <>
+          {/* View Selector - Toggle between transactions and monthly summary views */}
           <div className="view-selector">
             <div className="view-tabs">
               <button
@@ -324,6 +371,7 @@ function Income() {
             </div>
           </div>
 
+          {/* Month Selector - Only shown in transactions view */}
           {activeView === "transactions" && (
             <div className="month-selector">
               <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
@@ -336,78 +384,77 @@ function Income() {
             </div>
           )}
 
-          <div className="summary-cards">
-            <div className="summary-card">
+          {/* Summary Cards - Show totals for each category */}
+          <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
+            {/* Total Expense Card */}
+            <div className="summary-card" style={{ flex: "1 1 0" }}>
               <div className="summary-content">
                 <div className="summary-icon-wrapper total-icon">
-                  <div className="summary-icon">💰</div>
+                  <div className="summary-icon">💸</div>
                 </div>
-                <h3 className="summary-title">Total Income</h3>
+                <h3 className="summary-title">Total Expenses</h3>
                 <p className="summary-value">${currentViewTotal.toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
-                </p>
+                <p className="summary-period">{formatMonthYear(selectedMonth)}</p>
               </div>
             </div>
 
-            {["Salary", "Investments", "Government Benefit", "Other"].map((category) => (
-              <div className="summary-card" key={category}>
+            {/* Category Summary Cards - One card for each predefined category */}
+            {["Food", "Transport", "Entertainment", "Shopping", "Utilities"].map((category) => (
+              <div className="summary-card" key={category} style={{ flex: "1 1 0" }}>
                 <div className="summary-content">
                   <div className={`summary-icon-wrapper ${category.toLowerCase().replace(" ", "-")}-icon`}>
                     <div className="summary-icon">{getCategoryIcon(category)}</div>
                   </div>
                   <h3 className="summary-title">{category}</h3>
                   <p className="summary-value">${(categoryTotals[category] || 0).toFixed(2)}</p>
-                  <p className="summary-period">
-                    {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
-                  </p>
+                  <p className="summary-period">{formatMonthYear(selectedMonth)}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {activeView === "transactions" && (
-            <div className="income-grid">
-              <div className="income-card">
-                <h2 className="card-title">Income Distribution</h2>
-                <p className="card-description">Breakdown of your income sources</p>
+            <div className="expenses-grid">
+              <div className="expense-card">
+                <h2 className="card-title">Expense Distribution</h2>
+                <p className="card-description">Breakdown of your spending</p>
 
                 {chartData.length > 0 ? (
                   <div className="chart-container-wrapper">
-                    <ChartComponent data={chartData} type="income" />
+                    <ChartComponent data={chartData} chartType="doughnut" isIncome={false} />
                   </div>
                 ) : (
                   <div className="no-data-message">
-                    <p>No income data for this period. Add transactions to see your income distribution.</p>
+                    <p>No expense data for this period. Add transactions to see your expense distribution.</p>
                   </div>
                 )}
               </div>
 
-              <div className="income-card" style={{ display: "flex", flexDirection: "column" }}>
-                <h2 className="card-title">Income Transactions</h2>
-                <p className="card-description">Your income transactions for {formatMonthYear(selectedMonth)}</p>
+              <div className="expense-card" style={{ display: "flex", flexDirection: "column" }}>
+                <h2 className="card-title">Expense Transactions</h2>
+                <p className="card-description">Your expense transactions for {formatMonthYear(selectedMonth)}</p>
 
-                {filteredIncome.length > 0 ? (
-                  <div className="income-list">
-                    {filteredIncome.map((entry) => (
-                      <div key={entry.id} className="income-item">
-                        <div className="income-info">
-                          <div className="income-icon">{getCategoryIcon(entry.category)}</div>
+                {filteredExpenses.length > 0 ? (
+                  <div className="expenses-list">
+                    {filteredExpenses.map((entry) => (
+                      <div key={entry.id} className="expense-item">
+                        <div className="expense-info">
+                          <div className="expense-icon">{getCategoryIcon(entry.category)}</div>
                           <div>
-                            <div className="income-category">{entry.category}</div>
-                            <div className="income-description">{entry.description}</div>
+                            <div className="expense-category">{entry.category}</div>
+                            <div className="expense-description">{entry.description}</div>
                           </div>
                         </div>
-                        <div className="income-details">
-                          <div className="income-amount">+${entry.value.toFixed(2)}</div>
-                          <div className="income-date">{formatDate(entry.date)}</div>
+                        <div className="expense-details">
+                          <div className="expense-amount">-${entry.value.toFixed(2)}</div>
+                          <div className="expense-date">{formatDate(entry.date)}</div>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="no-data-message">
-                    <p>No income transactions found for this period.</p>
+                    <p>No expense transactions found for this period.</p>
                   </div>
                 )}
               </div>
@@ -424,12 +471,15 @@ function Income() {
 
                     return (
                       <div key={year} className="year-section">
-                        <h2 className="section-title">{year} Monthly Income</h2>
+                        <h2 className="section-title">{year} Monthly Expenses</h2>
 
                         {isSingleMonth ? (
                           <div className="monthly-single-chart-container">
                             {yearSummaries.map((summary, index) => {
-                              const monthDate = new Date(summary.month.getTime())
+                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({
+                                category,
+                                value,
+                              }))
                               return (
                                 <div
                                   key={index}
@@ -437,13 +487,7 @@ function Income() {
                                   onClick={() => handleMonthSelect(summary)}
                                 >
                                   <div className="month-chart">
-                                    <MonthlyChartComponent
-                                      data={Object.entries(summary.categories).map(([category, value]) => ({
-                                        category,
-                                        value,
-                                      }))}
-                                      month={monthDate}
-                                    />
+                                    <MonthlyChartComponent month={summary.month} data={monthData} isIncome={false} />
                                   </div>
                                   <div className="month-total">${summary.total.toFixed(2)}</div>
                                 </div>
@@ -455,7 +499,10 @@ function Income() {
                             {yearSummaries
                               .sort((a, b) => a.month - b.month)
                               .map((summary, index) => {
-                                const monthDate = new Date(summary.month.getTime())
+                                const monthData = Object.entries(summary.categories).map(([category, value]) => ({
+                                  category,
+                                  value,
+                                }))
                                 return (
                                   <div
                                     key={index}
@@ -463,13 +510,7 @@ function Income() {
                                     onClick={() => handleMonthSelect(summary)}
                                   >
                                     <div className="month-chart">
-                                      <MonthlyChartComponent
-                                        data={Object.entries(summary.categories).map(([category, value]) => ({
-                                          category,
-                                          value,
-                                        }))}
-                                        month={monthDate}
-                                      />
+                                      <MonthlyChartComponent month={summary.month} data={monthData} isIncome={false} />
                                     </div>
                                     <div className="month-total">${summary.total.toFixed(2)}</div>
                                   </div>
@@ -492,7 +533,7 @@ function Income() {
                         <div className="monthly-details-content">
                           <div className="monthly-details-summary">
                             <div className="details-total">
-                              <span className="details-label">Total Income:</span>
+                              <span className="details-label">Total Expenses:</span>
                               <span className="details-value">${selectedMonthDetails.total.toFixed(2)}</span>
                             </div>
 
@@ -514,8 +555,8 @@ function Income() {
                                   category,
                                   value,
                                 }))}
-                                type="income"
-                                chartId={`monthly-details-chart-${selectedMonthDetails.month.getTime()}`}
+                                chartType="doughnut"
+                                isIncome={false}
                               />
                             </div>
                           </div>
@@ -531,7 +572,7 @@ function Income() {
                 </>
               ) : (
                 <div className="no-data-message">
-                  <p>No monthly data available yet. Add income transactions to see your monthly summaries.</p>
+                  <p>No monthly data available yet. Add expense transactions to see your monthly summaries.</p>
                 </div>
               )}
             </div>
@@ -542,4 +583,4 @@ function Income() {
   )
 }
 
-export default Income
+export default Expenses
