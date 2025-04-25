@@ -1,4 +1,3 @@
-"use client"
 import { useState, useEffect, useRef } from "react"
 import { Plus, Calendar, BarChart3, Filter, Download, ChevronDown, ChevronUp } from "lucide-react"
 import ChartComponent from "../../components/ChartComponent/ChartComponent"
