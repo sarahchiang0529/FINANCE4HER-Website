@@ -21,10 +21,13 @@ import FAQ from "./features/faq/FAQ";
 import Home from "./features/home/Home";
 import FinancialOverview from "./features/financialOverview/FinancialOverview";
 
-import "./App.css";
+import "./App.css"
+import "./features/finances/Finances.css"
+import "./features/savingGoal/SavingGoal.css"
 
 import initFontAwesome from "./utils/initFontAwesome";
 initFontAwesome();
+
 
 const App = () => {
   const { isLoading, error } = useAuth0();

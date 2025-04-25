@@ -14,6 +14,43 @@ body {
   min-height: 100vh; /* Use viewport height to ensure full page height */
 }
 
+/* CSS Variables for consistent theming */
+:root {
+  --max-width: 1200px;
+  --border-radius: 12px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  /* Colors */
+  --color-bg: white;
+  --color-text: #333;
+  --color-text-light: #666;
+  --color-text-dark: #000;
+  --color-border: #e0e0e0;
+  --color-border-focus: #a94caf;
+  --color-focus-shadow: rgba(169, 76, 175, 0.1);
+  --color-primary: linear-gradient(to right, #e94caf, #8a4baf);
+  --color-secondary: #9ca3af;
+  --color-secondary-hover: #6b7280;
+  --color-income: #10b981;
+  --color-expense: #ef4444;
+
+  /* Tab colors */
+  --color-tab: #8a4baf;
+  --color-tab-hover: #f3e6fb;
+  --color-tab-active: #e2c6ff;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Chart heights */
+  --chart-height: 400px;
+  --mini-chart-height: 120px;
+}
+
 /* Main content wrapper */
 .app-wrapper {
   flex: 1 0 auto; /* This allows the content to grow but not shrink */
@@ -23,7 +60,7 @@ body {
 
 /* Container for page content */
 .container {
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 16px;
   width: 100%;
@@ -60,63 +97,29 @@ body {
   font-size: 36px;
   font-weight: 700;
   margin: 0;
-  color: #000;
+  color: var(--color-text-dark);
 }
 
 .page-subtitle {
   font-size: 18px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 8px 0 0 0;
-}
-
-/* Button styles */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-primary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.btn-sm {
-  font-size: 12px;
-  padding: 6px 12px;
-}
-
-.btn-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
 }
 
 /* Card styles */
 .card {
   background: white;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   margin-bottom: 0; /* Remove bottom margin */
 }
 
 .card-header {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
   margin-bottom: 16px;
 }
 
@@ -124,12 +127,12 @@ body {
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: #333;
+  color: var(--color-text);
 }
 
 .card-description {
   font-size: 16px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 0;
 }
 
@@ -138,18 +141,45 @@ body {
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: #333;
+  color: var(--color-text);
+  padding-top: 0;
 }
 
 .form-subtitle {
   font-size: 16px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 0 0 24px 0;
 }
 
-/* Tabs container */
-.tabs-container {
-  margin-bottom: 0; /* Remove bottom margin */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.input-row {
+  display: flex;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.input-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.input-field.full-width {
+  width: 100%;
+}
+
+.input-field label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-dark);
 }
 
 /* Global input with icon styles */
@@ -157,14 +187,14 @@ body {
   position: relative;
   display: flex;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   overflow: hidden;
   transition: all 0.2s ease;
 }
 
 .input-with-icon:focus-within {
-  border-color: #a94caf;
-  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
 }
 
 .input-icon {
@@ -173,9 +203,9 @@ body {
   justify-content: center;
   width: 30px;
   font-size: 16px;
-  color: #666;
+  color: var(--color-text-light);
   background-color: #f0f0f0;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid var(--color-border);
 }
 
 .input-with-icon input {
@@ -186,7 +216,7 @@ body {
   border: none;
   outline: none;
   font-size: 16px;
-  color: #333;
+  color: var(--color-text);
   background-color: white;
 }
 
@@ -200,10 +230,10 @@ body {
   width: 100%;
   height: 48px;
   padding: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   font-size: 16px;
-  color: #333;
+  color: var(--color-text);
   background-color: white;
   box-sizing: border-box;
   transition: all 0.2s ease;
@@ -212,8 +242,8 @@ body {
 .input-field input:focus:not(.input-with-icon input),
 .input-field select:focus {
   outline: none;
-  border-color: #a94caf;
-  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
 }
 
 /* Custom select styling */
@@ -269,7 +299,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 30px;
   height: 48px;
   background-color: #f0f0f0;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid var(--color-border);
 }
 
 .input-field .input-with-icon input {
@@ -277,11 +307,297 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   text-align: left;
 }
 
-/* Form group - remove bottom gap */
-.form-group {
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 48px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-secondary);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+}
+
+.btn-secondary:hover {
+  background: var(--color-secondary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-sm {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-sm);
+}
+
+/* Tabs container */
+.tabs-container {
+  margin-bottom: 0; /* Remove bottom margin */
+}
+
+/* Card title section */
+.card-title-section {
+  padding: 24px 0 16px;
+}
+
+/* Finance card header */
+.finance-card-header {
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.finance-card-header .card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.finance-card-header .card-description {
+  font-size: 16px;
+  color: var(--color-text-light);
+  margin: 4px 0 0 0;
+}
+
+/* Base layout styles for financial components */
+.income-container,
+.expenses-container,
+.saving-goals-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Card styles for financial components */
+.income-card,
+.expense-card,
+.goal-card {
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin-bottom: 0;
-  padding-bottom: 0;
+}
+
+/* New styles for data display cards */
+.income-data-card,
+.expense-data-card,
+.goal-data-card {
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  padding: 24px 32px; /* Adjust padding to match the screenshot */
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Empty states */
+.empty-state-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 48px var(--space-xl);
+  box-shadow: var(--shadow);
+  margin-top: var(--space-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+}
+
+.empty-state-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--color-text);
+}
+
+.empty-state-message {
+  font-size: 16px;
+  color: var(--color-text-light);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* No data message */
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-text-light);
+  font-size: 16px;
+  text-align: center;
+}
+
+/* View selector styles */
+.view-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.view-tabs {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.view-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px var(--space-md);
+  border: none;
+  background-color: white;
+  border-radius: var(--space-sm);
+  font-weight: 500;
+  color: var(--color-tab);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.view-tab:hover {
+  background-color: var(--color-tab-hover);
+}
+
+.view-tab.active {
+  background-color: var(--color-tab-active);
+}
+
+/* Grid layouts - Income and Expenses only */
+.income-grid,
+.expenses-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+  margin-top: var(--space-lg);
+}
+
+/* Separate goals grid styling */
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+/* Responsive grid layouts - Income and Expenses only */
+@media (min-width: 768px) {
+  .income-grid,
+  .expenses-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .income-grid .income-card,
+  .expenses-grid .expense-card,
+  .income-grid .income-data-card,
+  .expenses-grid .expense-data-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+/* Responsive grid layouts - Goals only */
+@media (max-width: 1024px) {
+  .goals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Section title */
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  padding: 16px 0 16px;
+  color: var(--color-text);
+  text-align: center;
+  width: 100%;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: var(--color-text-light);
+  margin: 0;
+  text-align: center;
+}
+
+/* Add new data grid classes */
+.data-income-grid,
+.data-expenses-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+  margin-top: var(--space-lg);
+}
+
+/* Responsive grid layouts for data grids */
+@media (min-width: 768px) {
+  .data-income-grid,
+  .data-expenses-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .data-income-grid .income-data-card,
+  .data-expenses-grid .expense-data-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 }

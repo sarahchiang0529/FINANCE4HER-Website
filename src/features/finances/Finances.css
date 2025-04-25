@@ -1,132 +1,4 @@
-/* CSS Variables for consistent theming */
-:root {
-  --max-width: 1200px;
-  --border-radius: 12px;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-  /* Colors */
-  --color-bg: white;
-  --color-text: #333;
-  --color-text-light: #666;
-  --color-text-dark: #000;
-  --color-border: #e0e0e0;
-  --color-border-focus: #a94caf;
-  --color-focus-shadow: rgba(169, 76, 175, 0.1);
-  --color-primary: linear-gradient(to right, #e94caf, #8a4baf);
-  --color-secondary: #9ca3af;
-  --color-secondary-hover: #6b7280;
-  --color-income: #10b981;
-  --color-expense: #ef4444;
-
-  /* Tab colors */
-  --color-tab: #8a4baf;
-  --color-tab-hover: #f3e6fb;
-  --color-tab-active: #e2c6ff;
-
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-
-  /* Chart heights */
-  --chart-height: 400px;
-  --mini-chart-height: 120px;
-}
-
-/* Base layout styles */
-.income-container,
-.expenses-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-}
-
-/* Typography */
-.page-title {
-  font-size: 36px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--color-text-dark);
-}
-
-.page-subtitle {
-  font-size: 18px;
-  color: var(--color-text-light);
-  margin: var(--space-sm) 0 0 0;
-}
-
-.form-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0 0 var(--space-sm) 0;
-  color: var(--color-text);
-  padding-top: var(--space-xl);
-}
-
-.form-subtitle {
-  font-size: 16px;
-  color: var(--color-text-light);
-  margin: 0 0 var(--space-lg) 0;
-}
-
-/* Add a new class for consistent card padding */
-.card-title-section {
-  padding: 24px 0 16px;
-}
-
-/* Add these styles for the card header styling that matches the Dashboard */
-.card-header {
-  background-color: transparent;
-  margin: 0;
-  padding: 0;
-  border-bottom: none;
-}
-
-/* Add a specific class for the Income/Expense headers */
-.finance-card-header {
-  padding: 32px 0 16px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-/* Update the finance-card-header title and description to match the form title and subtitle */
-.finance-card-header .card-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--color-text);
-}
-
-.finance-card-header .card-description {
-  font-size: 16px;
-  color: var(--color-text-light);
-  margin: 4px 0 0 0;
-}
-
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--color-text);
-}
-
-.card-description {
-  font-size: 14px;
-  color: var(--color-text-light);
-  margin: 4px 0 0 0;
-}
-
-/* Card styles */
-.income-card,
-.expense-card {
-  background: var(--color-bg);
-  border-radius: var(--border-radius);
-  padding: 0 var(--space-xl) var(--space-xl);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-}
+/* Finance-specific styles that aren't shared across the app */
 
 /* Chart containers */
 .chart-wrapper {
@@ -152,193 +24,20 @@
   position: relative;
 }
 
+/* Update the chart container wrapper to have proper spacing */
 .chart-container-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: var(--chart-height);
   width: 100%;
+  margin-top: 8px; /* Add a small margin to match the design */
 }
 
-/* Form styles */
+/* Form styles specific to finance forms */
 .income-form,
 .expense-form {
   width: 100%;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
-.input-row {
-  display: flex;
-  gap: var(--space-lg);
-  width: 100%;
-}
-
-.input-field {
-  flex: 1;
-  min-width: 0;
-}
-
-.input-field.full-width {
-  width: 100%;
-}
-
-.input-field label {
-  display: block;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: var(--space-sm);
-  color: var(--color-text-dark);
-}
-
-/* Input with icon */
-.input-with-icon {
-  position: relative;
-  display: flex;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  overflow: hidden;
-  transition: all 0.2s ease;
-}
-
-.input-with-icon:focus-within {
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 2px var(--color-focus-shadow);
-}
-
-.input-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  font-size: 16px;
-  color: var(--color-text-light);
-  background-color: #f0f0f0;
-  border-right: 1px solid var(--color-border);
-}
-
-.input-with-icon input {
-  flex: 1;
-  height: 48px;
-  padding: 12px;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  color: var(--color-text);
-  background-color: white;
-}
-
-/* Standard inputs and selects */
-.input-field input:not(.input-with-icon input),
-.input-field select {
-  width: 100%;
-  height: 48px;
-  padding: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 16px;
-  color: var(--color-text);
-  background-color: white;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.input-field input:focus:not(.input-with-icon input),
-.input-field select:focus {
-  outline: none;
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 2px var(--color-focus-shadow);
-}
-
-/* Button styles */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-sm) var(--space-md);
-  background: var(--color-primary);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  height: 48px;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-sm) var(--space-md);
-  background: var(--color-secondary);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  height: 40px;
-}
-
-.btn-secondary:hover {
-  background: var(--color-secondary-hover);
-  transform: translateY(-1px);
-}
-
-.btn-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: var(--space-sm);
-}
-
-/* View selector */
-.view-selector {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: var(--space-xl);
-  flex-wrap: wrap;
-  gap: var(--space-md);
-}
-
-.view-tabs {
-  display: flex;
-  gap: var(--space-md);
-}
-
-.view-tab {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 10px var(--space-md);
-  border: none;
-  background-color: white;
-  border-radius: var(--space-sm);
-  font-weight: 500;
-  color: var(--color-tab);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-}
-
-.view-tab:hover {
-  background-color: var(--color-tab-hover);
-}
-
-.view-tab.active {
-  background-color: var(--color-tab-active);
 }
 
 /* Month selector */
@@ -373,15 +72,6 @@
 .month-nav-button:hover {
   background: var(--color-tab-hover);
   border-color: var(--color-tab);
-}
-
-/* Grid layouts */
-.income-grid,
-.expenses-grid {
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: 1fr;
-  margin-top: var(--space-lg);
 }
 
 /* Summary cards - completely revised for 1xN layout */
@@ -441,7 +131,7 @@
   background-color: transparent !important;
 }
 
-/* Transaction lists */
+/* Ensure the income list has proper spacing */
 .income-list,
 .expenses-list {
   height: var(--chart-height) !important;
@@ -450,7 +140,7 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin: 0;
+  margin: 8px 0 0 0; /* Add top margin to match the chart spacing */
 }
 
 .income-item,
@@ -531,28 +221,10 @@
 .year-section {
   background: white;
   border-radius: var(--border-radius);
-  padding: var(--space-lg);
+  padding: var(--space-md);
   box-shadow: var(--shadow);
-  margin-bottom: var(--space-lg);
   width: 100%;
   overflow: hidden;
-  text-align: center;
-}
-
-/* Add consistent padding to the section-title class */
-.section-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin: 0;
-  padding: 24px 0 16px;
-  color: var(--color-text);
-  text-align: center;
-  width: 100%;
-}
-
-.section-subtitle {
-  font-size: 15px;
-  color: var(--color-text-light);
   text-align: center;
 }
 
@@ -562,7 +234,8 @@
   flex-wrap: wrap;
   gap: var(--space-lg);
   width: 100%;
-  justify-content: flex-start;
+  justify-content: flex-start;  padding: var(--space-lg);
+  padding: var(--space-md);
 }
 
 .monthly-single-chart-container {
@@ -640,7 +313,7 @@
 
 .monthly-details-content {
   width: 100%;
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
 }
 
 .monthly-details-summary {
@@ -687,24 +360,6 @@
   gap: var(--space-sm);
 }
 
-.category-icon {
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent !important;
-  background: none !important;
-  box-shadow: none !important;
-  width: 32px !important;
-  height: 32px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 20px !important;
-  padding: 0 !important;
-  border: none !important;
-}
-
 .category-name {
   font-size: 16px;
   font-weight: 500;
@@ -720,6 +375,7 @@
 .monthly-details-chart {
   height: var(--chart-height) !important;
   max-height: var(--chart-height) !important;
+  margin-top: var(--space-lg);
 }
 
 .monthly-view .chart-wrapper {
@@ -734,104 +390,7 @@
   max-height: var(--chart-height) !important;
 }
 
-/* Empty states */
-.no-data-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--color-text-light);
-  font-size: 16px;
-  text-align: center;
-}
-
-.empty-state-card {
-  background: white;
-  border-radius: var(--border-radius);
-  padding: 48px var(--space-xl);
-  box-shadow: var(--shadow);
-  margin-top: var(--space-lg);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.empty-state-icon {
-  font-size: 48px;
-  margin-bottom: var(--space-md);
-}
-
-.empty-state-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0 0 var(--space-md) 0;
-  color: var(--color-text);
-}
-
-.empty-state-message {
-  font-size: 16px;
-  color: var(--color-text-light);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-/* Responsive styles */
-@media (min-width: 640px) {
-  .summary-cards {
-    grid-template-columns: none !important;
-    display: flex !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .income-grid,
-  .expenses-grid {
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
-  }
-
-  .income-grid .income-card,
-  .expenses-grid .expense-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .summary-cards {
-    grid-template-columns: none !important;
-    display: flex !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .input-row {
-    flex-direction: column;
-    gap: var(--space-md);
-  }
-
-  .view-selector {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  /* On mobile, allow horizontal scrolling for summary cards */
-  .summary-cards {
-    display: flex !important;
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-
-  .summary-card {
-    flex: 0 0 140px;
-  }
-}
-
-/* Ensure summary icons have no background */
-/* Update the summary-content to ensure proper centering */
+/* Summary card styles */
 .summary-content {
   width: 100%;
   display: flex;
@@ -841,7 +400,6 @@
   text-align: center;
 }
 
-/* Ensure the summary card is properly centered */
 .summary-card {
   flex: 1 1 0 !important;
   min-width: 0 !important;
@@ -875,4 +433,28 @@
   font-size: 11px !important;
   color: var(--color-text-light) !important;
   margin: 2px 0 0 0 !important;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  /* On mobile, allow horizontal scrolling for summary cards */
+  .summary-cards {
+    display: flex !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .summary-card {
+    flex: 0 0 140px;
+  }
+}
+
+/* Add padding around distribution & transaction headers */
+.income-data-card > .finance-card-header,
+.expense-data-card > .finance-card-header {
+  background-color: #f5f5f5;                   /* light grey */
+  padding: 16px 24px;                          /* top/bottom 16px, left/right 24px */
+  border-bottom: 1px solid var(--color-border);/* divider line */
+  border-top-left-radius: var(--border-radius); 
+  border-top-right-radius: var(--border-radius);
 }

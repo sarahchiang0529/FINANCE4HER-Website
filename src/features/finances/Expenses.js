@@ -414,8 +414,8 @@ function Expenses() {
           </div>
 
           {activeView === "transactions" && (
-            <div className="expenses-grid">
-              <div className="expense-card">
+            <div className="data-expenses-grid">
+              <div className="expense-data-card">
                 <div className="finance-card-header">
                   <h2 className="card-title">Expense Distribution</h2>
                   <p className="card-description">Breakdown of your spending</p>
@@ -432,7 +432,7 @@ function Expenses() {
                 )}
               </div>
 
-              <div className="expense-card">
+              <div className="expense-data-card">
                 <div className="finance-card-header">
                   <h2 className="card-title">Expense Transactions</h2>
                   <p className="card-description">Your expense transactions for {formatMonthYear(selectedMonth)}</p>

@@ -22,7 +22,7 @@
 .goal-card {
   background: white;
   border-radius: 12px;
-  padding: 32px;
+  padding: 0 32px 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 24px;
   display: flex;
@@ -38,8 +38,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 0; 
-  padding-bottom: 0; 
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 .input-row {
   display: flex;
@@ -130,14 +130,30 @@ input[type="number"] {
 /* Goals grid and cards */
 .goals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  margin-top: 24px;
+}
+
+/* Responsive grid layouts */
+@media (max-width: 1024px) {
+  .goals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .goals-grid .goal-card {
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 0 24px 24px;
+  margin-bottom: 0;
 }
 
 .goal-card-header {
@@ -145,6 +161,7 @@ input[type="number"] {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  padding-top: 24px;
 }
 
 .goal-category {
@@ -192,7 +209,7 @@ input[type="number"] {
 
 /* Progress bar */
 .goal-progress-container {
-  margin: 12px 0 24px 0; 
+  margin: 12px 0 24px 0;
 }
 
 .goal-progress-bar {
@@ -205,7 +222,7 @@ input[type="number"] {
 .goal-progress-fill {
   height: 10px;
   border-radius: 6px;
-  background: linear-gradient(to right, #e94caf, #8a4baf); 
+  background: linear-gradient(to right, #e94caf, #8a4baf);
   transition: width 0.3s ease-in-out;
 }
 
@@ -224,8 +241,8 @@ input[type="number"] {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 0; 
-  margin-bottom: 24px; 
+  margin-top: 0;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
@@ -296,6 +313,7 @@ input[type="number"] {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-top: 24px;
 }
 
 .no-goals-icon {
@@ -307,7 +325,8 @@ input[type="number"] {
 
 /* Tabs Container */
 .tabs-container {
-  margin-bottom: 0; 
+  margin-bottom: 0;
+  margin-top: 24px;
 }
 
 .tabs {
@@ -385,19 +404,19 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: #9ca3af; 
-  color: white; 
+  background: #9ca3af;
+  color: white;
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
-  border: none; 
+  border: none;
   cursor: pointer;
   transition: all 0.2s ease;
   height: 48px;
 }
 
 .btn-secondary:hover {
-  background: #6b7280; 
+  background: #6b7280;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -459,6 +478,7 @@ input[type="number"] {
 /* Edit goal form */
 .edit-goal-form {
   width: 100%;
+  padding-top: 24px;
 }
 
 .edit-goal-header {
@@ -493,13 +513,13 @@ input[type="number"] {
   justify-content: space-between;
   gap: 12px;
   padding: 0;
-  margin-bottom: 0; 
+  margin-bottom: 0;
 }
 
 .edit-actions .btn-secondary,
 .edit-actions .btn-primary {
-  flex: 1; 
-  height: 48px; 
+  flex: 1;
+  height: 48px;
 }
 
 /* Checkbox field */
@@ -582,8 +602,8 @@ input[type="number"] {
 /* Goal completion toggle button */
 .goal-completion-toggle {
   margin-top: auto;
-  padding-top: 0;
-  padding-bottom: 0; 
+  padding-top: 16px;
+  padding-bottom: 0;
   text-align: center;
 }
 
@@ -635,6 +655,7 @@ input[type="number"] {
   font-weight: 600;
   margin: 0 0 8px 0;
   color: #333;
+  padding-top: 32px;
 }
 
 .form-subtitle {
