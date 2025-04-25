@@ -375,7 +375,6 @@
 .monthly-details-chart {
   height: var(--chart-height) !important;
   max-height: var(--chart-height) !important;
-  margin-top: var(--space-lg);
 }
 
 .monthly-view .chart-wrapper {
