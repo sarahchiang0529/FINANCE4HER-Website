@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef } from "react"
 import { Pie } from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend } from "chart.js"
@@ -13,20 +15,30 @@ Object.keys(ChartJS.registry.plugins.items || {}).forEach((key) => {
   }
 })
 
+// Define consistent colors for each category
+const CATEGORY_COLORS = {
+  // Income categories
+  Salary: "rgba(52, 144, 220, 0.9)", // Blue
+  "Government Benefit": "rgba(106, 90, 205, 0.9)", // Slate Blue
+  Investments: "rgba(46, 204, 113, 0.9)", // Green
+  Other: "rgba(156, 39, 176, 0.9)", // Purple
+
+  // Expense categories
+  Housing: "rgba(231, 76, 60, 0.9)", // Red
+  Food: "rgba(255, 152, 0, 0.9)", // Orange
+  Transportation: "rgba(255, 193, 7, 0.9)", // Amber
+  Utilities: "rgba(3, 169, 244, 0.9)", // Light Blue
+  Entertainment: "rgba(233, 30, 99, 0.9)", // Pink
+  Healthcare: "rgba(0, 150, 136, 0.9)", // Teal
+  Education: "rgba(103, 58, 183, 0.9)", // Deep Purple
+  Personal: "rgba(121, 85, 72, 0.9)", // Brown
+  Debt: "rgba(244, 67, 54, 0.9)", // Red
+  Savings: "rgba(76, 175, 80, 0.9)", // Green
+}
+
 const ChartComponent = ({ data, type, chartId = "income-distribution-chart" }) => {
   const chartRef = useRef(null)
   const containerRef = useRef(null)
-
-  // Define colors as an array
-  const colors = [
-    "rgba(77, 192, 181, 1)", // teal
-    "rgba(52, 144, 220, 1)", // blue
-    "rgba(246, 173, 85, 1)", // yellow/orange  192, 181, 1)", // teal
-    "rgba(52, 144, 220, 1)", // blue
-    "rgba(246, 173, 85, 1)", // yellow/orange
-    "rgba(159, 122, 234, 1)", // purple
-    "rgba(245, 101, 101, 1)", // red/orange
-  ]
 
   // Group data
   const groupedData = data
@@ -47,8 +59,11 @@ const ChartComponent = ({ data, type, chartId = "income-distribution-chart" }) =
   const chartLabel = type === "income" ? "Income" : "Expenses"
   const totalLabel = type === "income" ? "Total Income" : "Total Expenses"
 
-  // Assign colors to categories (sequentially from the array)
-  const backgroundColors = groupedData.map((_, index) => colors[index % colors.length])
+  // Assign consistent colors to categories
+  const backgroundColors = groupedData.map((item) => {
+    // Use predefined color if available, otherwise use a fallback color
+    return CATEGORY_COLORS[item.category] || "rgba(156, 156, 156, 0.9)" // Gray fallback color
+  })
 
   // Chart data
   const chartData = {
@@ -91,7 +106,8 @@ const ChartComponent = ({ data, type, chartId = "income-distribution-chart" }) =
           label: (ctx) => {
             const label = ctx.label || ""
             const value = ctx.raw || 0
-            return `${label}: $${value.toFixed(2)}`
+            const percentage = ((value / totalValue) * 100).toFixed(1)
+            return `${label}: $${value.toFixed(2)} (${percentage}%)`
           },
         },
       },

@@ -10,26 +10,38 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 
 // Unregister any existing plugins with IDs that might contain "centerText"
 // This ensures we don't have any leftover plugins from previous implementations
-Object.keys(ChartJS.registry.plugins.items).forEach(key => {
-  if (key.toLowerCase().includes('centertext') || key.toLowerCase().includes('monthlytext')) {
+Object.keys(ChartJS.registry.plugins.items).forEach((key) => {
+  if (key.toLowerCase().includes("centertext") || key.toLowerCase().includes("monthlytext")) {
     ChartJS.unregister(ChartJS.registry.plugins.items[key])
   }
 })
+
+// Define consistent colors for each category - same as in ChartComponent
+const CATEGORY_COLORS = {
+  // Income categories
+  Salary: "rgba(52, 144, 220, 0.9)", // Blue
+  "Government Benefit": "rgba(106, 90, 205, 0.9)", // Slate Blue
+  Investments: "rgba(46, 204, 113, 0.9)", // Green
+  Other: "rgba(156, 39, 176, 0.9)", // Purple
+
+  // Expense categories
+  Housing: "rgba(231, 76, 60, 0.9)", // Red
+  Food: "rgba(255, 152, 0, 0.9)", // Orange
+  Transportation: "rgba(255, 193, 7, 0.9)", // Amber
+  Utilities: "rgba(3, 169, 244, 0.9)", // Light Blue
+  Entertainment: "rgba(233, 30, 99, 0.9)", // Pink
+  Healthcare: "rgba(0, 150, 136, 0.9)", // Teal
+  Education: "rgba(103, 58, 183, 0.9)", // Deep Purple
+  Personal: "rgba(121, 85, 72, 0.9)", // Brown
+  Debt: "rgba(244, 67, 54, 0.9)", // Red
+  Savings: "rgba(76, 175, 80, 0.9)", // Green
+}
 
 const MonthlyChartComponent = ({ data, month }) => {
   const chartRef = useRef(null)
   const containerRef = useRef(null)
   // Store the month abbreviation in component state
   const [monthAbbr, setMonthAbbr] = useState("---")
-
-  // Define colors as an array
-  const colors = [
-    "rgba(77, 192, 181, 1)", // teal
-    "rgba(52, 144, 220, 1)", // blue
-    "rgba(246, 173, 85, 1)", // yellow/orange
-    "rgba(159, 122, 234, 1)", // purple
-    "rgba(245, 101, 101, 1)", // red/orange
-  ]
 
   // Calculate month abbreviation on mount and when month changes
   useEffect(() => {
@@ -55,8 +67,14 @@ const MonthlyChartComponent = ({ data, month }) => {
       }, [])
     : []
 
-  // Assign colors to categories (sequentially from the array)
-  const backgroundColors = groupedData.map((_, index) => colors[index % colors.length])
+  // Calculate total for percentage in tooltip
+  const totalValue = groupedData.reduce((acc, item) => acc + item.value, 0)
+
+  // Assign consistent colors to categories - same logic as in ChartComponent
+  const backgroundColors = groupedData.map((item) => {
+    // Use predefined color if available, otherwise use a fallback color
+    return CATEGORY_COLORS[item.category] || "rgba(156, 156, 156, 0.9)" // Gray fallback color
+  })
 
   // Chart data
   const chartData = {
@@ -94,7 +112,8 @@ const MonthlyChartComponent = ({ data, month }) => {
           label: (ctx) => {
             const label = ctx.label || ""
             const value = ctx.raw || 0
-            return `${label}: ${value.toFixed(2)}`
+            const percentage = ((value / totalValue) * 100).toFixed(1)
+            return `${label}: $${value.toFixed(2)} (${percentage}%)`
           },
         },
       },

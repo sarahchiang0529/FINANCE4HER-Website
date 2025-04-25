@@ -60,6 +60,32 @@
   font-family: "Inter", sans-serif;
 }
 
+/* Category color legend */
+.category-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.category-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.category-color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.category-name {
+  font-size: 12px;
+  color: #666;
+}
+
 /* Media queries for responsive chart sizing */
 @media (max-width: 768px) {
   .chart-wrapper {

@@ -214,16 +214,51 @@ function Income() {
   }
 
   // Calculate totals for the current view
-  const currentViewTotal = filteredIncome.reduce((sum, item) => sum + item.value, 0)
+  // Calculate totals based on the active view
+  const calculateTotals = () => {
+    if (activeView === "monthly") {
+      // For Monthly Summary view, calculate all-time totals from all income entries
+      const allTimeTotals = income.reduce(
+        (acc, item) => {
+          acc.total += item.value
 
-  // Calculate category totals for the summary cards
-  const categoryTotals = filteredIncome.reduce((acc, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = 0
+          if (!acc.categories[item.category]) {
+            acc.categories[item.category] = 0
+          }
+          acc.categories[item.category] += item.value
+
+          return acc
+        },
+        { total: 0, categories: {} },
+      )
+
+      return {
+        total: allTimeTotals.total,
+        categories: allTimeTotals.categories,
+      }
+    } else {
+      // For Transactions view, use the filtered income (by selected month)
+      const monthlyTotal = filteredIncome.reduce((sum, item) => sum + item.value, 0)
+
+      const categoryTotals = filteredIncome.reduce((acc, item) => {
+        if (!acc[item.category]) {
+          acc[item.category] = 0
+        }
+        acc[item.category] += item.value
+        return acc
+      }, {})
+
+      return {
+        total: monthlyTotal,
+        categories: categoryTotals,
+      }
     }
-    acc[item.category] += item.value
-    return acc
-  }, {})
+  }
+
+  // Get the appropriate totals based on the active view
+  const viewTotals = calculateTotals()
+  const currentViewTotal = viewTotals.total
+  const categoryTotals = viewTotals.categories
 
   // Add this function to handle month selection
   const monthlyDetailsRef = useRef(null)
@@ -247,6 +282,22 @@ function Income() {
 
   // Check if there's any income data
   const hasIncomeData = income.length > 0
+
+  // Add this function to the Income.js file to display the category colors in the UI
+  // This should be added inside the Income component, before the return statement
+
+  const getCategoryColor = (category) => {
+    // Use the same color mapping as in ChartComponent
+    const CATEGORY_COLORS = {
+      // Income categories
+      Salary: "rgba(52, 144, 220, 0.9)", // Blue
+      "Government Benefit": "rgba(106, 90, 205, 0.9)", // Slate Blue
+      Investments: "rgba(46, 204, 113, 0.9)", // Green
+      Other: "rgba(156, 39, 176, 0.9)", // Purple
+    }
+
+    return CATEGORY_COLORS[category] || "rgba(77, 192, 181, 0.9)" // Default to teal
+  }
 
   return (
     <div className="income-container">
@@ -428,47 +479,66 @@ function Income() {
           {/* Summary Cards */}
           <div className="summary-cards">
             <div className="summary-card">
-              <div className="summary-icon total-icon">💰</div>
               <div className="summary-content">
+                <div className="summary-icon-wrapper total-icon">
+                  <div className="summary-icon">💰</div>
+                </div>
                 <h3 className="summary-title">Total Income</h3>
                 <p className="summary-value">${currentViewTotal.toFixed(2)}</p>
                 <p className="summary-period">
-                  {activeView === "transactions" ? formatMonthYear(selectedMonth) : "All Time"}
+                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
                 </p>
               </div>
             </div>
 
             <div className="summary-card">
-              <div className="summary-icon salary-icon">💼</div>
               <div className="summary-content">
+                <div className="summary-icon-wrapper salary-icon">
+                  <div className="summary-icon">💼</div>
+                </div>
                 <h3 className="summary-title">Salary</h3>
                 <p className="summary-value">${(categoryTotals["Salary"] || 0).toFixed(2)}</p>
                 <p className="summary-period">
-                  {activeView === "transactions" ? formatMonthYear(selectedMonth) : "All Time"}
+                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
                 </p>
               </div>
             </div>
 
             <div className="summary-card">
-              <div className="summary-icon investments-icon">📈</div>
               <div className="summary-content">
+                <div className="summary-icon-wrapper investments-icon">
+                  <div className="summary-icon">📈</div>
+                </div>
                 <h3 className="summary-title">Investments</h3>
                 <p className="summary-value">${(categoryTotals["Investments"] || 0).toFixed(2)}</p>
                 <p className="summary-period">
-                  {activeView === "transactions" ? formatMonthYear(selectedMonth) : "All Time"}
+                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
                 </p>
               </div>
             </div>
 
             <div className="summary-card">
-              <div className="summary-icon other-icon">🏛️</div>
               <div className="summary-content">
-                <h3 className="summary-title">Other Sources</h3>
-                <p className="summary-value">
-                  ${((categoryTotals["Government Benefit"] || 0) + (categoryTotals["Other"] || 0)).toFixed(2)}
-                </p>
+                <div className="summary-icon-wrapper government-icon">
+                  <div className="summary-icon">🏛️</div>
+                </div>
+                <h3 className="summary-title">Government Benefit</h3>
+                <p className="summary-value">${(categoryTotals["Government Benefit"] || 0).toFixed(2)}</p>
                 <p className="summary-period">
-                  {activeView === "transactions" ? formatMonthYear(selectedMonth) : "All Time"}
+                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
+                </p>
+              </div>
+            </div>
+
+            <div className="summary-card">
+              <div className="summary-content">
+                <div className="summary-icon-wrapper other-icon">
+                  <div className="summary-icon">💵</div>
+                </div>
+                <h3 className="summary-title">Other</h3>
+                <p className="summary-value">${(categoryTotals["Other"] || 0).toFixed(2)}</p>
+                <p className="summary-period">
+                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
                 </p>
               </div>
             </div>
