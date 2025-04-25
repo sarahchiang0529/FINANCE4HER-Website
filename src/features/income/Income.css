@@ -29,6 +29,33 @@
   flex-direction: column;
 }
 
+/* Chart specific styles to prevent expansion */
+.income-card .chart-wrapper {
+  height: 400px !important; /* Fixed height */
+  min-height: 400px !important; /* Ensure minimum height is the same */
+  max-height: 400px !important; /* Add maximum height constraint */
+  width: 100%;
+  margin: 16px 0 0 0; /* Reduce margin to match the income list spacing */
+  padding: 0;
+  overflow: hidden; /* Prevent content overflow */
+}
+
+/* Override any conflicting styles */
+.income-card .chart-container {
+  height: 100% !important; /* Force height to 100% of parent */
+  max-height: 400px !important; /* Match the wrapper max-height */
+  width: 100%;
+}
+
+/* Chart container wrapper for better centering */
+.chart-container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100%;
+}
+
 /* Card title and description */
 .card-title {
   font-size: 24px;
@@ -40,7 +67,7 @@
 .card-description {
   font-size: 16px;
   color: #666;
-  margin: 8px 0 24px 0;
+  margin: 8px 0 8px 0; /* Reduced from 16px to 8px */
 }
 
 /* Form */
@@ -72,11 +99,71 @@
   color: #000;
 }
 
+/* Input with icon styles */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+  border-color: #a94caf;
+  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  font-size: 16px;
+  color: #666;
+  background-color: #f0f0f0;
+  border-right: 1px solid #e0e0e0;
+}
+
+.input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  padding-left: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+}
+
+.input-field input:not(.input-with-icon input),
+.input-field select {
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.input-field input:focus:not(.input-with-icon input),
+.input-field select:focus {
+  outline: none;
+  border-color: #a94caf;
+  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+}
+
 /* Grid */
 .income-grid {
   display: grid;
   gap: 24px;
   grid-template-columns: 1fr;
+  margin-top: 24px;
 }
 @media (min-width: 768px) {
   .income-grid {
@@ -86,21 +173,26 @@
   .income-grid .income-card {
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 }
 
 /* Log List */
 .income-list {
-  height: 370px;
+  height: 400px !important; /* Match the chart height */
+  max-height: 400px !important;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  padding: 0;
+  margin: 0;
 }
 .income-item {
   display: flex;
   justify-content: space-between;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
+  margin: 0;
 }
 .income-info {
   display: flex;
@@ -135,4 +227,671 @@
 .income-date {
   font-size: 12px;
   color: #666;
+}
+
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 48px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: #9ca3af;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 40px;
+}
+
+.btn-secondary:hover {
+  background: #6b7280;
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+/* Form titles */
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.form-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+/* View selector */
+.view-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.view-tabs {
+  display: flex;
+  gap: 16px;
+}
+
+.view-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  background-color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #8a4baf;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.view-tab:hover {
+  background-color: #f3e6fb;
+}
+
+.view-tab.active {
+  background-color: #e2c6ff;
+}
+
+.view-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #8a4baf;
+  color: #8a4baf;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background: #f3e6fb;
+}
+
+/* Month selector */
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.selected-month {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.month-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-nav-button:hover {
+  background: #f3e6fb;
+  border-color: #8a4baf;
+}
+
+/* Filters */
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.filter-group select,
+.filter-group input {
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+.date-range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-range-inputs span {
+  color: #666;
+}
+
+/* Summary cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+@media (min-width: 640px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .summary-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.summary-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.total-icon {
+  background-color: #f0e6fb;
+  color: #8a4baf;
+}
+
+.salary-icon {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.investments-icon {
+  background-color: #ffedd5;
+  color: #ea580c;
+}
+
+.other-icon {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin: 0 0 4px 0;
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.summary-period {
+  font-size: 12px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+/* Update the monthly chart styles to make them smaller and cleaner */
+
+/* Monthly view */
+.monthly-view {
+  margin-top: 24px;
+}
+
+/* Fix the year section title and layout */
+.year-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  color: #333;
+  text-align: center;
+  width: 100%;
+}
+
+/* Make the monthly chart container smaller */
+.monthly-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  justify-content: flex-start; /* Change from center to flex-start */
+}
+
+/* Center single month chart */
+.monthly-single-chart-container {
+  display: flex;
+  justify-content: flex-start; /* Change from center to flex-start to align left */
+  align-items: center;
+  width: 100%;
+  max-width: 100%; /* Change from 180px to 100% to allow full width */
+  margin: 0; /* Remove auto margin */
+}
+
+.single-month {
+  max-width: 180px;
+}
+
+/* Make the chart card smaller and cleaner */
+.month-chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 160px; /* Set a fixed width */
+  max-width: 160px; /* Ensure maximum width */
+  flex: 0 0 auto; /* Don't allow flex to resize */
+}
+
+.month-chart {
+  width: 100%;
+  height: 120px; /* Adjusted height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px; /* Reduced margin */
+}
+
+/* Reduce the chart wrapper height */
+.month-chart .chart-wrapper {
+  height: 120px !important; /* Match the height of month-chart */
+  min-height: 120px !important;
+  max-height: 120px !important;
+}
+
+/* Monthly chart component specific styles */
+.monthly-chart-wrapper {
+  height: 120px !important; /* Match the height of month-chart */
+  min-height: 120px !important;
+  max-height: 120px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Style the month total to be more prominent and ensure it's not covered */
+.month-total {
+  font-size: 16px; /* Slightly smaller font */
+  font-weight: 700;
+  color: #65328f;
+  margin-top: 4px; /* Reduced margin */
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .month-chart-card {
+    width: 160px;
+    max-width: 160px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .month-chart-card {
+    width: 160px;
+    max-width: 160px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .month-chart-card {
+    width: 160px;
+    max-width: 160px;
+    flex: 0 0 auto;
+  }
+}
+
+/* Monthly details section */
+.monthly-details-section {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-top: 24px;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add these styles for the monthly details section */
+.monthly-details-content {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.monthly-details-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.details-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f9f0ff;
+  border-radius: 8px;
+}
+
+.details-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.details-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #65328f;
+}
+
+.details-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.details-category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.details-category-item:hover {
+  background-color: #f0e6ff;
+}
+
+.monthly-details-chart {
+  height: 400px !important;
+  max-height: 400px !important;
+  margin-top: 24px;
+}
+
+/* Ensure the monthly bar chart has proper constraints */
+.monthly-view .chart-wrapper {
+  height: 400px !important;
+  max-height: 400px !important;
+  width: 100%;
+  margin: 0;
+}
+
+/* Fix for the chart container in the monthly view */
+.monthly-view .chart-container {
+  height: 100% !important;
+  max-height: 400px !important;
+}
+
+/* No data message */
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Empty state styles */
+.empty-state-card {
+  background: white;
+  border-radius: 12px;
+  padding: 48px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-top: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.empty-state-message {
+  font-size: 16px;
+  color: #666;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .view-selector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .view-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.monthly-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  justify-content: flex-start; /* Change from center to flex-start */
+}
+
+/* Fix the month chart card sizing */
+.month-chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 160px; /* Set a fixed width */
+  max-width: 160px; /* Ensure maximum width */
+  flex: 0 0 auto; /* Don't allow flex to resize */
+}
+
+/* Fix the chart container height */
+.month-chart {
+  width: 100%;
+  height: 120px; /* Adjusted height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px; /* Reduced margin */
+}
+
+/* Fix the monthly chart wrapper height */
+.monthly-chart-wrapper {
+  height: 120px !important; /* Match the height of month-chart */
+  min-height: 120px !important;
+  max-height: 120px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure the chart container respects the height */
+.month-chart .chart-wrapper {
+  height: 120px !important; /* Match the height of month-chart */
+  min-height: 120px !important;
+  max-height: 120px !important;
+}
+
+/* Style the month total to be more visible */
+.month-total {
+  font-size: 16px; /* Slightly smaller font */
+  font-weight: 700;
+  color: #65328f;
+  margin-top: 4px; /* Reduced margin */
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+/* Fix the single month container */
+.monthly-single-chart-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.single-month {
+  width: 160px; /* Match the width of month-chart-card */
+  max-width: 160px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .month-chart-card {
+    width: 160px;
+    max-width: 160px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .month-chart-card {
+    width: 160px;
+    max-width: 160px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .month-chart-card {
+    width: 160px;
+    max-width: 160px;
+    flex: 0 0 auto;
+  }
 }
