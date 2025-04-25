@@ -62,6 +62,7 @@
   font-weight: 600;
   margin: 0 0 var(--space-sm) 0;
   color: var(--color-text);
+  padding-top: var(--space-xl);
 }
 
 .form-subtitle {
@@ -70,17 +71,50 @@
   margin: 0 0 var(--space-lg) 0;
 }
 
-.card-title {
+/* Add a new class for consistent card padding */
+.card-title-section {
+  padding: 24px 0 16px;
+}
+
+/* Add these styles for the card header styling that matches the Dashboard */
+.card-header {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
+}
+
+/* Add a specific class for the Income/Expense headers */
+.finance-card-header {
+  padding: 32px 0 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Update the finance-card-header title and description to match the form title and subtitle */
+.finance-card-header .card-title {
   font-size: 24px;
   font-weight: 600;
   margin: 0;
   color: var(--color-text);
 }
 
-.card-description {
+.finance-card-header .card-description {
   font-size: 16px;
   color: var(--color-text-light);
-  margin: var(--space-sm) 0;
+  margin: 4px 0 0 0;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.card-description {
+  font-size: 14px;
+  color: var(--color-text-light);
+  margin: 4px 0 0 0;
 }
 
 /* Card styles */
@@ -88,9 +122,8 @@
 .expense-card {
   background: var(--color-bg);
   border-radius: var(--border-radius);
-  padding: var(--space-xl);
+  padding: 0 var(--space-xl) var(--space-xl);
   box-shadow: var(--shadow);
-  margin-top: var(--space-lg);
   display: flex;
   flex-direction: column;
 }
@@ -506,10 +539,12 @@
   text-align: center;
 }
 
+/* Add consistent padding to the section-title class */
 .section-title {
   font-size: 22px;
   font-weight: 600;
-  margin: 0 0 12px 0;
+  margin: 0;
+  padding: 24px 0 16px;
   color: var(--color-text);
   text-align: center;
   width: 100%;
@@ -518,7 +553,6 @@
 .section-subtitle {
   font-size: 15px;
   color: var(--color-text-light);
-  margin: 0;
   text-align: center;
 }
 
@@ -538,6 +572,7 @@
   width: 100%;
   max-width: 100%;
   margin: 0;
+  margin-bottom: var(--space-lg);
 }
 
 .single-month {
@@ -605,7 +640,7 @@
 
 .monthly-details-content {
   width: 100%;
-  margin-top: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 .monthly-details-summary {
@@ -634,7 +669,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: var(--space-md);
 }
 
 .details-category-item {
@@ -686,7 +720,6 @@
 .monthly-details-chart {
   height: var(--chart-height) !important;
   max-height: var(--chart-height) !important;
-  margin-top: var(--space-lg);
 }
 
 .monthly-view .chart-wrapper {

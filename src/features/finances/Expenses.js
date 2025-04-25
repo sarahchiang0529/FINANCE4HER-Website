@@ -416,8 +416,10 @@ function Expenses() {
           {activeView === "transactions" && (
             <div className="expenses-grid">
               <div className="expense-card">
-                <h2 className="card-title">Expense Distribution</h2>
-                <p className="card-description">Breakdown of your spending</p>
+                <div className="finance-card-header">
+                  <h2 className="card-title">Expense Distribution</h2>
+                  <p className="card-description">Breakdown of your spending</p>
+                </div>
 
                 {chartData.length > 0 ? (
                   <div className="chart-container-wrapper">
@@ -430,9 +432,11 @@ function Expenses() {
                 )}
               </div>
 
-              <div className="expense-card" style={{ display: "flex", flexDirection: "column" }}>
-                <h2 className="card-title">Expense Transactions</h2>
-                <p className="card-description">Your expense transactions for {formatMonthYear(selectedMonth)}</p>
+              <div className="expense-card">
+                <div className="finance-card-header">
+                  <h2 className="card-title">Expense Transactions</h2>
+                  <p className="card-description">Your expense transactions for {formatMonthYear(selectedMonth)}</p>
+                </div>
 
                 {filteredExpenses.length > 0 ? (
                   <div className="expenses-list">

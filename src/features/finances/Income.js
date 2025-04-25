@@ -404,9 +404,12 @@ function Income() {
 
           {activeView === "transactions" && (
             <div className="income-grid">
+              {/* Update the padding for the income-card class to match other containers */}
               <div className="income-card">
-                <h2 className="card-title">Income Distribution</h2>
-                <p className="card-description">Breakdown of your income</p>
+                <div className="finance-card-header">
+                  <h2 className="card-title">Income Distribution</h2>
+                  <p className="card-description">Breakdown of your income</p>
+                </div>
 
                 {chartData.length > 0 ? (
                   <div className="chart-container-wrapper">
@@ -419,9 +422,11 @@ function Income() {
                 )}
               </div>
 
-              <div className="income-card" style={{ display: "flex", flexDirection: "column" }}>
-                <h2 className="card-title">Income Transactions</h2>
-                <p className="card-description">Your income transactions for {formatMonthYear(selectedMonth)}</p>
+              <div className="income-card">
+                <div className="finance-card-header">
+                  <h2 className="card-title">Income Transactions</h2>
+                  <p className="card-description">Your income transactions for {formatMonthYear(selectedMonth)}</p>
+                </div>
 
                 {filteredIncome.length > 0 ? (
                   <div className="income-list">
