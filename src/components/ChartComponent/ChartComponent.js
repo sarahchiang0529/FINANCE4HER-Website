@@ -5,7 +5,15 @@ import "./ChartComponent.css"
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend)
 
-const ChartComponent = ({ data, type }) => {
+// Unregister any existing plugins with IDs that might contain "centerText"
+// This ensures we don't have any leftover plugins from previous implementations
+Object.keys(ChartJS.registry.plugins.items || {}).forEach((key) => {
+  if (key.toLowerCase().includes("centertext") || key.toLowerCase().includes("monthlytext")) {
+    ChartJS.unregister(ChartJS.registry.plugins.items[key])
+  }
+})
+
+const ChartComponent = ({ data, type, chartId = "income-distribution-chart" }) => {
   const chartRef = useRef(null)
   const containerRef = useRef(null)
 
@@ -13,58 +21,31 @@ const ChartComponent = ({ data, type }) => {
   const colors = [
     "rgba(77, 192, 181, 1)", // teal
     "rgba(52, 144, 220, 1)", // blue
+    "rgba(246, 173, 85, 1)", // yellow/orange  192, 181, 1)", // teal
+    "rgba(52, 144, 220, 1)", // blue
     "rgba(246, 173, 85, 1)", // yellow/orange
     "rgba(159, 122, 234, 1)", // purple
     "rgba(245, 101, 101, 1)", // red/orange
   ]
 
   // Group data
-  const groupedData = data.reduce((acc, item) => {
-    const existingCategory = acc.find((g) => g.category === item.category)
-    if (existingCategory) {
-      existingCategory.value += item.value
-    } else {
-      acc.push({ category: item.category, value: item.value })
-    }
-    return acc
-  }, [])
+  const groupedData = data
+    ? data.reduce((acc, item) => {
+        const existingCategory = acc.find((g) => g.category === item.category)
+        if (existingCategory) {
+          existingCategory.value += item.value
+        } else {
+          acc.push({ category: item.category, value: item.value })
+        }
+        return acc
+      }, [])
+    : []
 
   const totalValue = groupedData.reduce((acc, item) => acc + item.value, 0)
 
   // Labels
   const chartLabel = type === "income" ? "Income" : "Expenses"
   const totalLabel = type === "income" ? "Total Income" : "Total Expenses"
-
-  // Center text plugin
-  const centerTextPlugin = {
-    id: "centerText",
-    beforeDraw: (chart) => {
-      const { width, height, ctx } = chart
-      ctx.restore()
-      const centerY = height / 2
-
-      // Title
-      ctx.font = "14px Inter, sans-serif"
-      ctx.textAlign = "center"
-      ctx.textBaseline = "middle"
-      ctx.fillStyle = "#666"
-      ctx.fillText(totalLabel, width / 2, centerY - 20)
-
-      // Amount
-      ctx.font = "bold 28px Inter, sans-serif"
-      ctx.fillStyle = "#333"
-      ctx.fillText(`$${totalValue.toFixed(2)}`, width / 2, centerY + 10)
-      ctx.save()
-    },
-  }
-
-  // Unregister existing plugin
-  const existingPlugin = ChartJS.registry.plugins.get("centerText")
-  if (existingPlugin) {
-    ChartJS.unregister(existingPlugin)
-  }
-  // Register new plugin
-  ChartJS.register(centerTextPlugin)
 
   // Assign colors to categories (sequentially from the array)
   const backgroundColors = groupedData.map((_, index) => colors[index % colors.length])
@@ -86,7 +67,7 @@ const ChartComponent = ({ data, type }) => {
   // Chart options
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: false, // This is important to respect the container size
     layout: {
       padding: 0,
     },
@@ -114,6 +95,10 @@ const ChartComponent = ({ data, type }) => {
           },
         },
       },
+      // Explicitly disable any custom plugins
+      centerText: false,
+      monthlyChartCenterText: false,
+      doughnutLabel: false,
     },
     cutout: "70%", // Donut hole size
   }
@@ -139,7 +124,12 @@ const ChartComponent = ({ data, type }) => {
   return (
     <div className="chart-wrapper" ref={containerRef}>
       <div className="chart-container">
-        <Pie ref={chartRef} data={chartData} options={options} />
+        <Pie ref={chartRef} data={chartData} options={options} id={chartId} />
+        {/* Add center text as DOM element instead of plugin */}
+        <div className="chart-center-text">
+          <div className="chart-center-label">{totalLabel}</div>
+          <div className="chart-center-value">${totalValue.toFixed(2)}</div>
+        </div>
       </div>
     </div>
   )

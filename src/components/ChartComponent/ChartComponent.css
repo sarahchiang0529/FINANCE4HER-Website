@@ -1,42 +1,94 @@
 /* Chart wrapper */
 .chart-wrapper {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-    position: relative;
-    width: 100%;
-    margin: 24px auto;
-    padding: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px !important; /* Fixed height */
+  min-height: 400px !important; /* Consistent min-height */
+  max-height: 400px !important; /* Add max-height to prevent expansion */
+  position: relative;
+  width: 100%;
+  margin: 24px auto;
+  padding: 0;
+  overflow: hidden; /* Prevent content from overflowing */
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100% !important;
+  max-height: 400px !important; /* Match the wrapper max-height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure the chart canvas is responsive but respects height constraints */
+.chart-container canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Chart center text overlay */
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none; /* Allow clicks to pass through */
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.chart-center-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+  font-family: "Inter", sans-serif;
+}
+
+.chart-center-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  font-family: "Inter", sans-serif;
+}
+
+/* Media queries for responsive chart sizing */
+@media (max-width: 768px) {
+  .chart-wrapper {
+    height: 280px !important;
+    min-height: 280px !important;
+    max-height: 280px !important;
   }
-  
+
   .chart-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-height: 280px !important;
   }
-  
-  /* Ensure the chart canvas is responsive */
-  .chart-container canvas {
-    max-width: 100% !important;
-    max-height: 100% !important;
-    width: auto !important;
-    height: auto !important;
+
+  .chart-center-value {
+    font-size: 20px;
   }
-  
-  /* Media queries for responsive chart sizing */
-  @media (max-width: 768px) {
-    .chart-wrapper {
-      min-height: 280px;
-    }
+}
+
+@media (max-width: 480px) {
+  .chart-wrapper {
+    height: 260px !important;
+    min-height: 260px !important;
+    max-height: 260px !important;
   }
-  
-  @media (max-width: 480px) {
-    .chart-wrapper {
-      min-height: 260px;
-    }
-  }  
+
+  .chart-container {
+    max-height: 260px !important;
+  }
+
+  .chart-center-value {
+    font-size: 18px;
+  }
+}
