@@ -29,25 +29,23 @@
   flex-direction: column;
 }
 
-/* Chart specific styles to prevent expansion */
+/* Chart specific styles */
 .income-card .chart-wrapper {
-  height: 400px !important; /* Fixed height */
-  min-height: 400px !important; /* Ensure minimum height is the same */
-  max-height: 400px !important; /* Add maximum height constraint */
+  height: 400px !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
   width: 100%;
-  margin: 16px 0 0 0; /* Reduce margin to match the income list spacing */
+  margin: 16px 0 0 0;
   padding: 0;
-  overflow: hidden; /* Prevent content overflow */
+  overflow: hidden;
 }
 
-/* Override any conflicting styles */
 .income-card .chart-container {
-  height: 100% !important; /* Force height to 100% of parent */
-  max-height: 400px !important; /* Match the wrapper max-height */
+  height: 100% !important;
+  max-height: 400px !important;
   width: 100%;
 }
 
-/* Chart container wrapper for better centering */
 .chart-container-wrapper {
   display: flex;
   justify-content: center;
@@ -67,7 +65,7 @@
 .card-description {
   font-size: 16px;
   color: #666;
-  margin: 8px 0 8px 0; /* Reduced from 16px to 8px */
+  margin: 8px 0 8px 0;
 }
 
 /* Form */
@@ -158,11 +156,12 @@
   box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
 }
 
-/* Grid */
+/* Grid layout */
 .income-grid {
   display: grid;
   gap: 24px;
   grid-template-columns: 1fr;
+  margin-bottom: 24px;
 }
 @media (min-width: 768px) {
   .income-grid {
@@ -176,9 +175,9 @@
   }
 }
 
-/* Log List */
+/* Transaction list */
 .income-list {
-  height: 400px !important; /* Match the chart height */
+  height: 400px !important;
   max-height: 400px !important;
   overflow-y: auto;
   display: flex;
@@ -329,30 +328,6 @@
   background-color: #e2c6ff;
 }
 
-.view-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.action-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: transparent;
-  border: 1px solid #8a4baf;
-  color: #8a4baf;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.action-button:hover {
-  background: #f3e6fb;
-}
-
 /* Month selector */
 .month-selector {
   display: flex;
@@ -385,51 +360,6 @@
 .month-nav-button:hover {
   background: #f3e6fb;
   border-color: #8a4baf;
-}
-
-/* Filters */
-.filters-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  align-items: flex-end;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.filter-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-.filter-group select,
-.filter-group input {
-  height: 40px;
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #333;
-}
-
-.date-range-inputs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.date-range-inputs span {
-  color: #666;
 }
 
 /* Summary cards */
@@ -483,6 +413,7 @@
   font-size: 24px;
 }
 
+/* Category icon backgrounds */
 .total-icon {
   background-color: rgba(156, 39, 176, 0.15);
 }
@@ -523,14 +454,11 @@
   margin: 4px 0 0 0;
 }
 
-/* Update the monthly chart styles to make them smaller and cleaner */
-
 /* Monthly view */
 .monthly-view {
   margin-top: 24px;
 }
 
-/* Fix the year section title and layout */
 .year-section {
   background: white;
   border-radius: 12px;
@@ -543,38 +471,44 @@
 }
 
 .section-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
-  margin: 0 0 24px 0;
+  margin: 0 0 12px 0;
   color: #333;
   text-align: center;
   width: 100%;
 }
 
-/* Make the monthly chart container smaller */
+.section-subtitle {
+  font-size: 15px;
+  color: #666;
+  margin: 0;
+  text-align: center;
+}
+
+/* Monthly charts layout */
 .monthly-charts {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   width: 100%;
-  justify-content: flex-start; /* Change from center to flex-start */
+  justify-content: flex-start;
 }
 
-/* Center single month chart */
 .monthly-single-chart-container {
   display: flex;
-  justify-content: flex-start; /* Change from center to flex-start to align left */
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
-  max-width: 100%; /* Change from 180px to 100% to allow full width */
-  margin: 0; /* Remove auto margin */
+  max-width: 100%;
+  margin: 0;
 }
 
 .single-month {
   max-width: 180px;
 }
 
-/* Make the chart card smaller and cleaner */
+/* Month chart cards */
 .month-chart-card {
   background: white;
   border-radius: 12px;
@@ -585,98 +519,69 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 160px; /* Set a fixed width */
-  max-width: 160px; /* Ensure maximum width */
-  flex: 0 0 auto; /* Don't allow flex to resize */
+  width: 160px;
+  max-width: 160px;
+  flex: 0 0 auto;
 }
 
 .month-chart {
   width: 100%;
-  height: 120px; /* Adjusted height */
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8px; /* Reduced margin */
+  margin-bottom: 8px;
 }
 
-/* Reduce the chart wrapper height */
 .month-chart .chart-wrapper {
-  height: 120px !important; /* Match the height of month-chart */
+  height: 120px !important;
   min-height: 120px !important;
   max-height: 120px !important;
 }
 
-/* Monthly chart component specific styles */
 .monthly-chart-wrapper {
-  height: 120px !important; /* Match the height of month-chart */
+  height: 120px !important;
   min-height: 120px !important;
   max-height: 120px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-/* Style the month total to be more prominent and ensure it's not covered */
 .month-total {
-  font-size: 16px; /* Slightly smaller font */
+  font-size: 16px;
   font-weight: 700;
-  color: #65328f;
-  margin-top: 4px; /* Reduced margin */
+  color: #000;
+  margin-top: 4px;
   text-align: center;
   position: relative;
   z-index: 10;
   width: 100%;
 }
 
-/* Responsive adjustments */
-@media (min-width: 640px) {
-  .month-chart-card {
-    width: 160px;
-    max-width: 160px;
-    flex: 0 0 auto;
-  }
-}
-
-@media (min-width: 768px) {
-  .month-chart-card {
-    width: 160px;
-    max-width: 160px;
-    flex: 0 0 auto;
-  }
-}
-
-@media (min-width: 1024px) {
-  .month-chart-card {
-    width: 160px;
-    max-width: 160px;
-    flex: 0 0 auto;
-  }
-}
-
 /* Monthly details section */
 .monthly-details-section {
   background: white;
   border-radius: 12px;
-  padding: 32px;
+  padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-top: 24px;
   text-align: center;
-  min-height: 200px;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-/* Add these styles for the monthly details section */
 .monthly-details-content {
   width: 100%;
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .monthly-details-summary {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .details-total {
@@ -691,20 +596,19 @@
 .details-label {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #000;
 }
 
 .details-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: #65328f;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
 }
 
 .details-categories {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 16px;
 }
 
 .details-category-item {
@@ -717,17 +621,36 @@
   transition: all 0.2s ease;
 }
 
-.details-category-item:hover {
-  background-color: #f0e6ff;
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.category-amount {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
 }
 
 .monthly-details-chart {
   height: 400px !important;
   max-height: 400px !important;
-  margin-top: 24px;
 }
 
-/* Ensure the monthly bar chart has proper constraints */
 .monthly-view .chart-wrapper {
   height: 400px !important;
   max-height: 400px !important;
@@ -735,13 +658,12 @@
   margin: 0;
 }
 
-/* Fix for the chart container in the monthly view */
 .monthly-view .chart-container {
   height: 100% !important;
   max-height: 400px !important;
 }
 
-/* No data message */
+/* Empty states */
 .no-data-message {
   display: flex;
   align-items: center;
@@ -752,7 +674,6 @@
   text-align: center;
 }
 
-/* Empty state styles */
 .empty-state-card {
   background: white;
   border-radius: 12px;
@@ -785,6 +706,7 @@
   margin: 0 auto;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .input-row {
     flex-direction: column;
@@ -794,110 +716,5 @@
   .view-selector {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .view-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-
-.monthly-charts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  width: 100%;
-  justify-content: flex-start; /* Change from center to flex-start */
-}
-
-/* Fix the month chart card sizing */
-.month-chart-card {
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 160px; /* Set a fixed width */
-  max-width: 160px; /* Ensure maximum width */
-  flex: 0 0 auto; /* Don't allow flex to resize */
-}
-
-/* Fix the chart container height */
-.month-chart {
-  width: 100%;
-  height: 120px; /* Adjusted height */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 8px; /* Reduced margin */
-}
-
-/* Fix the monthly chart wrapper height */
-.monthly-chart-wrapper {
-  height: 120px !important; /* Match the height of month-chart */
-  min-height: 120px !important;
-  max-height: 120px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Ensure the chart container respects the height */
-.month-chart .chart-wrapper {
-  height: 120px !important; /* Match the height of month-chart */
-  min-height: 120px !important;
-  max-height: 120px !important;
-}
-
-/* Style the month total to be more visible */
-.month-total {
-  font-size: 16px; /* Slightly smaller font */
-  font-weight: 700;
-  color: #65328f;
-  margin-top: 4px; /* Reduced margin */
-  text-align: center;
-  position: relative;
-  z-index: 10;
-  width: 100%;
-}
-
-/* Fix the single month container */
-.monthly-single-chart-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-}
-
-.single-month {
-  width: 160px; /* Match the width of month-chart-card */
-  max-width: 160px;
-}
-
-/* Responsive adjustments */
-@media (min-width: 640px) {
-  .month-chart-card {
-    width: 160px;
-    max-width: 160px;
-    flex: 0 0 auto;
-  }
-}
-
-@media (min-width: 768px) {
-  .month-chart-card {
-    width: 160px;
-    max-width: 160px;
-    flex: 0 0 auto;
-  }
-}
-
-@media (min-width: 1024px) {
-  .month-chart-card {
-    width: 160px;
-    max-width: 160px;
-    flex: 0 0 auto;
   }
 }

@@ -1,33 +1,37 @@
-import { useState, useEffect, useRef } from "react"
-import { Plus, Calendar, BarChart3, Filter, Download, ChevronDown, ChevronUp } from "lucide-react"
+import { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
 import ChartComponent from "../../components/ChartComponent/ChartComponent"
 import MonthlyChartComponent from "../../components/MonthlyChartComponent/MonthlyChartComponent"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import "./Income.css"
 
-// Register required Chart.js components for bar chart
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Unregister any existing plugins with IDs that might contain "centerText"
-// This ensures we don't have any leftover plugins from previous implementations
 Object.keys(ChartJS.registry.plugins.items || {}).forEach((key) => {
   if (key.toLowerCase().includes("centertext") || key.toLowerCase().includes("monthlytext")) {
     ChartJS.unregister(ChartJS.registry.plugins.items[key])
   }
 })
 
+const CATEGORY_ICONS = {
+  Salary: "💼",
+  "Government Benefit": "🏛️",
+  Investments: "📈",
+  Other: "💰",
+  default: "💵",
+}
+
 function Income() {
   const [activeView, setActiveView] = useState("transactions")
   const [selectedMonth, setSelectedMonth] = useState(new Date())
-  const [showFilters, setShowFilters] = useState(false)
-  const [categoryFilter, setCategoryFilter] = useState("all")
   const [dateRange, setDateRange] = useState({
     start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
   })
 
-  // Start with an empty income array - no hardcoded data
   const [income, setIncome] = useState([])
+  const [monthlySummaries, setMonthlySummaries] = useState([])
+  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null)
 
   const [newIncome, setNewIncome] = useState({
     amount: "",
@@ -36,14 +40,15 @@ function Income() {
     date: new Date().toISOString().split("T")[0],
   })
 
-  // Calculate monthly summaries
-  const [monthlySummaries, setMonthlySummaries] = useState([])
+  const monthlyDetailsRef = useRef(null)
 
-  // Add this state for selected month details
-  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null)
-
+  // Generate monthly summaries from income data
   useEffect(() => {
-    // Group income by month and calculate totals
+    if (income.length === 0) {
+      setMonthlySummaries([])
+      return
+    }
+
     const summaries = income.reduce((acc, item) => {
       const date = new Date(item.date)
       const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
@@ -66,157 +71,30 @@ function Income() {
       return acc
     }, {})
 
-    // Convert to array and sort by date (newest first)
     const summariesArray = Object.values(summaries).sort((a, b) => b.month - a.month)
     setMonthlySummaries(summariesArray)
   }, [income])
 
-  // Filter income based on selected month and category
-  const filteredIncome = income
-    .filter((item) => {
-      const itemDate = new Date(item.date)
-      const inSelectedMonth = itemDate >= dateRange.start && itemDate <= dateRange.end
+  // Filter income by selected month
+  const filteredIncome = useMemo(() => {
+    return income
+      .filter((item) => {
+        const itemDate = new Date(item.date)
+        return itemDate >= dateRange.start && itemDate <= dateRange.end
+      })
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+  }, [income, dateRange])
 
-      const matchesCategory = categoryFilter === "all" || item.category === categoryFilter
-
-      return inSelectedMonth && matchesCategory
-    })
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-
-  // Prepare data for the chart component
-  const chartData = filteredIncome.map((item) => ({
-    category: item.category,
-    value: item.value,
-  }))
-
-  // Prepare data for monthly trend chart
-  const monthlyTrendData = {
-    labels: monthlySummaries
-      .slice(0, 6)
-      .reverse()
-      .map((summary) => summary.month.toLocaleDateString("en-US", { month: "short" })),
-    datasets: [
-      {
-        label: "Monthly Income",
-        data: monthlySummaries
-          .slice(0, 6)
-          .reverse()
-          .map((summary) => summary.total),
-        backgroundColor: "rgba(138, 75, 175, 0.7)",
-        borderColor: "#8a4baf",
-        borderWidth: 1,
-        borderRadius: 4,
-      },
-    ],
-  }
-
-  const monthlyChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: (value) => "$" + value,
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => `Income: $${context.raw.toFixed(2)}`,
-        },
-      },
-    },
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setNewIncome((prev) => ({
-      ...prev,
-      [name]: value,
+  const chartData = useMemo(() => {
+    return filteredIncome.map((item) => ({
+      category: item.category,
+      value: item.value,
     }))
-  }
+  }, [filteredIncome])
 
-  const handleAddIncome = () => {
-    const { amount, description, category, date } = newIncome
-    const numericAmount = Number.parseFloat(amount)
-
-    if (!amount || isNaN(numericAmount) || !category || !date || !description) {
-      alert("Please fill in all required fields.")
-      return
-    }
-
-    const newEntry = {
-      id: Date.now(), // Use timestamp as unique ID
-      category,
-      value: numericAmount,
-      description,
-      date,
-    }
-
-    setIncome((prev) => [newEntry, ...prev])
-
-    setNewIncome({
-      amount: "",
-      description: "",
-      category: "",
-      date: new Date().toISOString().split("T")[0],
-    })
-  }
-
-  const handleMonthChange = (direction) => {
-    const newMonth = new Date(selectedMonth)
-    if (direction === "prev") {
-      newMonth.setMonth(newMonth.getMonth() - 1)
-    } else {
-      newMonth.setMonth(newMonth.getMonth() + 1)
-    }
-    setSelectedMonth(newMonth)
-
-    // Update date range
-    setDateRange({
-      start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1),
-      end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0),
-    })
-  }
-
-  const getCategoryIcon = (category) => {
-    switch (category) {
-      case "Salary":
-        return "💼"
-      case "Government Benefit":
-        return "🏛️"
-      case "Investments":
-        return "📈"
-      case "Other":
-        return "💰"
-      default:
-        return "💵"
-    }
-  }
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
-
-  const formatMonthYear = (date) => {
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
-  }
-
-  // Calculate totals for the current view
-  // Calculate totals based on the active view
-  const calculateTotals = () => {
+  // Calculate totals based on active view
+  const { currentViewTotal, categoryTotals } = useMemo(() => {
     if (activeView === "monthly") {
-      // For Monthly Summary view, calculate all-time totals from all income entries
       const allTimeTotals = income.reduce(
         (acc, item) => {
           acc.total += item.value
@@ -232,14 +110,13 @@ function Income() {
       )
 
       return {
-        total: allTimeTotals.total,
-        categories: allTimeTotals.categories,
+        currentViewTotal: allTimeTotals.total,
+        categoryTotals: allTimeTotals.categories,
       }
     } else {
-      // For Transactions view, use the filtered income (by selected month)
       const monthlyTotal = filteredIncome.reduce((sum, item) => sum + item.value, 0)
 
-      const categoryTotals = filteredIncome.reduce((acc, item) => {
+      const catTotals = filteredIncome.reduce((acc, item) => {
         if (!acc[item.category]) {
           acc[item.category] = 0
         }
@@ -248,24 +125,71 @@ function Income() {
       }, {})
 
       return {
-        total: monthlyTotal,
-        categories: categoryTotals,
+        currentViewTotal: monthlyTotal,
+        categoryTotals: catTotals,
       }
     }
-  }
+  }, [activeView, income, filteredIncome])
 
-  // Get the appropriate totals based on the active view
-  const viewTotals = calculateTotals()
-  const currentViewTotal = viewTotals.total
-  const categoryTotals = viewTotals.categories
+  const handleInputChange = useCallback((e) => {
+    const { name, value } = e.target
+    setNewIncome((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }, [])
 
-  // Add this function to handle month selection
-  const monthlyDetailsRef = useRef(null)
+  // Add new income entry
+  const handleAddIncome = useCallback(() => {
+    const { amount, description, category, date } = newIncome
+    const numericAmount = Number.parseFloat(amount)
 
-  const handleMonthSelect = (summary) => {
+    if (!amount || isNaN(numericAmount) || !category || !date || !description) {
+      alert("Please fill in all required fields.")
+      return
+    }
+
+    const newEntry = {
+      id: Date.now(),
+      category,
+      value: numericAmount,
+      description,
+      date,
+    }
+
+    setIncome((prev) => [newEntry, ...prev])
+
+    setNewIncome({
+      amount: "",
+      description: "",
+      category: "",
+      date: new Date().toISOString().split("T")[0],
+    })
+  }, [newIncome])
+
+  // Navigate between months
+  const handleMonthChange = useCallback(
+    (direction) => {
+      const newMonth = new Date(selectedMonth)
+      if (direction === "prev") {
+        newMonth.setMonth(newMonth.getMonth() - 1)
+      } else {
+        newMonth.setMonth(newMonth.getMonth() + 1)
+      }
+      setSelectedMonth(newMonth)
+
+      setDateRange({
+        start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1),
+        end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0),
+      })
+    },
+    [selectedMonth],
+  )
+
+  // Select a month for detailed view
+  const handleMonthSelect = useCallback((summary) => {
     setSelectedMonthDetails(summary)
 
-    // Add a small delay to ensure the details section is rendered before scrolling
     setTimeout(() => {
       if (monthlyDetailsRef.current) {
         monthlyDetailsRef.current.scrollIntoView({
@@ -274,29 +198,26 @@ function Income() {
         })
       }
     }, 100)
-  }
+  }, [])
 
-  // Find the highest monthly income to use as the max value for gauge charts
-  const maxMonthlyIncome = Math.max(...monthlySummaries.map((summary) => summary.total), 1000)
+  const getCategoryIcon = useCallback((category) => {
+    return CATEGORY_ICONS[category] || CATEGORY_ICONS.default
+  }, [])
 
-  // Check if there's any income data
+  const formatDate = useCallback((dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }, [])
+
+  const formatMonthYear = useCallback((date) => {
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+  }, [])
+
   const hasIncomeData = income.length > 0
-
-  // Add this function to the Income.js file to display the category colors in the UI
-  // This should be added inside the Income component, before the return statement
-
-  const getCategoryColor = (category) => {
-    // Use the same color mapping as in ChartComponent
-    const CATEGORY_COLORS = {
-      // Income categories
-      Salary: "rgba(52, 144, 220, 0.9)", // Blue
-      "Government Benefit": "rgba(106, 90, 205, 0.9)", // Slate Blue
-      Investments: "rgba(46, 204, 113, 0.9)", // Green
-      Other: "rgba(156, 39, 176, 0.9)", // Purple
-    }
-
-    return CATEGORY_COLORS[category] || "rgba(77, 192, 181, 0.9)" // Default to teal
-  }
 
   return (
     <div className="income-container">
@@ -384,7 +305,6 @@ function Income() {
 
       {hasIncomeData && (
         <>
-          {/* View Selector */}
           <div className="view-selector">
             <div className="view-tabs">
               <button
@@ -402,67 +322,8 @@ function Income() {
                 Monthly Summary
               </button>
             </div>
-
-            <div className="view-actions">
-              <button className="action-button" onClick={() => setShowFilters(!showFilters)}>
-                <Filter size={16} />
-                Filter
-              </button>
-              <button className="action-button">
-                <Download size={16} />
-                Export
-              </button>
-            </div>
           </div>
 
-          {/* Filters */}
-          {showFilters && (
-            <div className="filters-container">
-              <div className="filter-group">
-                <label>Category</label>
-                <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
-                  <option value="all">All Categories</option>
-                  <option value="Salary">Salary</option>
-                  <option value="Government Benefit">Government Benefit</option>
-                  <option value="Investments">Investments</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div className="filter-group">
-                <label>Date Range</label>
-                <div className="date-range-inputs">
-                  <input
-                    type="date"
-                    value={dateRange.start.toISOString().split("T")[0]}
-                    onChange={(e) => setDateRange({ ...dateRange, start: new Date(e.target.value) })}
-                  />
-                  <span>to</span>
-                  <input
-                    type="date"
-                    value={dateRange.end.toISOString().split("T")[0]}
-                    onChange={(e) => setDateRange({ ...dateRange, end: new Date(e.target.value) })}
-                  />
-                </div>
-              </div>
-
-              <button
-                className="btn-secondary"
-                onClick={() => {
-                  setCategoryFilter("all")
-                  const currentMonth = new Date()
-                  setDateRange({
-                    start: new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1),
-                    end: new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0),
-                  })
-                }}
-              >
-                Reset Filters
-              </button>
-            </div>
-          )}
-
-          {/* Month Selector (only for transactions view) */}
           {activeView === "transactions" && (
             <div className="month-selector">
               <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
@@ -475,7 +336,6 @@ function Income() {
             </div>
           )}
 
-          {/* Summary Cards */}
           <div className="summary-cards">
             <div className="summary-card">
               <div className="summary-content">
@@ -490,60 +350,22 @@ function Income() {
               </div>
             </div>
 
-            <div className="summary-card">
-              <div className="summary-content">
-                <div className="summary-icon-wrapper salary-icon">
-                  <div className="summary-icon">💼</div>
+            {["Salary", "Investments", "Government Benefit", "Other"].map((category) => (
+              <div className="summary-card" key={category}>
+                <div className="summary-content">
+                  <div className={`summary-icon-wrapper ${category.toLowerCase().replace(" ", "-")}-icon`}>
+                    <div className="summary-icon">{getCategoryIcon(category)}</div>
+                  </div>
+                  <h3 className="summary-title">{category}</h3>
+                  <p className="summary-value">${(categoryTotals[category] || 0).toFixed(2)}</p>
+                  <p className="summary-period">
+                    {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
+                  </p>
                 </div>
-                <h3 className="summary-title">Salary</h3>
-                <p className="summary-value">${(categoryTotals["Salary"] || 0).toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
-                </p>
               </div>
-            </div>
-
-            <div className="summary-card">
-              <div className="summary-content">
-                <div className="summary-icon-wrapper investments-icon">
-                  <div className="summary-icon">📈</div>
-                </div>
-                <h3 className="summary-title">Investments</h3>
-                <p className="summary-value">${(categoryTotals["Investments"] || 0).toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
-                </p>
-              </div>
-            </div>
-
-            <div className="summary-card">
-              <div className="summary-content">
-                <div className="summary-icon-wrapper government-icon">
-                  <div className="summary-icon">🏛️</div>
-                </div>
-                <h3 className="summary-title">Government Benefit</h3>
-                <p className="summary-value">${(categoryTotals["Government Benefit"] || 0).toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
-                </p>
-              </div>
-            </div>
-
-            <div className="summary-card">
-              <div className="summary-content">
-                <div className="summary-icon-wrapper other-icon">
-                  <div className="summary-icon">💵</div>
-                </div>
-                <h3 className="summary-title">Other</h3>
-                <p className="summary-value">${(categoryTotals["Other"] || 0).toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All Time" : formatMonthYear(selectedMonth)}
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Transactions View */}
           {activeView === "transactions" && (
             <div className="income-grid">
               <div className="income-card">
@@ -592,25 +414,22 @@ function Income() {
             </div>
           )}
 
-          {/* Monthly Summary View */}
           {activeView === "monthly" && (
             <div className="monthly-view">
               {monthlySummaries.length > 0 ? (
                 <>
-                  {/* Group monthly summaries by year */}
-                  {Array.from(new Set(monthlySummaries.map((summary) => summary.month.getFullYear()))).map((year) => (
-                    <div key={year} className="year-section">
-                      <h2 className="section-title">{year} Monthly Income</h2>
+                  {Array.from(new Set(monthlySummaries.map((summary) => summary.month.getFullYear()))).map((year) => {
+                    const yearSummaries = monthlySummaries.filter((summary) => summary.month.getFullYear() === year)
+                    const isSingleMonth = yearSummaries.length === 1
 
-                      {/* If there's only one month, center it in the card */}
-                      {monthlySummaries.filter((summary) => summary.month.getFullYear() === year).length === 1 ? (
-                        <div className="monthly-single-chart-container">
-                          {monthlySummaries
-                            .filter((summary) => summary.month.getFullYear() === year)
-                            .map((summary, index) => {
-                              // Create a new Date object for each month to ensure it's properly isolated
+                    return (
+                      <div key={year} className="year-section">
+                        <h2 className="section-title">{year} Monthly Income</h2>
+
+                        {isSingleMonth ? (
+                          <div className="monthly-single-chart-container">
+                            {yearSummaries.map((summary, index) => {
                               const monthDate = new Date(summary.month.getTime())
-
                               return (
                                 <div
                                   key={index}
@@ -630,41 +449,38 @@ function Income() {
                                 </div>
                               )
                             })}
-                        </div>
-                      ) : (
-                        <div className="monthly-charts">
-                          {monthlySummaries
-                            .filter((summary) => summary.month.getFullYear() === year)
-                            .sort((a, b) => a.month - b.month) // Changed from b.month - a.month to a.month - b.month
-                            .map((summary, index) => {
-                              // Create a new Date object for each month to ensure it's properly isolated
-                              const monthDate = new Date(summary.month.getTime())
-
-                              return (
-                                <div
-                                  key={index}
-                                  className="month-chart-card"
-                                  onClick={() => handleMonthSelect(summary)}
-                                >
-                                  <div className="month-chart">
-                                    <MonthlyChartComponent
-                                      data={Object.entries(summary.categories).map(([category, value]) => ({
-                                        category,
-                                        value,
-                                      }))}
-                                      month={monthDate}
-                                    />
+                          </div>
+                        ) : (
+                          <div className="monthly-charts">
+                            {yearSummaries
+                              .sort((a, b) => a.month - b.month)
+                              .map((summary, index) => {
+                                const monthDate = new Date(summary.month.getTime())
+                                return (
+                                  <div
+                                    key={index}
+                                    className="month-chart-card"
+                                    onClick={() => handleMonthSelect(summary)}
+                                  >
+                                    <div className="month-chart">
+                                      <MonthlyChartComponent
+                                        data={Object.entries(summary.categories).map(([category, value]) => ({
+                                          category,
+                                          value,
+                                        }))}
+                                        month={monthDate}
+                                      />
+                                    </div>
+                                    <div className="month-total">${summary.total.toFixed(2)}</div>
                                   </div>
-                                  <div className="month-total">${summary.total.toFixed(2)}</div>
-                                </div>
-                              )
-                            })}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                                )
+                              })}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
 
-                  {/* Monthly Details Section */}
                   <div className="monthly-details-section" ref={monthlyDetailsRef}>
                     {selectedMonthDetails ? (
                       <>
@@ -699,7 +515,7 @@ function Income() {
                                   value,
                                 }))}
                                 type="income"
-                                chartId="monthly-details-chart" // Add this prop
+                                chartId={`monthly-details-chart-${selectedMonthDetails.month.getTime()}`}
                               />
                             </div>
                           </div>
