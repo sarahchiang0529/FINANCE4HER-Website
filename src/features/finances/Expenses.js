@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
-import ChartComponent from "../../components/Charts/ChartComponent";
-import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent";
+import ChartComponent from "../../components/Charts/ChartComponent"
+import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
 import "./Finances.css"
 
 // Register required Chart.js components for bar chart visualization
@@ -394,7 +394,9 @@ function Expenses() {
                 </div>
                 <h3 className="summary-title">Total Expenses</h3>
                 <p className="summary-value">${currentViewTotal.toFixed(2)}</p>
-                <p className="summary-period">{formatMonthYear(selectedMonth)}</p>
+                <p className="summary-period">
+                  {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
+                </p>
               </div>
             </div>
 
@@ -407,7 +409,9 @@ function Expenses() {
                   </div>
                   <h3 className="summary-title">{category}</h3>
                   <p className="summary-value">${(categoryTotals[category] || 0).toFixed(2)}</p>
-                  <p className="summary-period">{formatMonthYear(selectedMonth)}</p>
+                  <p className="summary-period">
+                    {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
+                  </p>
                 </div>
               </div>
             ))}
