@@ -3,12 +3,12 @@ import "./PointsRewards.css"
 import { Award, Gift, TrendingUp, Calendar, CheckCircle, PiggyBank, DollarSign, BookOpen, CreditCard, AlertCircle, Zap, Users, MessageSquare } from 'lucide-react'
 
 function PointsRewards() {
-  const [currentPoints, setCurrentPoints] = useState(105)
+  const [currentPoints, setCurrentPoints] = useState(0)
   const [pointsToNextMilestone, setPointsToNextMilestone] = useState(0)
   const [progressPercentage, setProgressPercentage] = useState(0)
   const [showPointsAdded, setShowPointsAdded] = useState(null)
-  const [weeklyAssets, setWeeklyAssets] = useState(35)
-  const [weeklyLiabilities, setWeeklyLiabilities] = useState(7)
+  const [weeklyAssets, setWeeklyAssets] = useState(0)
+  const [weeklyLiabilities, setWeeklyLiabilities] = useState(0)
   const [weeklyScore, setWeeklyScore] = useState(weeklyAssets - weeklyLiabilities)
   const [activeTab, setActiveTab] = useState("rewards")
   const [redeemedRewards, setRedeemedRewards] = useState([])

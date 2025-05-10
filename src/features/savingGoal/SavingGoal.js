@@ -4,48 +4,7 @@ import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle, X } from
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
-  const [goals, setGoals] = useState([
-    {
-      id: 1,
-      name: "Emergency Fund",
-      category: "Emergency",
-      targetAmount: 5000,
-      currentAmount: 2500,
-      targetDate: "2025-12-31",
-      description: "Emergency fund for unexpected expenses",
-      completed: false,
-    },
-    {
-      id: 2,
-      name: "New Laptop",
-      category: "Tech",
-      targetAmount: 1500,
-      currentAmount: 500,
-      targetDate: "2025-08-15",
-      description: "Save for a new MacBook Pro",
-      completed: false,
-    },
-    {
-      id: 3,
-      name: "Summer Vacation",
-      category: "Travel",
-      targetAmount: 3000,
-      currentAmount: 1200,
-      targetDate: "2025-06-01",
-      description: "Trip to Hawaii",
-      completed: false,
-    },
-    {
-      id: 4,
-      name: "Home Renovation",
-      category: "Home",
-      targetAmount: 10000,
-      currentAmount: 10000,
-      targetDate: "2025-01-15",
-      description: "Kitchen remodel",
-      completed: true,
-    },
-  ])
+  const [goals, setGoals] = useState([])
 
   const [newGoal, setNewGoal] = useState({
     name: "",
