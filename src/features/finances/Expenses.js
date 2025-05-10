@@ -1,12 +1,9 @@
-"use client"
-
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
 import "./Finances.css"
-import { useFinancial } from "../../contexts/FinancialContext" // Import the financial context
 
 // Register required Chart.js components for bar chart visualization
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -23,9 +20,6 @@ const CATEGORY_ICONS = {
 }
 
 function Expenses() {
-  // Use the financial context instead of local state for expenses data
-  const { expenses, addExpense, isLoading } = useFinancial()
-
   // View state - controls which view is active (transactions or monthly summary)
   const [activeView, setActiveView] = useState("transactions")
 
@@ -36,7 +30,8 @@ function Expenses() {
     end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Last day of current month
   })
 
-  // Expense data state - stores derived data
+  // Expense data state - stores all expense entries and derived data
+  const [expenses, setExpenses] = useState([]) // All expense transactions
   const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
   const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
 
@@ -163,7 +158,8 @@ function Expenses() {
     }))
   }, [])
 
-  // Add new expense entry using the context's addExpense method
+  // Add new expense entry to the expenses state
+  // Validates form data and creates a new entry with unique ID
   const handleAddExpense = useCallback(() => {
     const { amount, description, category, date } = newExpense
     const numericAmount = Number.parseFloat(amount)
@@ -174,30 +170,26 @@ function Expenses() {
       return
     }
 
-    // Create new expense entry
+    // Create new expense entry with unique ID
     const newEntry = {
+      id: Date.now(), // Use timestamp as unique ID
       category,
       value: numericAmount,
       description,
       date,
     }
 
-    // Use the context's addExpense method
-    addExpense(newEntry)
-      .then(() => {
-        // Reset form fields after successful submission
-        setNewExpense({
-          amount: "",
-          description: "",
-          category: "",
-          date: new Date().toISOString().split("T")[0],
-        })
-      })
-      .catch((error) => {
-        console.error("Error adding expense:", error)
-        alert("Failed to add expense. Please try again.")
-      })
-  }, [newExpense, addExpense])
+    // Add new entry to the beginning of the expenses array
+    setExpenses((prev) => [newEntry, ...prev])
+
+    // Reset form fields after successful submission
+    setNewExpense({
+      amount: "",
+      description: "",
+      category: "",
+      date: new Date().toISOString().split("T")[0],
+    })
+  }, [newExpense])
 
   // Handle month navigation (previous/next) in transactions view
   // Updates selected month and date range for filtering
@@ -320,9 +312,9 @@ function Expenses() {
 
               <div className="input-field">
                 <label>&nbsp;</label>
-                <button className="btn-primary" onClick={handleAddExpense} disabled={isLoading}>
+                <button className="btn-primary" onClick={handleAddExpense}>
                   <Plus className="btn-icon" />
-                  {isLoading ? "Adding..." : "Add Expense"}
+                  Add Expense
                 </button>
               </div>
             </div>

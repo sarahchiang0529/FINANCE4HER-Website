@@ -1,13 +1,14 @@
-// src/App.js
 import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
+
+// Import components from their actual locations
 import Loading from "./components/Common/Loading";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
+import { FinancialProvider } from "./contexts/FinancialContext";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
-import { FinancialProvider } from "./contexts/FinancialContext"; // Import the provider
 
 // Import feature components
 import Dashboard from "./features/dashboard/Dashboard";
@@ -28,6 +29,7 @@ import "./features/savingGoal/SavingGoal.css"
 import initFontAwesome from "./utils/initFontAwesome";
 initFontAwesome();
 
+
 const App = () => {
   const { isLoading, error } = useAuth0();
 
@@ -41,7 +43,7 @@ const App = () => {
 
   return (
     <ErrorBoundary>
-      <FinancialProvider> {/* Wrap the entire app with FinancialProvider */}
+      <FinancialProvider>
         <Router history={history}>
           <NavBar />
           <main className="page-content">
