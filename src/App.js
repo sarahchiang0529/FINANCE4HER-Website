@@ -20,6 +20,7 @@ import PointsRewards from "./features/pointsRewards/PointsRewards";
 import FAQ from "./features/faq/FAQ";
 import Home from "./features/home/Home";
 import FinancialOverview from "./features/financialOverview/FinancialOverview";
+import Profile from "./features/profile/Profile";
 
 import "./App.css"
 import "./features/finances/Finances.css"
@@ -57,6 +58,7 @@ const App = () => {
                 <Route path="/learning-resources" component={LearningResources} />
                 <Route path="/points-rewards" component={PointsRewards} />
                 <Route path="/faq" component={FAQ} />
+                <Route path="/profile" component={Profile} />
               </Switch>
             </Container>
           </main>
