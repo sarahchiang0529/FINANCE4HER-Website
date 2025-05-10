@@ -1,9 +1,19 @@
+import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
-import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp } from "lucide-react"
+import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp } from 'lucide-react'
+import { faqItems } from "../faq/FAQ" // Adjust this path to match your project structure
 
 const Dashboard = () => {
   const history = useHistory()
+  // State for FAQ items
+  const [faqs, setFaqs] = useState([])
+
+  // Fetch FAQ items when component mounts
+  useEffect(() => {
+    // Get the first 3 FAQ items
+    setFaqs(faqItems.slice(0, 3))
+  }, [])
 
   return (
     <div className="dashboard-container">
@@ -198,6 +208,7 @@ const Dashboard = () => {
                 <div className="transaction-date">Apr 12</div>
               </div>
             </div>
+
             <div className="transaction">
               <div className="transaction-info">
                 <div className="transaction-icon expense">
@@ -213,6 +224,7 @@ const Dashboard = () => {
                 <div className="transaction-date">Apr 12</div>
               </div>
             </div>
+
             <div className="transaction">
               <div className="transaction-info">
                 <div className="transaction-icon expense">
@@ -227,26 +239,50 @@ const Dashboard = () => {
                 <div className="amount expense">-$25.00</div>
                 <div className="transaction-date">Apr 12</div>
               </div>
+            </div>
+            
+            <div className="transaction">
+              <div className="transaction-info">
+                <div className="transaction-icon expense">
+                  <CreditCard className="icon-sm" />
+                </div>
+                <div>
+                  <div className="transaction-title">Transport</div>
+                  <div className="transaction-subtitle">Uber ride</div>
+                </div>
+              </div>
+              <div className="transaction-amount">
+                <div className="amount expense">-$25.00</div>
+                <div className="transaction-date">Apr 12</div>
+              </div>
+            </div>
+
+            <div className="button-row">
+              <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
+                View All Income
+                <ArrowRight className="btn-icon-sm" />
+              </button>
+  
+              <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
+                View All Expenses
+                <ArrowRight className="btn-icon-sm" />
+              </button>
             </div>
           </div>
         </div>
 
-        <div className="faq-card">
+        <div className="faqs-card">
           <div className="card-header">
             <h3 className="card-title">FAQ</h3>
             <p className="card-description">A set of frequently asked questions and answers</p>
           </div>
-          <div className="faq-list">
-
-            <div className="faq">
-              <h4 className="faq-title">What's the difference between a checking and a savings account?</h4>
-              <p className="faq-description">A checking account is for daily spending—you can use it for purchases, bills, or cash withdrawals. A savings account is meant to store money for future goals and usually earns interest, helping your money grow over time.</p>
-            </div>
-
-            <div className="faq">
-              <h4 className="faq-title">How do I open a bank account and what do I need to bring with me?</h4>
-              <p className="faq-description">To open a bank account, you typically need valid ID (like a student card, passport, or government-issued ID), proof of address, and sometimes a guardian if you're under 18. Many banks offer youth accounts with no fees.</p>
-            </div>
+          <div className="faqs-list">
+            {faqs.map((faq, index) => (
+              <div key={index} className="faq">
+                <h4 className="faq-title">{faq.question}</h4>
+                <p className="faq-description">{faq.answer}</p>
+              </div>
+            ))}
 
             <button className="btn-outline btn-sm full-width" onClick={() => history.push("/faq")}>
               View All FAQs
