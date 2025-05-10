@@ -8,7 +8,7 @@ import "./Finances.css"
 // Register required Chart.js components for bar chart visualization
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Update the CATEGORY_ICONS to match the screenshot
+// Update the CATEGORY_ICONS
 const CATEGORY_ICONS = {
   Salary: "💼",
   "Government Benefit": "🏛️",
