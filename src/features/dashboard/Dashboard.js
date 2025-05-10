@@ -182,32 +182,74 @@ const Dashboard = () => {
                 <div className="transaction-date">Apr 12</div>
               </div>
             </div>
+
+            <div className="transaction">
+              <div className="transaction-info">
+                <div className="transaction-icon expense">
+                  <CreditCard className="icon-sm" />
+                </div>
+                <div>
+                  <div className="transaction-title">Transport</div>
+                  <div className="transaction-subtitle">Uber ride</div>
+                </div>
+              </div>
+              <div className="transaction-amount">
+                <div className="amount expense">-$25.00</div>
+                <div className="transaction-date">Apr 12</div>
+              </div>
+            </div>
+            <div className="transaction">
+              <div className="transaction-info">
+                <div className="transaction-icon expense">
+                  <CreditCard className="icon-sm" />
+                </div>
+                <div>
+                  <div className="transaction-title">Transport</div>
+                  <div className="transaction-subtitle">Uber ride</div>
+                </div>
+              </div>
+              <div className="transaction-amount">
+                <div className="amount expense">-$25.00</div>
+                <div className="transaction-date">Apr 12</div>
+              </div>
+            </div>
+            <div className="transaction">
+              <div className="transaction-info">
+                <div className="transaction-icon expense">
+                  <CreditCard className="icon-sm" />
+                </div>
+                <div>
+                  <div className="transaction-title">Transport</div>
+                  <div className="transaction-subtitle">Uber ride</div>
+                </div>
+              </div>
+              <div className="transaction-amount">
+                <div className="amount expense">-$25.00</div>
+                <div className="transaction-date">Apr 12</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="tips-card">
+        <div className="faq-card">
           <div className="card-header">
-            <h3 className="card-title">Financial Tips</h3>
-            <p className="card-description">Personalized advice for your financial journey</p>
+            <h3 className="card-title">FAQ</h3>
+            <p className="card-description">A set of frequently asked questions and answers</p>
           </div>
-          <div className="tips-list">
-            <div className="tip">
-              <h4 className="tip-title">Increase your emergency fund</h4>
-              <p className="tip-description">Aim for 3–6 months of expenses</p>
+          <div className="faq-list">
+
+            <div className="faq">
+              <h4 className="faq-title">What's the difference between a checking and a savings account?</h4>
+              <p className="faq-description">A checking account is for daily spending—you can use it for purchases, bills, or cash withdrawals. A savings account is meant to store money for future goals and usually earns interest, helping your money grow over time.</p>
             </div>
 
-            <div className="tip">
-              <h4 className="tip-title">Review your subscriptions</h4>
-              <p className="tip-description">You could save $25/month by canceling unused services</p>
+            <div className="faq">
+              <h4 className="faq-title">How do I open a bank account and what do I need to bring with me?</h4>
+              <p className="faq-description">To open a bank account, you typically need valid ID (like a student card, passport, or government-issued ID), proof of address, and sometimes a guardian if you're under 18. Many banks offer youth accounts with no fees.</p>
             </div>
 
-            <div className="tip">
-              <h4 className="tip-title">Consider investing</h4>
-              <p className="tip-description">Your savings account has excess funds that could be working harder</p>
-            </div>
-
-            <button className="btn-outline btn-sm full-width" onClick={() => history.push("/learning-resources")}>
-              View All Resources
+            <button className="btn-outline btn-sm full-width" onClick={() => history.push("/faq")}>
+              View All FAQs
               <ArrowRight className="btn-icon-sm" />
             </button>
           </div>
