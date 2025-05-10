@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from 'lucide-react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
 import "./Finances.css"
+import { useFinancial } from "../../contexts/FinancialContext" // Import the financial context
 
 // Register required Chart.js components for bar chart visualization
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -18,6 +19,9 @@ const CATEGORY_ICONS = {
 }
 
 function Income() {
+  // Use the financial context instead of local state for income data
+  const { income, addIncome, isLoading } = useFinancial()
+  
   // View state - controls which view is active (transactions or monthly summary)
   const [activeView, setActiveView] = useState("transactions")
 
@@ -28,8 +32,7 @@ function Income() {
     end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Last day of current month
   })
 
-  // Income data state - stores all income entries and derived data
-  const [income, setIncome] = useState([]) // All income transactions
+  // Income data state - stores derived data
   const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
   const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
 
@@ -156,8 +159,7 @@ function Income() {
     }))
   }, [])
 
-  // Add new income entry to the income state
-  // Validates form data and creates a new entry with unique ID
+  // Add new income entry using the context's addIncome method
   const handleAddIncome = useCallback(() => {
     const { amount, description, category, date } = newIncome
     const numericAmount = Number.parseFloat(amount)
@@ -168,26 +170,30 @@ function Income() {
       return
     }
 
-    // Create new income entry with unique ID
+    // Create new income entry
     const newEntry = {
-      id: Date.now(), // Use timestamp as unique ID
       category,
       value: numericAmount,
       description,
       date,
     }
 
-    // Add new entry to the beginning of the income array
-    setIncome((prev) => [newEntry, ...prev])
-
-    // Reset form fields after successful submission
-    setNewIncome({
-      amount: "",
-      description: "",
-      category: "",
-      date: new Date().toISOString().split("T")[0],
-    })
-  }, [newIncome])
+    // Use the context's addIncome method
+    addIncome(newEntry)
+      .then(() => {
+        // Reset form fields after successful submission
+        setNewIncome({
+          amount: "",
+          description: "",
+          category: "",
+          date: new Date().toISOString().split("T")[0],
+        })
+      })
+      .catch(error => {
+        console.error("Error adding income:", error)
+        alert("Failed to add income. Please try again.")
+      })
+  }, [newIncome, addIncome])
 
   // Handle month navigation (previous/next) in transactions view
   // Updates selected month and date range for filtering
@@ -301,9 +307,9 @@ function Income() {
 
               <div className="input-field">
                 <label>&nbsp;</label>
-                <button className="btn-primary" onClick={handleAddIncome}>
+                <button className="btn-primary" onClick={handleAddIncome} disabled={isLoading}>
                   <Plus className="btn-icon" />
-                  Add Income
+                  {isLoading ? "Adding..." : "Add Income"}
                 </button>
               </div>
             </div>

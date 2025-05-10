@@ -9,4 +9,16 @@ if (!supabaseUrl || !supabaseKey) {
   )
 }
 
+// Create a basic client with the anon key
 export const supabase = createClient(supabaseUrl, supabaseKey)
+
+// Create a client with Auth0 token
+export const createSupabaseWithAuth = (authToken) => {
+  return createClient(supabaseUrl, supabaseKey, {
+    global: {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    },
+  })
+}
