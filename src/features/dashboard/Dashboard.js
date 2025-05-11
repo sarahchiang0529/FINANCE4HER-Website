@@ -2,17 +2,25 @@ import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
 import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp } from 'lucide-react'
-import { faqItems } from "../faq/FAQ" // Adjust this path to match your project structure
+import { faqItems } from "../faq/FAQ"
 
 const Dashboard = () => {
   const history = useHistory()
   // State for FAQ items
   const [faqs, setFaqs] = useState([])
+  // State for transactions
+  const [transactions, setTransactions] = useState([])
+  // Maximum number of transactions to display
+  const MAX_TRANSACTIONS = 7
 
   // Fetch FAQ items when component mounts
   useEffect(() => {
     // Get the first 3 FAQ items
     setFaqs(faqItems.slice(0, 3))
+
+    // In a real app, you would fetch transactions from your data source here
+    // For now, we'll just set an empty array
+    setTransactions([])
   }, [])
 
   return (
@@ -145,129 +153,57 @@ const Dashboard = () => {
             <p className="card-description">Your latest financial activities</p>
           </div>
           <div className="transactions-list">
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon expense">
-                  <CreditCard className="icon-sm" />
-                </div>
-                <div>
-                  <div className="transaction-title">Food</div>
-                  <div className="transaction-subtitle">Grocery shopping</div>
-                </div>
-              </div>
-              <div className="transaction-amount">
-                <div className="amount expense">-$45.00</div>
-                <div className="transaction-date">Today</div>
-              </div>
-            </div>
+            {transactions && transactions.length > 0 ? (
+              <>
+                {/* Display only the most recent 7 transactions */}
+                {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
+                  <div key={transaction.id} className="transaction">
+                    <div className="transaction-info">
+                      <div className={`transaction-icon ${transaction.type}`}>
+                        {transaction.type === "income" ? (
+                          <DollarSign className="icon-sm" />
+                        ) : (
+                          <CreditCard className="icon-sm" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="transaction-title">{transaction.category}</div>
+                        <div className="transaction-subtitle">{transaction.description}</div>
+                      </div>
+                    </div>
+                    <div className="transaction-amount">
+                      <div className={`amount ${transaction.type}`}>
+                        {transaction.type === "income" ? "+" : "-"}${transaction.amount.toFixed(2)}
+                      </div>
+                      <div className="transaction-date">{transaction.date}</div>
+                    </div>
+                  </div>
+                ))}
 
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon income">
-                  <DollarSign className="icon-sm" />
-                </div>
-                <div>
-                  <div className="transaction-title">Salary</div>
-                  <div className="transaction-subtitle">Monthly payment</div>
-                </div>
-              </div>
-              <div className="transaction-amount">
-                <div className="amount income">+$1,500.00</div>
-                <div className="transaction-date">Yesterday</div>
-              </div>
-            </div>
+                <div className="button-row">
+                  <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
+                    View All Income
+                    <ArrowRight className="btn-icon-sm" />
+                  </button>
 
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon expense">
-                  <CreditCard className="icon-sm" />
+                  <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
+                    View All Expenses
+                    <ArrowRight className="btn-icon-sm" />
+                  </button>
                 </div>
-                <div>
-                  <div className="transaction-title">Transport</div>
-                  <div className="transaction-subtitle">Uber ride</div>
-                </div>
-              </div>
-              <div className="transaction-amount">
-                <div className="amount expense">-$25.00</div>
-                <div className="transaction-date">Apr 12</div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <div className="empty-state">
 
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon expense">
-                  <CreditCard className="icon-sm" />
-                </div>
-                <div>
-                  <div className="transaction-title">Transport</div>
-                  <div className="transaction-subtitle">Uber ride</div>
-                </div>
-              </div>
-              <div className="transaction-amount">
-                <div className="amount expense">-$25.00</div>
-                <div className="transaction-date">Apr 12</div>
-              </div>
-            </div>
+                <div className="empty-state-icon">📊</div>
 
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon expense">
-                  <CreditCard className="icon-sm" />
-                </div>
-                <div>
-                  <div className="transaction-title">Transport</div>
-                  <div className="transaction-subtitle">Uber ride</div>
-                </div>
+                <h3>No Transaction Data Yet</h3>
+                <p>
+                  Start by adding your income/expense transactions through the respective forms. Your transaction data
+                  will appear here.
+                </p>
               </div>
-              <div className="transaction-amount">
-                <div className="amount expense">-$25.00</div>
-                <div className="transaction-date">Apr 12</div>
-              </div>
-            </div>
-
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon expense">
-                  <CreditCard className="icon-sm" />
-                </div>
-                <div>
-                  <div className="transaction-title">Transport</div>
-                  <div className="transaction-subtitle">Uber ride</div>
-                </div>
-              </div>
-              <div className="transaction-amount">
-                <div className="amount expense">-$25.00</div>
-                <div className="transaction-date">Apr 12</div>
-              </div>
-            </div>
-            
-            <div className="transaction">
-              <div className="transaction-info">
-                <div className="transaction-icon expense">
-                  <CreditCard className="icon-sm" />
-                </div>
-                <div>
-                  <div className="transaction-title">Transport</div>
-                  <div className="transaction-subtitle">Uber ride</div>
-                </div>
-              </div>
-              <div className="transaction-amount">
-                <div className="amount expense">-$25.00</div>
-                <div className="transaction-date">Apr 12</div>
-              </div>
-            </div>
-
-            <div className="button-row">
-              <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
-                View All Income
-                <ArrowRight className="btn-icon-sm" />
-              </button>
-  
-              <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
-                View All Expenses
-                <ArrowRight className="btn-icon-sm" />
-              </button>
-            </div>
+            )}
           </div>
         </div>
 
