@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
 import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp } from 'lucide-react'
 import { faqItems } from "../faq/FAQ"
+import EmptyState from "../../components/EmptyState"
 
 const Dashboard = () => {
   const history = useHistory()
@@ -10,6 +11,10 @@ const Dashboard = () => {
   const [faqs, setFaqs] = useState([])
   // State for transactions
   const [transactions, setTransactions] = useState([])
+  // State for saving goals
+  const [savingGoals, setSavingGoals] = useState([])
+  // Maximum number of goals to display
+  const MAX_GOALS = 4
   // Maximum number of transactions to display
   const MAX_TRANSACTIONS = 7
 
@@ -21,6 +26,29 @@ const Dashboard = () => {
     // In a real app, you would fetch transactions from your data source here
     // For now, we'll just set an empty array
     setTransactions([])
+
+    // Fetch saving goals from localStorage or API
+    const fetchSavingGoals = () => {
+      try {
+        // In a real app, this would be an API call or database query
+        // For this example, we'll check if there are any goals in localStorage
+        const storedGoals = localStorage.getItem("savingGoals")
+        if (storedGoals) {
+          const parsedGoals = JSON.parse(storedGoals)
+          // Sort by most recently added (assuming id is timestamp-based)
+          const sortedGoals = parsedGoals.sort((a, b) => b.id - a.id)
+          // Get the most recent 4 goals
+          setSavingGoals(sortedGoals.slice(0, MAX_GOALS))
+        } else {
+          setSavingGoals([])
+        }
+      } catch (error) {
+        console.error("Error fetching saving goals:", error)
+        setSavingGoals([])
+      }
+    }
+
+    fetchSavingGoals()
   }, [])
 
   return (
@@ -106,40 +134,38 @@ const Dashboard = () => {
                 <p className="card-description">Track your progress toward financial goals</p>
               </div>
               <div className="goals-container">
-                <div className="goal">
-                  <div className="goal-header">
-                    <div className="goal-name">Emergency Fund</div>
-                    <div className="goal-percent">75%</div>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: "75%" }}></div>
-                  </div>
-                </div>
+                {savingGoals && savingGoals.length > 0 ? (
+                  <>
+                    {savingGoals.map((goal) => (
+                      <div key={goal.id} className="goal">
+                        <div className="goal-header">
+                          <div className="goal-name">{goal.name}</div>
+                          <div className="goal-percent">
+                            {Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100)}%
+                          </div>
+                        </div>
+                        <div className="progress-bar">
+                          <div
+                            className="progress-fill"
+                            style={{
+                              width: `${Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100)}%`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
 
-                <div className="goal">
-                  <div className="goal-header">
-                    <div className="goal-name">Vacation</div>
-                    <div className="goal-percent">50%</div>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: "50%" }}></div>
-                  </div>
-                </div>
-
-                <div className="goal">
-                  <div className="goal-header">
-                    <div className="goal-name">New Laptop</div>
-                    <div className="goal-percent">25%</div>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: "25%" }}></div>
-                  </div>
-                </div>
-
-                <button className="btn-outline btn-sm full-width" onClick={() => history.push("/saving-goals")}>
-                  View All Goals
-                  <ArrowRight className="btn-icon-sm" />
-                </button>
+                    <button className="btn-outline btn-sm full-width" onClick={() => history.push("/saving-goals")}>
+                      View All Goals
+                      <ArrowRight className="btn-icon-sm" />
+                    </button>
+                  </>
+                ) : (
+                  <EmptyState
+                    title="No Saving Goals Yet"
+                    message="Start by creating saving goals to track your financial progress. Your goals will appear here."
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -193,16 +219,10 @@ const Dashboard = () => {
                 </div>
               </>
             ) : (
-              <div className="empty-state">
-
-                <div className="empty-state-icon">📊</div>
-
-                <h3>No Transaction Data Yet</h3>
-                <p>
-                  Start by adding your income/expense transactions through the respective forms. Your transaction data
-                  will appear here.
-                </p>
-              </div>
+              <EmptyState
+                title="No Transaction Data Yet"
+                message="Start by adding your income/expense transactions through the respective forms. Your transaction data will appear here."
+              />
             )}
           </div>
         </div>

@@ -3,6 +3,7 @@ import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
+import EmptyState from "../../components/EmptyState"
 import "./Finances.css"
 
 // Register required Chart.js components for bar chart visualization
@@ -329,11 +330,10 @@ function Income() {
       {/* Empty State - Shown when no income data exists */}
       {!hasIncomeData && (
         <div className="empty-state-card">
-          <div className="empty-state-icon">📊</div>
-          <h3 className="empty-state-title">No Income Data Yet</h3>
-          <p className="empty-state-message">
-            Start by adding your income transactions using the form above. Your income data will appear here.
-          </p>
+          <EmptyState
+            title="No Income Data Yet"
+            message="Start by adding your income transactions using the form above. Your income data will appear here."
+          />
         </div>
       )}
 

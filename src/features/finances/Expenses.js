@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from 'lucide-react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
+import EmptyState from "../../components/EmptyState"
 import "./Finances.css"
 
 // Register required Chart.js components for bar chart visualization
@@ -340,11 +341,10 @@ function Expenses() {
       {/* Empty State - Shown when no expense data exists */}
       {!hasExpenseData && (
         <div className="empty-state-card">
-          <div className="empty-state-icon">📊</div>
-          <h3 className="empty-state-title">No Expense Data Yet</h3>
-          <p className="empty-state-message">
-            Start by adding your expense transactions using the form above. Your expense data will appear here.
-          </p>
+          <EmptyState
+            title="No Expense Data Yet"
+            message="Start by adding your expense transactions using the form above. Your expense data will appear here."
+          />
         </div>
       )}
 

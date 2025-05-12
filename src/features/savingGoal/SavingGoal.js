@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import "./SavingGoal.css"
-import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle, X } from "lucide-react"
+import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle, X } from 'lucide-react'
+import EmptyState from "../../components/EmptyState"
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
@@ -18,6 +19,18 @@ function SavingGoal() {
   // State for editing goals
   const [editingGoal, setEditingGoal] = useState(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
+
+  useEffect(() => {
+    // Load goals from localStorage when component mounts
+    const storedGoals = localStorage.getItem("savingGoals")
+    if (storedGoals) {
+      try {
+        setGoals(JSON.parse(storedGoals))
+      } catch (error) {
+        console.error("Error parsing goals from localStorage:", error)
+      }
+    }
+  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -54,7 +67,11 @@ function SavingGoal() {
       completed: false,
     }
 
-    setGoals((prev) => [...prev, newGoalObj])
+    const updatedGoals = [...goals, newGoalObj]
+    setGoals(updatedGoals)
+
+    // Save to localStorage
+    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
 
     setNewGoal({
       name: "",
@@ -80,7 +97,6 @@ function SavingGoal() {
     setEditingGoal(null)
   }
 
-  // Function to save edited goal
   const saveEditGoal = () => {
     if (
       !editingGoal.name ||
@@ -99,7 +115,11 @@ function SavingGoal() {
       currentAmount: editingGoal.currentAmount ? Number.parseFloat(editingGoal.currentAmount) : 0,
     }
 
-    setGoals((prev) => prev.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal)))
+    const updatedGoals = goals.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal))
+    setGoals(updatedGoals)
+
+    // Save to localStorage
+    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
 
     setEditingGoal(null)
   }
@@ -114,15 +134,23 @@ function SavingGoal() {
     setShowDeleteConfirm(null)
   }
 
-  // Function to delete a goal
   const deleteGoal = (goalId) => {
-    setGoals((prev) => prev.filter((goal) => goal.id !== goalId))
+    const updatedGoals = goals.filter((goal) => goal.id !== goalId)
+    setGoals(updatedGoals)
+
+    // Save to localStorage
+    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
+
     setShowDeleteConfirm(null)
   }
 
   // Function to toggle goal completion status
   const toggleGoalCompletion = (goalId) => {
-    setGoals((prev) => prev.map((goal) => (goal.id === goalId ? { ...goal, completed: !goal.completed } : goal)))
+    const updatedGoals = goals.map((goal) => (goal.id === goalId ? { ...goal, completed: !goal.completed } : goal))
+    setGoals(updatedGoals)
+
+    // Save to localStorage
+    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
   }
 
   const getCategoryIcon = (category) => {
@@ -278,8 +306,10 @@ function SavingGoal() {
         <div className="tab-content">
           {filteredGoals.length === 0 ? (
             <div className="no-goals-message">
-              <Target className="no-goals-icon" />
-              <p>No {activeTab} goals found. Start by adding a new goal above!</p>
+              <EmptyState 
+                title={`No ${activeTab} goals found`} 
+                message="Start by adding a new goal above!" 
+              />
             </div>
           ) : (
             <div className="goals-grid">

@@ -104,6 +104,7 @@ body {
   font-size: 18px;
   color: var(--color-text-light);
   margin: 8px 0 0 0;
+  padding-bottom: 1 rem;
 }
 
 /* Card styles */
@@ -600,4 +601,47 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex-direction: column;
     height: 100%;
   }
+}
+
+/* Universal Empty State Component */
+.universal-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 32px;
+  min-height: 250px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.universal-empty-state-icon {
+  margin-bottom: 16px;
+}
+
+.universal-empty-state-icon svg {
+  color: #8a4baf;
+}
+
+.universal-empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.universal-empty-state p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* Target Icon SVG for Empty States */
+.target-icon-svg {
+  width: 48px;
+  height: 48px;
 }
