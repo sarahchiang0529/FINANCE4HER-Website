@@ -198,6 +198,15 @@ body {
   color: #666;
 }
 
+/* Add these new CSS classes after the .stat-change class */
+.stat-change.positive {
+  color: #10b981; /* Green color for positive values */
+}
+
+.stat-change.negative {
+  color: #ef4444; /* Red color for negative values */
+}
+
 /* Tabs */
 .tabs-container {
   margin-bottom: 24px;

@@ -78,7 +78,7 @@ const Dashboard = () => {
             <DollarSign className="stat-icon" />
           </div>
           <div className="stat-value">$2,500.00</div>
-          <div className="stat-change">+20.1% from last month</div>
+          <div className={`stat-change positive`}>+20.1% from last month</div>
         </div>
 
         <div className="stat-card">
@@ -87,7 +87,7 @@ const Dashboard = () => {
             <TrendingUp className="stat-icon" />
           </div>
           <div className="stat-value">$1,800.00</div>
-          <div className="stat-change">+10.5% from last month</div>
+          <div className={`stat-change positive`}>+10.5% from last month</div>
         </div>
 
         <div className="stat-card">
@@ -96,7 +96,7 @@ const Dashboard = () => {
             <CreditCard className="stat-icon" />
           </div>
           <div className="stat-value">$1,200.00</div>
-          <div className="stat-change">-5.2% from last month</div>
+          <div className={`stat-change negative`}>-5.2% from last month</div>
         </div>
 
         <div className="stat-card">
@@ -105,7 +105,7 @@ const Dashboard = () => {
             <ArrowUpRight className="stat-icon" />
           </div>
           <div className="stat-value">33%</div>
-          <div className="stat-change">+7% from last month</div>
+          <div className={`stat-change positive`}>+7% from last month</div>
         </div>
       </div>
 
