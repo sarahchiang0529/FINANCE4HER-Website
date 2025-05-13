@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, CreditCard } from 'lucide-react'
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, CreditCard, Edit, Trash2 } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
@@ -35,6 +35,26 @@ function Expenses() {
   const [expenses, setExpenses] = useState([]) // All expense transactions
   const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
   const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
+
+  useEffect(() => {
+    // Load expenses data from localStorage when component mounts
+    const storedExpenses = localStorage.getItem("expensesData")
+    if (storedExpenses) {
+      try {
+        setExpenses(JSON.parse(storedExpenses))
+      } catch (error) {
+        console.error("Error parsing expenses data from localStorage:", error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    // Save expenses data to localStorage whenever it changes
+    localStorage.setItem("expensesData", JSON.stringify(expenses))
+  }, [expenses])
+
+  const [editingExpense, setEditingExpense] = useState(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
 
   // Form state - manages the new expense entry form
   const [newExpense, setNewExpense] = useState({
@@ -253,6 +273,54 @@ function Expenses() {
   // Check if there's any expense data to determine whether to show empty state
   const hasExpenseData = expenses.length > 0
 
+  // Function to start editing an expense entry
+  const startEditExpense = (entry) => {
+    setEditingExpense({
+      ...entry,
+      amount: entry.value.toString(),
+    })
+  }
+
+  // Function to cancel editing
+  const cancelEditExpense = () => {
+    setEditingExpense(null)
+  }
+
+  // Function to save edited expense
+  const saveEditExpense = () => {
+    if (!editingExpense.category || !editingExpense.amount || !editingExpense.date || !editingExpense.description) {
+      alert("Please fill in all required fields.")
+      return
+    }
+
+    const updatedEntry = {
+      ...editingExpense,
+      value: Number.parseFloat(editingExpense.amount),
+    }
+    delete updatedEntry.amount
+
+    const updatedExpenses = expenses.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry))
+    setExpenses(updatedExpenses)
+    setEditingExpense(null)
+  }
+
+  // Function to confirm deletion
+  const confirmDeleteExpense = (expenseId) => {
+    setShowDeleteConfirm(expenseId)
+  }
+
+  // Function to cancel deletion
+  const cancelDeleteExpense = () => {
+    setShowDeleteConfirm(null)
+  }
+
+  // Function to delete expense entry
+  const deleteExpense = (expenseId) => {
+    const updatedExpenses = expenses.filter((entry) => entry.id !== expenseId)
+    setExpenses(updatedExpenses)
+    setShowDeleteConfirm(null)
+  }
+
   return (
     <div className="expenses-container">
       {/* Header Section */}
@@ -439,29 +507,103 @@ function Expenses() {
                   <p className="card-description">Your expense transactions for {formatMonthYear(selectedMonth)}</p>
                 </div>
 
-                {filteredExpenses.length > 0 ? (
-                  <div className="expenses-list">
-                    {filteredExpenses.map((entry) => (
-                      <div key={entry.id} className="expense-item">
-                        <div className="expense-info">
-                          <div className="expense-icon">{getCategoryIcon(entry.category)}</div>
-                          <div>
-                            <div className="expense-category">{entry.category}</div>
-                            <div className="expense-description">{entry.description}</div>
+                <div className="expenses-list">
+                  {filteredExpenses.map((entry) => (
+                    <div key={entry.id} className="expense-item">
+                      {showDeleteConfirm === entry.id ? (
+                        <div className="delete-confirm">
+                          <p>Delete this transaction?</p>
+                          <div className="delete-actions">
+                            <button className="btn-secondary" onClick={cancelDeleteExpense}>
+                              Cancel
+                            </button>
+                            <button className="btn-danger" onClick={() => deleteExpense(entry.id)}>
+                              Delete
+                            </button>
                           </div>
                         </div>
-                        <div className="expense-details">
-                          <div className="expense-amount">-${entry.value.toFixed(2)}</div>
-                          <div className="expense-date">{formatDate(entry.date)}</div>
+                      ) : editingExpense && editingExpense.id === entry.id ? (
+                        <div className="edit-transaction-form">
+                          <div className="edit-form-row">
+                            <div className="edit-field">
+                              <label>Category</label>
+                              <select
+                                value={editingExpense.category}
+                                onChange={(e) => setEditingExpense({ ...editingExpense, category: e.target.value })}
+                              >
+                                <option value="Food">Food</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+                            <div className="edit-field">
+                              <label>Amount</label>
+                              <div className="input-with-icon">
+                                <div className="input-icon">$</div>
+                                <input
+                                  type="text"
+                                  value={editingExpense.amount}
+                                  onChange={(e) => setEditingExpense({ ...editingExpense, amount: e.target.value })}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="edit-form-row">
+                            <div className="edit-field">
+                              <label>Description</label>
+                              <input
+                                type="text"
+                                value={editingExpense.description}
+                                onChange={(e) => setEditingExpense({ ...editingExpense, description: e.target.value })}
+                              />
+                            </div>
+                            <div className="edit-field">
+                              <label>Date</label>
+                              <input
+                                type="date"
+                                value={editingExpense.date}
+                                onChange={(e) => setEditingExpense({ ...editingExpense, date: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                          <div className="edit-actions">
+                            <button className="btn-secondary" onClick={cancelEditExpense}>
+                              Cancel
+                            </button>
+                            <button className="btn-primary" onClick={saveEditExpense}>
+                              Save
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="no-data-message">
-                    <p>No expense transactions found for this period.</p>
-                  </div>
-                )}
+                      ) : (
+                        <>
+                          <div className="expense-info">
+                            <div className="expense-icon">{getCategoryIcon(entry.category)}</div>
+                            <div>
+                              <div className="expense-category">{entry.category}</div>
+                              <div className="expense-description">{entry.description}</div>
+                            </div>
+                          </div>
+                          <div className="expense-details">
+                            <div className="expense-amount">-${entry.value.toFixed(2)}</div>
+                            <div className="expense-date">{formatDate(entry.date)}</div>
+                            <div className="transaction-actions">
+                              <button className="action-btn edit-btn" onClick={() => startEditExpense(entry)}>
+                                <Edit size={16} />
+                              </button>
+                              <button className="action-btn delete-btn" onClick={() => confirmDeleteExpense(entry.id)}>
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}

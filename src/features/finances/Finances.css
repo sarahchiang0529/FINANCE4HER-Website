@@ -1,6 +1,6 @@
 /* Finance-specific styles that aren't shared across the app */
 
-/* Chart containers */
+/* Chart containers - restored to original larger size */
 .chart-wrapper {
   height: var(--chart-height) !important;
   min-height: var(--chart-height) !important;
@@ -134,8 +134,7 @@
 /* Ensure the income list has proper spacing */
 .income-list,
 .expenses-list {
-  height: var(--chart-height) !important;
-  max-height: var(--chart-height) !important;
+  max-height: 400px !important;  
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -150,6 +149,8 @@
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
   margin: 0;
+  min-height: 100px; /* Use min-height instead of fixed height */
+  box-sizing: border-box;
 }
 
 .income-info,
@@ -190,9 +191,13 @@
   color: var(--color-text-light);
 }
 
+/* Update the transaction details layout */
 .income-details,
 .expense-details {
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .income-amount {
@@ -234,7 +239,8 @@
   flex-wrap: wrap;
   gap: var(--space-lg);
   width: 100%;
-  justify-content: flex-start;  padding: var(--space-lg);
+  justify-content: flex-start;
+  padding: var(--space-lg);
   padding: var(--space-md);
 }
 
@@ -451,9 +457,150 @@
 /* Add padding around distribution & transaction headers */
 .income-data-card > .finance-card-header,
 .expense-data-card > .finance-card-header {
-  background-color: #f5f5f5;                   /* light grey */
-  padding: 16px 24px;                          /* top/bottom 16px, left/right 24px */
-  border-bottom: 1px solid var(--color-border);/* divider line */
-  border-top-left-radius: var(--border-radius); 
+  background-color: #f5f5f5; /* light grey */
+  padding: 16px 24px; /* top/bottom 16px, left/right 24px */
+  border-bottom: 1px solid var(--color-border); /* divider line */
+  border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
+}
+
+/* Edit and Delete functionality styles */
+.transaction-actions {
+  display: flex;
+  gap: 0px; /* Remove gap completely */
+  margin-top: 4px;
+  align-items: center;
+}
+
+/* Make the action buttons more compact */
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0px; /* Remove left margin completely */
+}
+
+.edit-btn {
+  color: #8a4baf;
+}
+
+.edit-btn:hover {
+  background-color: rgba(138, 75, 175, 0.1);
+}
+
+.delete-btn {
+  color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Delete confirmation */
+.delete-confirm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: #fff9f9;
+  border-radius: 6px;
+}
+
+.delete-confirm p {
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.delete-actions button {
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Edit transaction form */
+.edit-transaction-form {
+  width: 100%;
+  padding: 12px;
+  background-color: #f9f0ff;
+  border-radius: 6px;
+}
+
+.edit-form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.edit-field {
+  flex: 1;
+}
+
+.edit-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.edit-field input,
+.edit-field select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.edit-actions button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  color: white;
+}
+
+/* Add a new class for the transaction info row */
+.transaction-info-row {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Reduce the gap between amount and buttons */
 }

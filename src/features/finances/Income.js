@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, DollarSign } from 'lucide-react'
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, DollarSign, Edit, Trash2 } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
@@ -33,6 +33,26 @@ function Income() {
   const [income, setIncome] = useState([]) // All income transactions
   const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
   const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
+
+  useEffect(() => {
+    // Load income data from localStorage when component mounts
+    const storedIncome = localStorage.getItem("incomeData")
+    if (storedIncome) {
+      try {
+        setIncome(JSON.parse(storedIncome))
+      } catch (error) {
+        console.error("Error parsing income data from localStorage:", error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    // Save income data to localStorage whenever it changes
+    localStorage.setItem("incomeData", JSON.stringify(income))
+  }, [income])
+
+  const [editingIncome, setEditingIncome] = useState(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
 
   // Form state - manages the new income entry form
   const [newIncome, setNewIncome] = useState({
@@ -251,6 +271,54 @@ function Income() {
   // Check if there's any income data to determine whether to show empty state
   const hasIncomeData = income.length > 0
 
+  // Function to start editing an income entry
+  const startEditIncome = (entry) => {
+    setEditingIncome({
+      ...entry,
+      amount: entry.value.toString(),
+    })
+  }
+
+  // Function to cancel editing
+  const cancelEditIncome = () => {
+    setEditingIncome(null)
+  }
+
+  // Function to save edited income
+  const saveEditIncome = () => {
+    if (!editingIncome.category || !editingIncome.amount || !editingIncome.date || !editingIncome.description) {
+      alert("Please fill in all required fields.")
+      return
+    }
+
+    const updatedEntry = {
+      ...editingIncome,
+      value: Number.parseFloat(editingIncome.amount),
+    }
+    delete updatedEntry.amount
+
+    const updatedIncome = income.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry))
+    setIncome(updatedIncome)
+    setEditingIncome(null)
+  }
+
+  // Function to confirm deletion
+  const confirmDeleteIncome = (incomeId) => {
+    setShowDeleteConfirm(incomeId)
+  }
+
+  // Function to cancel deletion
+  const cancelDeleteIncome = () => {
+    setShowDeleteConfirm(null)
+  }
+
+  // Function to delete income entry
+  const deleteIncome = (incomeId) => {
+    const updatedIncome = income.filter((entry) => entry.id !== incomeId)
+    setIncome(updatedIncome)
+    setShowDeleteConfirm(null)
+  }
+
   return (
     <div className="income-container">
       {/* Header Section */}
@@ -428,29 +496,101 @@ function Income() {
                   <p className="card-description">Your income transactions for {formatMonthYear(selectedMonth)}</p>
                 </div>
 
-                {filteredIncome.length > 0 ? (
-                  <div className="income-list">
-                    {filteredIncome.map((entry) => (
-                      <div key={entry.id} className="income-item">
-                        <div className="income-info">
-                          <div className="income-icon">{getCategoryIcon(entry.category)}</div>
-                          <div>
-                            <div className="income-category">{entry.category}</div>
-                            <div className="income-description">{entry.description}</div>
+                <div className="income-list">
+                  {filteredIncome.map((entry) => (
+                    <div key={entry.id} className="income-item">
+                      {showDeleteConfirm === entry.id ? (
+                        <div className="delete-confirm">
+                          <p>Delete this transaction?</p>
+                          <div className="delete-actions">
+                            <button className="btn-secondary" onClick={cancelDeleteIncome}>
+                              Cancel
+                            </button>
+                            <button className="btn-danger" onClick={() => deleteIncome(entry.id)}>
+                              Delete
+                            </button>
                           </div>
                         </div>
-                        <div className="income-details">
-                          <div className="income-amount">${entry.value.toFixed(2)}</div>
-                          <div className="income-date">{formatDate(entry.date)}</div>
+                      ) : editingIncome && editingIncome.id === entry.id ? (
+                        <div className="edit-transaction-form">
+                          <div className="edit-form-row">
+                            <div className="edit-field">
+                              <label>Category</label>
+                              <select
+                                value={editingIncome.category}
+                                onChange={(e) => setEditingIncome({ ...editingIncome, category: e.target.value })}
+                              >
+                                <option value="Salary">Salary</option>
+                                <option value="Government Benefit">Government Benefit</option>
+                                <option value="Investments">Investments</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+                            <div className="edit-field">
+                              <label>Amount</label>
+                              <div className="input-with-icon">
+                                <div className="input-icon">$</div>
+                                <input
+                                  type="text"
+                                  value={editingIncome.amount}
+                                  onChange={(e) => setEditingIncome({ ...editingIncome, amount: e.target.value })}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="edit-form-row">
+                            <div className="edit-field">
+                              <label>Description</label>
+                              <input
+                                type="text"
+                                value={editingIncome.description}
+                                onChange={(e) => setEditingIncome({ ...editingIncome, description: e.target.value })}
+                              />
+                            </div>
+                            <div className="edit-field">
+                              <label>Date</label>
+                              <input
+                                type="date"
+                                value={editingIncome.date}
+                                onChange={(e) => setEditingIncome({ ...editingIncome, date: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                          <div className="edit-actions">
+                            <button className="btn-secondary" onClick={cancelEditIncome}>
+                              Cancel
+                            </button>
+                            <button className="btn-primary" onClick={saveEditIncome}>
+                              Save
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="no-data-message">
-                    <p>No income transactions found for this period.</p>
-                  </div>
-                )}
+                      ) : (
+                        <>
+                          <div className="income-info">
+                            <div className="income-icon">{getCategoryIcon(entry.category)}</div>
+                            <div>
+                              <div className="income-category">{entry.category}</div>
+                              <div className="income-description">{entry.description}</div>
+                            </div>
+                          </div>
+                          <div className="income-details">
+                            <div className="income-amount">${entry.value.toFixed(2)}</div>
+                            <div className="income-date">{formatDate(entry.date)}</div>
+                            <div className="transaction-actions">
+                              <button className="action-btn edit-btn" onClick={() => startEditIncome(entry)}>
+                                <Edit size={16} />
+                              </button>
+                              <button className="action-btn delete-btn" onClick={() => confirmDeleteIncome(entry.id)}>
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
