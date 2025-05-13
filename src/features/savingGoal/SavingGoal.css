@@ -151,7 +151,6 @@ input[type="number"] {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0 24px 24px;
   margin-bottom: 0;
 }
 

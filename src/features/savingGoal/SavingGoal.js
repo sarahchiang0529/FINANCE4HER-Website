@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import "./SavingGoal.css"
-import { Plus, Target, CheckCircle, X, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
+import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
 
 function SavingGoal() {
@@ -337,111 +337,80 @@ function SavingGoal() {
 
                   {/* Show edit form if this goal is being edited */}
                   {editingGoal && editingGoal.id === goal.id ? (
-                    <div className="edit-goal-form">
-                      <div className="edit-goal-header">
-                        <h3>Edit Goal</h3>
-                        <button className="icon-button close-button" onClick={cancelEditGoal}>
-                          <X size={16} />
-                        </button>
-                      </div>
-
-                      <div className="form-group">
-                        <div className="input-field">
-                          <label htmlFor="edit-name">Goal Name</label>
+                    <div className="edit-transaction-form">
+                      <div className="edit-form-row">
+                        <div className="edit-field">
+                          <label>Goal Name</label>
                           <input
                             type="text"
-                            id="edit-name"
-                            name="name"
                             value={editingGoal.name}
-                            onChange={handleEditInputChange}
-                            required
+                            onChange={(e) => setEditingGoal({ ...editingGoal, name: e.target.value })}
                           />
                         </div>
-
-                        <div className="input-row">
-                          <div className="input-field">
-                            <label htmlFor="edit-targetAmount">Target Amount</label>
-                            <div className="input-with-icon">
-                              <div className="input-icon">$</div>
-                              <input
-                                type="text"
-                                id="edit-targetAmount"
-                                name="targetAmount"
-                                value={editingGoal.targetAmount}
-                                onChange={handleEditInputChange}
-                                required
-                              />
-                            </div>
-                          </div>
-
-                          <div className="input-field">
-                            <label htmlFor="edit-currentAmount">Current Amount</label>
-                            <div className="input-with-icon">
-                              <div className="input-icon">$</div>
-                              <input
-                                type="text"
-                                id="edit-currentAmount"
-                                name="currentAmount"
-                                value={editingGoal.currentAmount}
-                                onChange={handleEditInputChange}
-                              />
-                            </div>
-                          </div>
+                      </div>
+                      <div className="edit-form-row">
+                        <div className="edit-field">
+                          <label>Category</label>
+                          <select
+                            value={editingGoal.category}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, category: e.target.value })}
+                          >
+                            <option value="Emergency">Emergency</option>
+                            <option value="Tech">Tech</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Home">Home</option>
+                            <option value="Education">Education</option>
+                          </select>
                         </div>
-
-                        <div className="input-row">
-                          <div className="input-field">
-                            <label htmlFor="edit-targetDate">Target Date</label>
+                        <div className="edit-field">
+                          <label>Target Amount</label>
+                          <div className="input-with-icon">
+                            <div className="input-icon">$</div>
                             <input
-                              type="date"
-                              id="edit-targetDate"
-                              name="targetDate"
-                              value={editingGoal.targetDate}
-                              onChange={handleEditInputChange}
-                              required
+                              type="text"
+                              value={editingGoal.targetAmount}
+                              onChange={(e) => setEditingGoal({ ...editingGoal, targetAmount: e.target.value })}
                             />
                           </div>
-
-                          <div className="input-field">
-                            <label htmlFor="edit-category">Category</label>
-                            <select
-                              id="edit-category"
-                              name="category"
-                              value={editingGoal.category}
-                              onChange={handleEditInputChange}
-                              required
-                            >
-                              <option value="" disabled>
-                                Select a category
-                              </option>
-                              <option value="Emergency">Emergency</option>
-                              <option value="Tech">Tech</option>
-                              <option value="Travel">Travel</option>
-                              <option value="Home">Home</option>
-                              <option value="Education">Education</option>
-                            </select>
+                        </div>
+                      </div>
+                      <div className="edit-form-row">
+                        <div className="edit-field">
+                          <label>Current Amount</label>
+                          <div className="input-with-icon">
+                            <div className="input-icon">$</div>
+                            <input
+                              type="text"
+                              value={editingGoal.currentAmount}
+                              onChange={(e) => setEditingGoal({ ...editingGoal, currentAmount: e.target.value })}
+                            />
                           </div>
                         </div>
-
-                        <div className="input-field">
-                          <label htmlFor="edit-description">Description</label>
+                        <div className="edit-field">
+                          <label>Target Date</label>
                           <input
-                            type="text"
-                            id="edit-description"
-                            name="description"
-                            value={editingGoal.description}
-                            onChange={handleEditInputChange}
-                            required
+                            type="date"
+                            value={editingGoal.targetDate}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, date: e.target.value })}
                           />
                         </div>
-
-                        <div className="input-field">
-                          <label htmlFor="edit-completed">Status</label>
+                      </div>
+                      <div className="edit-form-row">
+                        <div className="edit-field">
+                          <label>Description</label>
+                          <input
+                            type="text"
+                            value={editingGoal.description}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, description: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                      <div className="edit-form-row">
+                        <div className="edit-field">
                           <div className="checkbox-field">
                             <input
                               type="checkbox"
-                              id="edit-completed"
-                              name="completed"
+                              id={`edit-completed-${goal.id}`}
                               checked={editingGoal.completed}
                               onChange={(e) =>
                                 setEditingGoal({
@@ -450,20 +419,19 @@ function SavingGoal() {
                                 })
                               }
                             />
-                            <label htmlFor="edit-completed" className="checkbox-label">
+                            <label htmlFor={`edit-completed-${goal.id}`} className="checkbox-label">
                               Mark as completed
                             </label>
                           </div>
                         </div>
-
-                        <div className="edit-actions">
-                          <button className="btn-secondary" onClick={cancelEditGoal}>
-                            Discard Changes
-                          </button>
-                          <button className="btn-primary" onClick={saveEditGoal}>
-                            Save Changes
-                          </button>
-                        </div>
+                      </div>
+                      <div className="edit-actions">
+                        <button className="btn-secondary" onClick={cancelEditGoal}>
+                          Cancel
+                        </button>
+                        <button className="btn-primary" onClick={saveEditGoal}>
+                          Save
+                        </button>
                       </div>
                     </div>
                   ) : (
