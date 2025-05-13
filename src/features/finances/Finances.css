@@ -1,5 +1,3 @@
-/* Finance-specific styles that aren't shared across the app */
-
 /* Chart containers - restored to original larger size */
 .chart-wrapper {
   height: var(--chart-height) !important;
@@ -134,7 +132,7 @@
 /* Ensure the income list has proper spacing */
 .income-list,
 .expenses-list {
-  max-height: 400px !important;  
+  max-height: 400px !important;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -142,15 +140,25 @@
   margin: 8px 0 0 0; /* Add top margin to match the chart spacing */
 }
 
+/* Improve the income/expense item layout */
 .income-item,
 .expense-item {
   display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
+  flex-direction: column;
+  padding: 16px;
   border-bottom: 1px solid #f0f0f0;
   margin: 0;
-  min-height: 100px; /* Use min-height instead of fixed height */
+  min-height: auto;
   box-sizing: border-box;
+  width: 100%;
+}
+
+/* When not editing or deleting, use row layout */
+.income-item:not(:has(.edit-transaction-form, .delete-confirm)),
+.expense-item:not(:has(.edit-transaction-form, .delete-confirm)) {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .income-info,
@@ -198,6 +206,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  min-width: 120px; /* Add minimum width to prevent squishing */
 }
 
 .income-amount {
@@ -467,9 +476,10 @@
 /* Edit and Delete functionality styles */
 .transaction-actions {
   display: flex;
-  gap: 0px; /* Remove gap completely */
+  gap: 8px; /* Increase gap for better spacing */
   margin-top: 4px;
   align-items: center;
+  justify-content: flex-end; /* Align buttons to the right */
 }
 
 /* Make the action buttons more compact */
@@ -477,17 +487,18 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   border-radius: 4px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0px; /* Remove left margin completely */
+  margin-left: 4px;
 }
 
 .edit-btn {
   color: #8a4baf;
+  background-color: rgba(138, 75, 175, 0.05);
 }
 
 .edit-btn:hover {
@@ -496,6 +507,7 @@
 
 .delete-btn {
   color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.05);
 }
 
 .delete-btn:hover {
@@ -509,28 +521,33 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 16px;
   background-color: #fff9f9;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid #ffdddd;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .delete-confirm p {
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
   font-weight: 500;
+  color: #333;
 }
 
 .delete-actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
 .delete-actions button {
-  padding: 4px 12px;
+  padding: 8px 16px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .btn-secondary {
@@ -538,27 +555,40 @@
   color: #333;
 }
 
+.btn-secondary:hover {
+  background-color: #e5e5e5;
+}
+
 .btn-danger {
   background-color: #e74c3c;
   color: white;
 }
 
+.btn-danger:hover {
+  background-color: #d44333;
+}
+
 /* Edit transaction form */
 .edit-transaction-form {
   width: 100%;
-  padding: 12px;
+  padding: 16px;
   background-color: #f9f0ff;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid #e6d0ff;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .edit-form-row {
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
-.edit-field {
+.edit-form-row .edit-field {
   flex: 1;
+  min-width: 200px; /* Ensure fields don't get too narrow */
 }
 
 .edit-field label {
@@ -572,30 +602,157 @@
 .edit-field input,
 .edit-field select {
   width: 100%;
-  padding: 6px 8px;
+  padding: 8px 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
+  background-color: white;
+  height: 38px; /* Set a consistent height for all inputs */
+  box-sizing: border-box;
 }
 
-.edit-actions {
+/* Replace the existing input-with-icon styles with the ones from App.css */
+
+/* Edit transaction form input with icon */
+.edit-field .input-with-icon {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
-.edit-actions button {
-  padding: 6px 12px;
-  border-radius: 4px;
+.edit-field .input-with-icon:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+.edit-field .input-with-icon .input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 48px;
+  font-size: 16px;
+  color: var(--color-text-light);
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.edit-field .input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  padding-left: 12px;
   border: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  outline: none;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: white;
+  width: 100%;
 }
 
-.btn-primary {
-  background: linear-gradient(to right, #e94caf, #8a4baf);
-  color: white;
+/* Global input with icon styles */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  font-size: 16px;
+  color: var(--color-text-light);
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  padding-left: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: white;
+}
+
+/* Fix placeholder alignment in amount fields */
+.input-with-icon input::placeholder {
+  color: #999;
+}
+
+/* Amount input with dollar sign styling */
+.input-field .input-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.input-field .input-with-icon .input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 48px;
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.input-field .input-with-icon input {
+  padding-left: 12px;
+  text-align: left;
+}
+
+/* Make sure all other inputs match the height */
+.input-field input:not(.input-with-icon input),
+.input-field select {
+  height: 48px;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 10px;
+  font-weight: 500;
+  color: #666;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.input-with-icon input {
+  padding-left: 24px;
+  width: 100%;
+}
+
+.edit-field .input-with-icon {
+  width: 100%;
+}
+
+.edit-field .input-with-icon input {
+  width: 100%;
+}
+
+/* Also fix the main form input with icon */
+
+/* Make sure all form inputs have consistent height */
+.input-field input,
+.input-field select {
+  height: 38px;
+  box-sizing: border-box;
 }
 
 /* Add a new class for the transaction info row */
@@ -603,4 +760,11 @@
   display: flex;
   align-items: center;
   gap: 4px; /* Reduce the gap between amount and buttons */
+}
+
+input,
+select,
+.input-with-icon input {
+  height: 38px;
+  box-sizing: border-box;
 }

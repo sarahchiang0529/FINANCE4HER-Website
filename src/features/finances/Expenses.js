@@ -275,15 +275,14 @@ function Expenses() {
 
   // Function to start editing an expense entry
   const startEditExpense = (entry) => {
+    // Make a deep copy to avoid modifying the original entry
     setEditingExpense({
       ...entry,
       amount: entry.value.toString(),
     })
-  }
 
-  // Function to cancel editing
-  const cancelEditExpense = () => {
-    setEditingExpense(null)
+    // Clear any delete confirmation that might be showing
+    setShowDeleteConfirm(null)
   }
 
   // Function to save edited expense
@@ -293,9 +292,16 @@ function Expenses() {
       return
     }
 
+    // Validate amount is a valid number
+    const numericAmount = Number.parseFloat(editingExpense.amount)
+    if (isNaN(numericAmount)) {
+      alert("Please enter a valid amount.")
+      return
+    }
+
     const updatedEntry = {
       ...editingExpense,
-      value: Number.parseFloat(editingExpense.amount),
+      value: numericAmount,
     }
     delete updatedEntry.amount
 
@@ -319,6 +325,10 @@ function Expenses() {
     const updatedExpenses = expenses.filter((entry) => entry.id !== expenseId)
     setExpenses(updatedExpenses)
     setShowDeleteConfirm(null)
+  }
+
+  const cancelEditExpense = () => {
+    setEditingExpense(null)
   }
 
   return (

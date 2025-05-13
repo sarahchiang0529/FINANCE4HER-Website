@@ -273,10 +273,14 @@ function Income() {
 
   // Function to start editing an income entry
   const startEditIncome = (entry) => {
+    // Make a deep copy to avoid modifying the original entry
     setEditingIncome({
       ...entry,
       amount: entry.value.toString(),
     })
+
+    // Clear any delete confirmation that might be showing
+    setShowDeleteConfirm(null)
   }
 
   // Function to cancel editing
@@ -291,9 +295,16 @@ function Income() {
       return
     }
 
+    // Validate amount is a valid number
+    const numericAmount = Number.parseFloat(editingIncome.amount)
+    if (isNaN(numericAmount)) {
+      alert("Please enter a valid amount.")
+      return
+    }
+
     const updatedEntry = {
       ...editingIncome,
-      value: Number.parseFloat(editingIncome.amount),
+      value: numericAmount,
     }
     delete updatedEntry.amount
 
