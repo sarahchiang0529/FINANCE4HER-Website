@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import "./SavingGoal.css"
-import { Plus, Target, Calendar, DollarSign, Edit, Trash2, CheckCircle, X } from 'lucide-react'
+import { Plus, Target, CheckCircle, X, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
 
 function SavingGoal() {
@@ -178,6 +178,7 @@ function SavingGoal() {
   }
 
   const filteredGoals = goals.filter((goal) => (activeTab === "current" ? !goal.completed : goal.completed))
+  const hasGoals = filteredGoals.length > 0
 
   return (
     <div className="container">
@@ -304,11 +305,12 @@ function SavingGoal() {
         </div>
 
         <div className="tab-content">
-          {filteredGoals.length === 0 ? (
-            <div className="no-goals-message">
-              <EmptyState 
-                title={`No ${activeTab} goals found`} 
-                message="Start by adding a new goal above!" 
+          {!hasGoals ? (
+            <div className="goal-card" style={{ marginTop: "32px" }}>
+              <EmptyState
+                title={`No ${activeTab} goals found`}
+                message="Start by adding a new goal using the form above. Your goal will appear here."
+                icon={<Target size={48} className="text-[#8a4baf]" />}
               />
             </div>
           ) : (

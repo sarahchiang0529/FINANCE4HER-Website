@@ -253,6 +253,8 @@ body {
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
 }
 
 .wide {
@@ -296,7 +298,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-height: 250px; /* Ensure minimum height for empty state */
+  padding: 16px 0;
+  flex: 1;
 }
 
 .goal {
@@ -361,7 +364,6 @@ body {
   flex-direction: column;
   gap: 12px;
   color: #000;
-  min-height: 250px; /* Ensure minimum height for empty state */
 }
 
 .transaction {
@@ -485,35 +487,49 @@ body {
 }
 
 /* Empty state styling */
-.empty-state {
+.empty-state-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+  width: 100%;
+  flex: 1;
+}
+
+/* Universal Empty State Component */
+.universal-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 100%;
   padding: 32px;
-  min-height: 200px;
+  width: 100%;
 }
 
-.empty-state-icon {
+.universal-empty-state-icon {
   margin-bottom: 16px;
 }
 
-.empty-state-icon svg {
+.universal-empty-state-icon svg {
   color: #8a4baf;
 }
 
-.empty-state h3 {
+.universal-empty-state h3 {
   font-size: 18px;
   font-weight: 600;
   color: #333;
   margin: 0 0 8px 0;
 }
 
-.empty-state p {
+.universal-empty-state p {
   font-size: 14px;
   color: #666;
   margin: 0;
   max-width: 400px;
+}
+
+/* Button container */
+.button-container {
+  margin-top: 16px;
 }

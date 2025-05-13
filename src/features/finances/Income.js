@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from "lucide-react"
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, DollarSign } from 'lucide-react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
@@ -327,18 +327,15 @@ function Income() {
         </div>
       </div>
 
-      {/* Empty State - Shown when no income data exists */}
-      {!hasIncomeData && (
-        <div className="empty-state-card">
+      {!hasIncomeData ? (
+        <div className="income-data-card" style={{ marginTop: "32px" }}>
           <EmptyState
             title="No Income Data Yet"
             message="Start by adding your income transactions using the form above. Your income data will appear here."
+            icon={<DollarSign size={48} className="text-[#8a4baf]" />}
           />
         </div>
-      )}
-
-      {/* Income Data Display - Only shown when income data exists */}
-      {hasIncomeData && (
+      ) : (
         <>
           {/* View Selector - Toggle between transactions and monthly summary views */}
           <div className="view-selector">

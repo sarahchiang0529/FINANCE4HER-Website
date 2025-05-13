@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
-import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp, Target } from "lucide-react"
 import { faqItems } from "../faq/FAQ"
 import EmptyState from "../../components/EmptyState"
 
@@ -161,10 +161,13 @@ const Dashboard = () => {
                     </button>
                   </>
                 ) : (
-                  <EmptyState
-                    title="No Saving Goals Yet"
-                    message="Start by creating saving goals to track your financial progress. Your goals will appear here."
-                  />
+                  <div className="empty-state-wrapper">
+                    <EmptyState
+                      title="No Saving Goals Yet"
+                      message="Start by creating saving goals to track your financial progress. Your goals will appear here."
+                      icon={<Target size={48} className="text-[#8a4baf]" />}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -173,12 +176,12 @@ const Dashboard = () => {
       </div>
 
       <div className="bottom-grid">
-        <div className="transactions-card">
+        <div className="chart-card">
           <div className="card-header">
             <h3 className="card-title">Recent Transactions</h3>
             <p className="card-description">Your latest financial activities</p>
           </div>
-          <div className="transactions-list">
+          <div className="goals-container">
             {transactions && transactions.length > 0 ? (
               <>
                 {/* Display only the most recent 7 transactions */}
@@ -206,33 +209,31 @@ const Dashboard = () => {
                   </div>
                 ))}
 
-                <div className="button-row">
-                  <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
-                    View All Income
-                    <ArrowRight className="btn-icon-sm" />
-                  </button>
-
-                  <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
-                    View All Expenses
+                <div className="button-container">
+                  <button className="btn-outline btn-sm full-width" onClick={() => history.push("/income")}>
+                    View All Transactions
                     <ArrowRight className="btn-icon-sm" />
                   </button>
                 </div>
               </>
             ) : (
-              <EmptyState
-                title="No Transaction Data Yet"
-                message="Start by adding your income/expense transactions through the respective forms. Your transaction data will appear here."
-              />
+              <div className="empty-state-wrapper">
+                <EmptyState
+                  title="No Transaction Data Yet"
+                  message="Start by adding your income/expense transactions through the respective forms. Your transaction data will appear here."
+                  icon={<CreditCard size={48} className="text-[#8a4baf]" />}
+                />
+              </div>
             )}
           </div>
         </div>
 
-        <div className="faqs-card">
+        <div className="chart-card">
           <div className="card-header">
             <h3 className="card-title">FAQ</h3>
             <p className="card-description">A set of frequently asked questions and answers</p>
           </div>
-          <div className="faqs-list">
+          <div className="goals-container">
             {faqs.map((faq, index) => (
               <div key={index} className="faq">
                 <h4 className="faq-title">{faq.question}</h4>

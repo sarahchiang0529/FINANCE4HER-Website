@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp } from 'lucide-react'
+import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, CreditCard } from 'lucide-react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
 import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent"
@@ -338,18 +338,15 @@ function Expenses() {
         </div>
       </div>
 
-      {/* Empty State - Shown when no expense data exists */}
-      {!hasExpenseData && (
-        <div className="empty-state-card">
+      {!hasExpenseData ? (
+        <div className="expense-data-card" style={{ marginTop: "32px" }}>
           <EmptyState
             title="No Expense Data Yet"
             message="Start by adding your expense transactions using the form above. Your expense data will appear here."
+            icon={<CreditCard size={48} className="text-[#8a4baf]" />}
           />
         </div>
-      )}
-
-      {/* Expense Data Display - Only shown when expense data exists */}
-      {hasExpenseData && (
+      ) : (
         <>
           {/* View Selector - Toggle between transactions and monthly summary views */}
           <div className="view-selector">

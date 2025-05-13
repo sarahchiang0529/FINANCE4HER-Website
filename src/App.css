@@ -613,9 +613,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 100%;
   padding: 32px;
   min-height: 250px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .universal-empty-state-icon {
@@ -638,10 +635,4 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #666;
   margin: 0;
   max-width: 400px;
-}
-
-/* Target Icon SVG for Empty States */
-.target-icon-svg {
-  width: 48px;
-  height: 48px;
 }
