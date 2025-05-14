@@ -1,3 +1,5 @@
+/* Finance-specific styles that aren't shared across the app */
+
 /* Chart containers - restored to original larger size */
 .chart-wrapper {
   height: var(--chart-height) !important;
@@ -487,31 +489,28 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px;
+  padding: 4px;
   border-radius: 4px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 4px;
+  color: #8a4baf; /* Make all buttons purple by default */
 }
 
-.edit-btn {
-  color: #8a4baf;
-  background-color: rgba(138, 75, 175, 0.05);
-}
-
-.edit-btn:hover {
-  background-color: rgba(138, 75, 175, 0.1);
+.action-btn:hover {
+  color: #e94caf; /* Turn pink on hover */
+  transform: translateY(-1px); /* Add subtle lift effect on hover */
 }
 
 .delete-btn {
-  color: #e74c3c;
-  background-color: rgba(231, 76, 60, 0.05);
+  color: #8a4baf; /* Make delete button purple to match f button */
+  background-color: transparent; /* Remove background */
 }
 
 .delete-btn:hover {
-  background-color: rgba(231, 76, 60, 0.1);
+  color: #e94caf; /* Make delete button turn pink on hover */
+  background-color: transparent; /* Remove background on hover */
 }
 
 /* Delete confirmation */
@@ -540,6 +539,7 @@
   gap: 12px;
 }
 
+/* Make both buttons in delete confirmation the same height */
 .delete-actions button {
   padding: 8px 16px;
   border-radius: 4px;
@@ -548,11 +548,17 @@
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
+  height: 36px; /* Set a fixed height for both buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .btn-secondary {
   background-color: #f1f1f1;
   color: #333;
+  height: 36px; /* Ensure consistent height */
 }
 
 .btn-secondary:hover {
@@ -562,6 +568,7 @@
 .btn-danger {
   background-color: #e74c3c;
   color: white;
+  height: 36px; /* Ensure consistent height */
 }
 
 .btn-danger:hover {
