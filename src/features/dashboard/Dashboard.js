@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
@@ -16,16 +18,46 @@ const Dashboard = () => {
   // Maximum number of goals to display
   const MAX_GOALS = 4
   // Maximum number of transactions to display
-  const MAX_TRANSACTIONS = 7
+  const MAX_TRANSACTIONS = 6
 
-  // Fetch FAQ items when component mounts
+  // Update the useEffect hook to fetch transactions from localStorage
   useEffect(() => {
-    // Get the first 3 FAQ items
+    // Get the first 4 FAQ items
     setFaqs(faqItems.slice(0, 3))
 
-    // In a real app, you would fetch transactions from your data source here
-    // For now, we'll just set an empty array
-    setTransactions([])
+    // Fetch transactions from localStorage
+    const fetchTransactions = () => {
+      try {
+        // Get income data
+        const storedIncome = localStorage.getItem("incomeData")
+        let incomeData = []
+        if (storedIncome) {
+          incomeData = JSON.parse(storedIncome).map((item) => ({
+            ...item,
+            type: "income",
+          }))
+        }
+
+        // Get expense data
+        const storedExpenses = localStorage.getItem("expensesData")
+        let expenseData = []
+        if (storedExpenses) {
+          expenseData = JSON.parse(storedExpenses).map((item) => ({
+            ...item,
+            type: "expense",
+          }))
+        }
+
+        // Combine and sort by date (newest first)
+        const combined = [...incomeData, ...expenseData]
+        const sorted = combined.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+        setTransactions(sorted)
+      } catch (error) {
+        console.error("Error fetching transactions:", error)
+        setTransactions([])
+      }
+    }
 
     // Fetch saving goals from localStorage or API
     const fetchSavingGoals = () => {
@@ -48,8 +80,46 @@ const Dashboard = () => {
       }
     }
 
+    fetchTransactions()
     fetchSavingGoals()
   }, [])
+
+  // Format date string to readable format (e.g., "Jan 1, 2023")
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
+
+  // Get category icon based on category name and transaction type
+  const getCategoryIcon = (category, type) => {
+    const INCOME_ICONS = {
+      Salary: "💼",
+      "Government Benefit": "🏛️",
+      Investments: "📈",
+      Other: "📋",
+      default: "💰",
+    }
+
+    const EXPENSE_ICONS = {
+      Food: "🍽️",
+      Transport: "🚌",
+      Entertainment: "🎬",
+      Shopping: "🛍️",
+      Utilities: "💡",
+      Other: "📋",
+      default: "💸",
+    }
+
+    if (type === "income") {
+      return INCOME_ICONS[category] || INCOME_ICONS.default
+    } else {
+      return EXPENSE_ICONS[category] || EXPENSE_ICONS.default
+    }
+  }
 
   return (
     <div className="dashboard-container">
@@ -184,36 +254,50 @@ const Dashboard = () => {
           <div className="goals-container">
             {transactions && transactions.length > 0 ? (
               <>
-                {/* Display only the most recent 7 transactions */}
-                {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
-                  <div key={transaction.id} className="transaction">
-                    <div className="transaction-info">
-                      <div className={`transaction-icon ${transaction.type}`}>
-                        {transaction.type === "income" ? (
-                          <DollarSign className="icon-sm" />
-                        ) : (
-                          <CreditCard className="icon-sm" />
-                        )}
+                <div className="transactions-list">
+                  {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
+                    <div
+                      key={`${transaction.type}-${transaction.id}`}
+                      className={transaction.type === "income" ? "income-item" : "expense-item"}
+                    >
+                      <div className={transaction.type === "income" ? "income-info" : "expense-info"}>
+                        <div className={transaction.type === "income" ? "income-icon" : "expense-icon"}>
+                          {getCategoryIcon(transaction.category, transaction.type)}
+                        </div>
+                        <div>
+                          <div className={transaction.type === "income" ? "income-category" : "expense-category"}>
+                            {transaction.category}
+                          </div>
+                          <div className={transaction.type === "income" ? "income-description" : "expense-description"}>
+                            {transaction.description}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="transaction-title">{transaction.category}</div>
-                        <div className="transaction-subtitle">{transaction.description}</div>
+                      <div className={transaction.type === "income" ? "income-details" : "expense-details"}>
+                        <div className={transaction.type === "income" ? "income-amount" : "expense-amount"}>
+                          {transaction.type === "income"
+                            ? `$${transaction.value.toFixed(2)}`
+                            : `-$${transaction.value.toFixed(2)}`}
+                        </div>
+                        <div className={transaction.type === "income" ? "income-date" : "expense-date"}>
+                          {formatDate(transaction.date)}
+                        </div>
                       </div>
                     </div>
-                    <div className="transaction-amount">
-                      <div className={`amount ${transaction.type}`}>
-                        {transaction.type === "income" ? "+" : "-"}${transaction.amount.toFixed(2)}
-                      </div>
-                      <div className="transaction-date">{transaction.date}</div>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
 
                 <div className="button-container">
-                  <button className="btn-outline btn-sm full-width" onClick={() => history.push("/income")}>
-                    View All Transactions
-                    <ArrowRight className="btn-icon-sm" />
-                  </button>
+                  <div className="button-row">
+                    <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
+                      View All Income
+                      <ArrowRight className="btn-icon-sm" />
+                    </button>
+                    <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
+                      View All Expenses
+                      <ArrowRight className="btn-icon-sm" />
+                    </button>
+                  </div>
                 </div>
               </>
             ) : (
