@@ -35,20 +35,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
   }, [transactions])
 
   const chartData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
         label: "Income",
@@ -150,12 +137,15 @@ const MonthlyComparisonChart = ({ transactions }) => {
             size: 10,
           },
           callback: (value) => {
-            if (value >= 1000) {
-              return "$" + value / 1000 + "k"
+            if (value >= 1000000000) {
+              return "$" + (value / 1000000000).toFixed(1) + "B"
+            } else if (value >= 1000000) {
+              return "$" + (value / 1000000).toFixed(1) + "M"
+            } else if (value >= 1000) {
+              return "$" + (value / 1000).toFixed(1) + "k"
             }
             return "$" + value
           },
-          maxTicksLimit: 6,
           padding: 5,
         },
         beginAtZero: true,
@@ -177,10 +167,10 @@ const MonthlyComparisonChart = ({ transactions }) => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <div className="monthly-chart-container">
+    <div className="monthly-comparison-container">
       {hasData ? (
-        <div className="monthly-chart-wrapper">
-          <div className="monthly-chart-legend">
+        <div className="monthly-comparison-wrapper">
+          <div className="monthly-comparison-legend">
             <div className="monthly-legend-item">
               <span className="monthly-legend-color monthly-income-color"></span>
               <span>Income</span>
@@ -190,13 +180,10 @@ const MonthlyComparisonChart = ({ transactions }) => {
               <span>Expenses</span>
             </div>
           </div>
-          <Bar 
-            data={chartData} 
-            options={options} 
-          />
+          <Bar data={chartData} options={options} />
         </div>
       ) : (
-        <div className="monthly-chart-no-data">
+        <div className="monthly-comparison-no-data">
           <p>No transaction data available for {currentYear}. Add transactions to see your monthly comparison.</p>
         </div>
       )}

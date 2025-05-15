@@ -541,3 +541,127 @@ body {
 .button-container {
   margin-top: 16px;
 }
+
+/* Chart container styles - updated for consistent height */
+.chart-container {
+  height: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
+}
+
+/* Chart card styles */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card .card-header {
+  flex: 0 0 auto;
+}
+
+.chart-card .chart-container {
+  flex: 1;
+}
+
+/* Ensure the chart card has enough height */
+.chart-card.wide {
+  min-height: 400px;
+}
+
+/* Income/expense items */
+.income-item,
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.income-item:last-child,
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.income-info,
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.income-icon,
+.expense-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: #f5f5f5;
+}
+
+.income-category,
+.expense-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.income-description,
+.expense-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.income-details,
+.expense-details {
+  text-align: right;
+}
+
+.income-amount,
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.income-amount {
+  color: #10b981;
+}
+
+.expense-amount {
+  color: #ef4444;
+}
+
+.income-date,
+.expense-date {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Add this to your Dashboard.css file */
+.daily-chart-wrapper,
+.monthly-comparison-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+/* Ensure both chart containers have the same height */
+.chart-container {
+  height: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
+}
+
+/* Make sure both chart wrappers fill their containers */
+.daily-chart-wrapper canvas,
+.monthly-comparison-wrapper canvas {
+  height: 100% !important;
+  width: 100% !important;
+}

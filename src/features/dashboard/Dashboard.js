@@ -385,7 +385,8 @@ const Dashboard = () => {
                     : "Monthly income vs expenses for the year"}
                 </p>
               </div>
-              <div className="chart-container">
+              {/* Updated chart container with fixed height and flex styling */}
+              <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column" }}>
                 {activeChartTab === "daily" ? (
                   <DailyCashflowChart transactions={transactions} />
                 ) : (
