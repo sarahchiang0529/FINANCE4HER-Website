@@ -1,11 +1,27 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
 import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp, Target } from "lucide-react"
 import { faqItems } from "../faq/FAQ"
 import EmptyState from "../../components/EmptyState"
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js"
+
+// Add these imports after the other imports
+import DailyCashflowChart from "../dashboard/charts/DailyCashflowChart/DailyCashflowChart"
+import MonthlyComparisonChart from "../dashboard/charts/MonthlyComparisonChart/MonthlyComparisonChart"
+
+// Register ChartJS components
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
 const Dashboard = () => {
   const history = useHistory()
@@ -19,6 +35,8 @@ const Dashboard = () => {
   const MAX_GOALS = 4
   // Maximum number of transactions to display
   const MAX_TRANSACTIONS = 6
+  // State for active chart tab
+  const [activeChartTab, setActiveChartTab] = useState("daily")
 
   // Update the useEffect hook to fetch transactions from localStorage
   useEffect(() => {
@@ -121,6 +139,155 @@ const Dashboard = () => {
     }
   }
 
+  // Get date range for current month
+  const getCurrentMonthRange = () => {
+    const now = new Date()
+    return {
+      start: new Date(now.getFullYear(), now.getMonth(), 1),
+      end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
+    }
+  }
+
+  // Get date range for previous month
+  const getPreviousMonthRange = () => {
+    const now = new Date()
+    return {
+      start: new Date(now.getFullYear(), now.getMonth() - 1, 1),
+      end: new Date(now.getFullYear(), now.getMonth(), 0),
+    }
+  }
+
+  // Filter transactions by date range
+  const filterTransactionsByDateRange = (transactions, dateRange) => {
+    return transactions.filter((item) => {
+      const itemDate = new Date(item.date)
+      return itemDate >= dateRange.start && itemDate <= dateRange.end
+    })
+  }
+
+  // Calculate total for transactions
+  const calculateTotal = (transactions) => {
+    return transactions.reduce((sum, item) => sum + item.value, 0)
+  }
+
+  // Calculate monthly income
+  const calculateMonthlyIncome = () => {
+    const currentMonthRange = getCurrentMonthRange()
+    const currentMonthIncome = filterTransactionsByDateRange(
+      transactions.filter((t) => t.type === "income"),
+      currentMonthRange,
+    )
+    return calculateTotal(currentMonthIncome)
+  }
+
+  // Calculate monthly expenses
+  const calculateMonthlyExpenses = () => {
+    const currentMonthRange = getCurrentMonthRange()
+    const currentMonthExpenses = filterTransactionsByDateRange(
+      transactions.filter((t) => t.type === "expense"),
+      currentMonthRange,
+    )
+    return calculateTotal(currentMonthExpenses)
+  }
+
+  // Calculate total balance
+  const calculateTotalBalance = () => {
+    const totalIncome = calculateTotal(transactions.filter((t) => t.type === "income"))
+    const totalExpenses = calculateTotal(transactions.filter((t) => t.type === "expense"))
+    return totalIncome - totalExpenses
+  }
+
+  // Calculate income change percentage
+  const calculateIncomeChange = () => {
+    const currentMonthIncome = calculateMonthlyIncome()
+
+    const previousMonthRange = getPreviousMonthRange()
+    const previousMonthIncome = calculateTotal(
+      filterTransactionsByDateRange(
+        transactions.filter((t) => t.type === "income"),
+        previousMonthRange,
+      ),
+    )
+
+    if (previousMonthIncome === 0) return 0
+    return ((currentMonthIncome - previousMonthIncome) / previousMonthIncome) * 100
+  }
+
+  // Calculate expense change percentage
+  const calculateExpenseChange = () => {
+    const currentMonthExpenses = calculateMonthlyExpenses()
+
+    const previousMonthRange = getPreviousMonthRange()
+    const previousMonthExpenses = calculateTotal(
+      filterTransactionsByDateRange(
+        transactions.filter((t) => t.type === "expense"),
+        previousMonthRange,
+      ),
+    )
+
+    if (previousMonthExpenses === 0) return 0
+    return ((currentMonthExpenses - previousMonthExpenses) / previousMonthExpenses) * 100
+  }
+
+  // Calculate balance change percentage
+  const calculateBalanceChange = () => {
+    const currentMonthIncome = calculateMonthlyIncome()
+    const currentMonthExpenses = calculateMonthlyExpenses()
+    const currentBalance = currentMonthIncome - currentMonthExpenses
+
+    const previousMonthRange = getPreviousMonthRange()
+    const previousMonthIncome = calculateTotal(
+      filterTransactionsByDateRange(
+        transactions.filter((t) => t.type === "income"),
+        previousMonthRange,
+      ),
+    )
+    const previousMonthExpenses = calculateTotal(
+      filterTransactionsByDateRange(
+        transactions.filter((t) => t.type === "expense"),
+        previousMonthRange,
+      ),
+    )
+    const previousBalance = previousMonthIncome - previousMonthExpenses
+
+    if (previousBalance === 0) return 0
+    return ((currentBalance - previousBalance) / Math.abs(previousBalance)) * 100
+  }
+
+  // Calculate savings rate
+  const calculateSavingsRate = () => {
+    const monthlyIncome = calculateMonthlyIncome()
+    const monthlyExpenses = calculateMonthlyExpenses()
+
+    if (monthlyIncome === 0) return 0
+    const savingsRate = ((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100
+    return Math.round(savingsRate)
+  }
+
+  // Calculate savings rate change
+  const calculateSavingsRateChange = () => {
+    const currentSavingsRate = calculateSavingsRate()
+
+    const previousMonthRange = getPreviousMonthRange()
+    const previousMonthIncome = calculateTotal(
+      filterTransactionsByDateRange(
+        transactions.filter((t) => t.type === "income"),
+        previousMonthRange,
+      ),
+    )
+    const previousMonthExpenses = calculateTotal(
+      filterTransactionsByDateRange(
+        transactions.filter((t) => t.type === "expense"),
+        previousMonthRange,
+      ),
+    )
+
+    if (previousMonthIncome === 0) return 0
+    const previousSavingsRate = Math.round(((previousMonthIncome - previousMonthExpenses) / previousMonthIncome) * 100)
+
+    return currentSavingsRate - previousSavingsRate
+  }
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -147,8 +314,11 @@ const Dashboard = () => {
             <div className="stat-title">Total Balance</div>
             <DollarSign className="stat-icon" />
           </div>
-          <div className="stat-value">$2,500.00</div>
-          <div className={`stat-change positive`}>+20.1% from last month</div>
+          <div className="stat-value">${calculateTotalBalance().toFixed(2)}</div>
+          <div className={`stat-change ${calculateBalanceChange() >= 0 ? "positive" : "negative"}`}>
+            {calculateBalanceChange() >= 0 ? "+" : ""}
+            {calculateBalanceChange().toFixed(1)}% from last month
+          </div>
         </div>
 
         <div className="stat-card">
@@ -156,8 +326,11 @@ const Dashboard = () => {
             <div className="stat-title">Monthly Income</div>
             <TrendingUp className="stat-icon" />
           </div>
-          <div className="stat-value">$1,800.00</div>
-          <div className={`stat-change positive`}>+10.5% from last month</div>
+          <div className="stat-value">${calculateMonthlyIncome().toFixed(2)}</div>
+          <div className={`stat-change ${calculateIncomeChange() >= 0 ? "positive" : "negative"}`}>
+            {calculateIncomeChange() >= 0 ? "+" : ""}
+            {calculateIncomeChange().toFixed(1)}% from last month
+          </div>
         </div>
 
         <div className="stat-card">
@@ -165,8 +338,11 @@ const Dashboard = () => {
             <div className="stat-title">Monthly Expenses</div>
             <CreditCard className="stat-icon" />
           </div>
-          <div className="stat-value">$1,200.00</div>
-          <div className={`stat-change negative`}>-5.2% from last month</div>
+          <div className="stat-value">${calculateMonthlyExpenses().toFixed(2)}</div>
+          <div className={`stat-change ${calculateExpenseChange() >= 0 ? "positive" : "negative"}`}>
+            {calculateExpenseChange() >= 0 ? "+" : ""}
+            {calculateExpenseChange().toFixed(1)}% from last month
+          </div>
         </div>
 
         <div className="stat-card">
@@ -174,16 +350,28 @@ const Dashboard = () => {
             <div className="stat-title">Savings Rate</div>
             <ArrowUpRight className="stat-icon" />
           </div>
-          <div className="stat-value">33%</div>
-          <div className={`stat-change positive`}>+7% from last month</div>
+          <div className="stat-value">{calculateSavingsRate()}%</div>
+          <div className={`stat-change ${calculateSavingsRateChange() >= 0 ? "positive" : "negative"}`}>
+            {calculateSavingsRateChange() >= 0 ? "+" : ""}
+            {calculateSavingsRateChange()}% from last month
+          </div>
         </div>
       </div>
 
       <div className="tabs-container">
         <div className="tabs">
-          <button className="tab active">Overview</button>
-          <button className="tab">Monthly</button>
-          <button className="tab">Yearly</button>
+          <button
+            className={`tab ${activeChartTab === "daily" ? "active" : ""}`}
+            onClick={() => setActiveChartTab("daily")}
+          >
+            Daily
+          </button>
+          <button
+            className={`tab ${activeChartTab === "monthly" ? "active" : ""}`}
+            onClick={() => setActiveChartTab("monthly")}
+          >
+            Monthly
+          </button>
         </div>
 
         <div className="tab-content">
@@ -191,10 +379,18 @@ const Dashboard = () => {
             <div className="chart-card wide">
               <div className="card-header">
                 <h3 className="card-title">Financial Summary</h3>
-                <p className="card-description">Your income and expenses for the current month</p>
+                <p className="card-description">
+                  {activeChartTab === "daily"
+                    ? "Daily cashflow for the current month"
+                    : "Monthly income vs expenses for the year"}
+                </p>
               </div>
-              <div className="chart-placeholder">
-                <p>Income vs Expenses Chart</p>
+              <div className="chart-container">
+                {activeChartTab === "daily" ? (
+                  <DailyCashflowChart transactions={transactions} />
+                ) : (
+                  <MonthlyComparisonChart transactions={transactions} />
+                )}
               </div>
             </div>
 
