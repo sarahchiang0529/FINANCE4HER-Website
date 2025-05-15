@@ -61,7 +61,7 @@ function Expenses() {
     amount: "",
     description: "",
     category: "",
-    date: new Date().toISOString().split("T")[0], // Default to today's date in YYYY-MM-DD format
+    date: "", // Empty string instead of default date
   })
 
   // Refs - used for scrolling to elements
@@ -208,7 +208,7 @@ function Expenses() {
       amount: "",
       description: "",
       category: "",
-      date: new Date().toISOString().split("T")[0],
+      date: "",
     })
   }, [newExpense])
 
@@ -383,6 +383,7 @@ function Expenses() {
                   type="date"
                   id="date"
                   name="date"
+                  placeholder="yyyy-mm-dd"
                   value={newExpense.date}
                   onChange={handleInputChange}
                   required

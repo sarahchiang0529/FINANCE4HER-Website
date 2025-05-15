@@ -59,7 +59,7 @@ function Income() {
     amount: "",
     description: "",
     category: "",
-    date: new Date().toISOString().split("T")[0], // Default to today's date in YYYY-MM-DD format
+    date: "", // Empty string instead of default date
   })
 
   // Refs - used for scrolling to elements
@@ -206,7 +206,7 @@ function Income() {
       amount: "",
       description: "",
       category: "",
-      date: new Date().toISOString().split("T")[0],
+      date: "",
     })
   }, [newIncome])
 
@@ -376,7 +376,15 @@ function Income() {
 
               <div className="input-field">
                 <label htmlFor="date">Date</label>
-                <input type="date" id="date" name="date" value={newIncome.date} onChange={handleInputChange} required />
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  placeholder="yyyy-mm-dd"
+                  value={newIncome.date}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
 
               <div className="input-field">
