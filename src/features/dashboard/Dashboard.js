@@ -1,7 +1,16 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useHistory } from "react-router-dom"
 import "./Dashboard.css"
-import { ArrowRight, ArrowUpRight, CreditCard, DollarSign, TrendingUp, Target } from "lucide-react"
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CreditCard,
+  DollarSign,
+  TrendingUp,
+  Target,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react"
 import { faqItems } from "../faq/FAQ"
 import EmptyState from "../../components/EmptyState"
 import {
@@ -37,6 +46,51 @@ const Dashboard = () => {
   const MAX_TRANSACTIONS = 6
   // State for active chart tab
   const [activeChartTab, setActiveChartTab] = useState("daily")
+
+  // State for date selection
+  const [selectedMonth, setSelectedMonth] = useState(new Date())
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+
+  // Format date to month and year format (e.g., "January 2023")
+  const formatMonthYear = (date) => {
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+  }
+
+  // Handle month navigation (previous/next)
+  const handleMonthChange = (direction) => {
+    const newMonth = new Date(selectedMonth)
+    if (direction === "prev") {
+      newMonth.setMonth(newMonth.getMonth() - 1)
+    } else {
+      newMonth.setMonth(newMonth.getMonth() + 1)
+    }
+    setSelectedMonth(newMonth)
+  }
+
+  // Handle year navigation (previous/next)
+  const handleYearChange = (direction) => {
+    const newYear = direction === "prev" ? selectedYear - 1 : selectedYear + 1
+    setSelectedYear(newYear)
+  }
+
+  // Filter transactions by selected month
+  const filteredTransactions = useMemo(() => {
+    const startOfMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), 1)
+    const endOfMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0)
+
+    return transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.date)
+      return transactionDate >= startOfMonth && transactionDate <= endOfMonth
+    })
+  }, [transactions, selectedMonth])
+
+  // Filter transactions by selected year
+  const filteredTransactionsByYear = useMemo(() => {
+    return transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.date)
+      return transactionDate.getFullYear() === selectedYear
+    })
+  }, [transactions, selectedYear])
 
   // Update the useEffect hook to fetch transactions from localStorage
   useEffect(() => {
@@ -376,7 +430,7 @@ const Dashboard = () => {
 
         <div className="tab-content">
           <div className="charts-grid">
-            <div className="chart-card wide">
+            <div className="chart-card">
               <div className="card-header">
                 <h3 className="card-title">Financial Summary</h3>
                 <p className="card-description">
@@ -385,12 +439,36 @@ const Dashboard = () => {
                     : "Monthly income vs expenses for the year"}
                 </p>
               </div>
+
+              {/* Month/Year selector inside the card */}
+              {activeChartTab === "daily" ? (
+                <div className="month-selector">
+                  <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
+                    <ChevronDown size={20} />
+                  </button>
+                  <h3 className="selected-month">{formatMonthYear(selectedMonth)}</h3>
+                  <button className="month-nav-button" onClick={() => handleMonthChange("next")}>
+                    <ChevronUp size={20} />
+                  </button>
+                </div>
+              ) : (
+                <div className="month-selector">
+                  <button className="month-nav-button" onClick={() => handleYearChange("prev")}>
+                    <ChevronDown size={20} />
+                  </button>
+                  <h3 className="selected-month">{selectedYear}</h3>
+                  <button className="month-nav-button" onClick={() => handleYearChange("next")}>
+                    <ChevronUp size={20} />
+                  </button>
+                </div>
+              )}
+
               {/* Updated chart container with fixed height and flex styling */}
               <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column" }}>
                 {activeChartTab === "daily" ? (
-                  <DailyCashflowChart transactions={transactions} />
+                  <DailyCashflowChart transactions={filteredTransactions} />
                 ) : (
-                  <MonthlyComparisonChart transactions={transactions} />
+                  <MonthlyComparisonChart transactions={filteredTransactionsByYear} />
                 )}
               </div>
             </div>
