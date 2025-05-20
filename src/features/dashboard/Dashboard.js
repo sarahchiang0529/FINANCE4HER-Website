@@ -343,6 +343,10 @@ const Dashboard = () => {
     return currentSavingsRate - previousSavingsRate
   }
 
+  // Check if there's data for the current selection
+  const hasDataDaily = filteredTransactions && filteredTransactions.length > 0
+  const hasDataMonthly = filteredTransactionsByYear && filteredTransactionsByYear.length > 0
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -441,28 +445,38 @@ const Dashboard = () => {
                 </p>
               </div>
 
-              {/* Month/Year selector inside the card */}
-              {activeChartTab === "daily" ? (
-                <div className="month-selector">
-                  <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
-                    <ChevronDown size={20} />
-                  </button>
-                  <h3 className="selected-month">{formatMonthYear(selectedMonth)}</h3>
-                  <button className="month-nav-button" onClick={() => handleMonthChange("next")}>
-                    <ChevronUp size={20} />
-                  </button>
-                </div>
-              ) : (
-                <div className="month-selector">
-                  <button className="month-nav-button" onClick={() => handleYearChange("prev")}>
-                    <ChevronDown size={20} />
-                  </button>
-                  <h3 className="selected-month">{selectedYear}</h3>
-                  <button className="month-nav-button" onClick={() => handleYearChange("next")}>
-                    <ChevronUp size={20} />
-                  </button>
-                </div>
-              )}
+              {/* Always show the date selector, but style it differently when no data */}
+              <div
+                className={`date-selector-container ${activeChartTab === "daily" ? (hasDataDaily ? "" : "no-data") : hasDataMonthly ? "" : "no-data"}`}
+              >
+                {activeChartTab === "daily" ? (
+                  <div className="dashboard-month-selector">
+                    <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
+                      <ChevronDown size={20} />
+                    </button>
+                    <div className="selected-date">
+                      <Calendar className="date-icon" size={16} />
+                      <h3 className="selected-month">{selectedMonth.toLocaleDateString("en-US", { month: "long" })}</h3>
+                    </div>
+                    <button className="month-nav-button" onClick={() => handleMonthChange("next")}>
+                      <ChevronUp size={20} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="dashboard-month-selector">
+                    <button className="month-nav-button" onClick={() => handleYearChange("prev")}>
+                      <ChevronDown size={20} />
+                    </button>
+                    <div className="selected-date">
+                      <Calendar className="date-icon" size={16} />
+                      <h3 className="selected-month">{selectedYear}</h3>
+                    </div>
+                    <button className="month-nav-button" onClick={() => handleYearChange("next")}>
+                      <ChevronUp size={20} />
+                    </button>
+                  </div>
+                )}
+              </div>
 
               {/* Chart container with fixed height and flex styling */}
               <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column" }}>
