@@ -51,9 +51,9 @@ const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
 
-  // Format date to month and year format (e.g., "January 2023")
+  // Format date to month format only (e.g., "May")
   const formatMonthYear = (date) => {
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    return date.toLocaleDateString("en-US", { month: "long" })
   }
 
   // Handle month navigation (previous/next)
@@ -342,6 +342,8 @@ const Dashboard = () => {
     return currentSavingsRate - previousSavingsRate
   }
 
+  const hasData = transactions && transactions.length > 0
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -440,18 +442,17 @@ const Dashboard = () => {
                 </p>
               </div>
 
-              {/* Month/Year selector inside the card */}
-              {activeChartTab === "daily" ? (
+              {activeChartTab === "daily" && hasData ? (
                 <div className="month-selector">
                   <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
                     <ChevronDown size={20} />
                   </button>
-                  <h3 className="selected-month">{formatMonthYear(selectedMonth)}</h3>
+                  <h3 className="selected-month">{selectedMonth.toLocaleDateString("en-US", { month: "long" })}</h3>
                   <button className="month-nav-button" onClick={() => handleMonthChange("next")}>
                     <ChevronUp size={20} />
                   </button>
                 </div>
-              ) : (
+              ) : activeChartTab === "monthly" && hasData ? (
                 <div className="month-selector">
                   <button className="month-nav-button" onClick={() => handleYearChange("prev")}>
                     <ChevronDown size={20} />
@@ -461,7 +462,7 @@ const Dashboard = () => {
                     <ChevronUp size={20} />
                   </button>
                 </div>
-              )}
+              ) : null}
 
               {/* Updated chart container with fixed height and flex styling */}
               <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column" }}>
