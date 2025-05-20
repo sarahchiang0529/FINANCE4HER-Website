@@ -307,7 +307,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px 0;
   flex: 1;
 }
 
@@ -372,6 +371,23 @@ body {
   display: flex;
   flex-direction: column;
   color: #000;
+}
+
+/* New transaction item styles with colored backgrounds */
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.transaction-item.income {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.transaction-item.expense {
+  background-color: rgba(231, 76, 60, 0.1);
 }
 
 .transaction {
@@ -450,6 +466,92 @@ body {
 }
 
 .transaction-date {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Income/expense items */
+.dashboard-income-item,
+.dashboard-expense-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.dashboard-income-item {
+  background-color: rgba(46, 204, 113, 0.1); /* Light green background for income */
+}
+
+.dashboard-expense-item {
+  background-color: rgba(231, 76, 60, 0.1); /* Light red background for expenses */
+}
+
+/* Remove the border-bottom since we're using card-style items now */
+.dashboard-income-item,
+.edashboard-xpense-item {
+  border-bottom: none;
+}
+
+.dashboard-income-item:last-child,
+.dashboard-expense-item:last-child {
+  border-bottom: none;
+}
+
+.dashboard-income-info,
+.dashboard-expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-income-icon,
+.dashboard-texpense-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: #f5f5f5;
+}
+
+.income-category,
+.expense-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.income-description,
+.expense-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.income-details,
+.expense-details {
+  text-align: right;
+}
+
+.income-amount,
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.income-amount {
+  color: #10b981;
+}
+
+.expense-amount {
+  color: #ef4444;
+}
+
+.income-date,
+.expense-date {
   font-size: 12px;
   color: #666;
 }
@@ -537,11 +639,6 @@ body {
   max-width: 400px;
 }
 
-/* Button container */
-.button-container {
-  margin-top: 16px;
-}
-
 /* Chart container styles - updated for consistent height */
 .chart-container {
   height: 350px;
@@ -571,77 +668,6 @@ body {
   min-height: 400px;
 }
 
-/* Income/expense items */
-.income-item,
-.expense-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.income-item:last-child,
-.expense-item:last-child {
-  border-bottom: none;
-}
-
-.income-info,
-.expense-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.income-icon,
-.expense-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  background: #f5f5f5;
-}
-
-.income-category,
-.expense-category {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-.income-description,
-.expense-description {
-  font-size: 12px;
-  color: #666;
-}
-
-.income-details,
-.expense-details {
-  text-align: right;
-}
-
-.income-amount,
-.expense-amount {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.income-amount {
-  color: #10b981;
-}
-
-.expense-amount {
-  color: #ef4444;
-}
-
-.income-date,
-.expense-date {
-  font-size: 12px;
-  color: #666;
-}
-
 /* Add this to your Dashboard.css file */
 .daily-chart-wrapper,
 .monthly-comparison-wrapper {
@@ -664,4 +690,110 @@ body {
 .monthly-comparison-wrapper canvas {
   height: 100% !important;
   width: 100% !important;
+}
+
+.date-selector-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.date-selector-container.no-data {
+  opacity: 0.7;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  padding: 8px 15px;
+}
+
+.dashboard-month-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selected-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f8f8f8;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.date-icon {
+  color: #8a4baf;
+}
+
+.selected-month {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+}
+
+.month-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background-color: white;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-nav-button:hover {
+  background-color: #f0f0f0;
+  color: #8a4baf;
+}
+
+.date-selector-container.no-data .month-nav-button {
+  background-color: #f8f8f8;
+}
+
+.date-selector-container.no-data .selected-date {
+  background-color: #f0f0f0;
+  border-color: #e5e5e5;
+}
+
+.chart-no-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: #999;
+  font-size: 16px;
+  text-align: center;
+  padding: 20px;
+}
+
+.chart-no-data p {
+  margin-bottom: 15px;
+}
+
+.chart-no-data .add-data-btn {
+  padding: 8px 16px;
+  background: linear-gradient(to right, #e94caf, #8a4baf);
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-no-data .add-data-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

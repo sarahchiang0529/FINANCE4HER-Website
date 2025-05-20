@@ -10,6 +10,7 @@ import {
   Target,
   ChevronUp,
   ChevronDown,
+  Calendar,
 } from "lucide-react"
 import { faqItems } from "../faq/FAQ"
 import EmptyState from "../../components/EmptyState"
@@ -41,9 +42,9 @@ const Dashboard = () => {
   // State for saving goals
   const [savingGoals, setSavingGoals] = useState([])
   // Maximum number of goals to display
-  const MAX_GOALS = 4
+  const MAX_GOALS = 5
   // Maximum number of transactions to display
-  const MAX_TRANSACTIONS = 6
+  const MAX_TRANSACTIONS = 4
   // State for active chart tab
   const [activeChartTab, setActiveChartTab] = useState("daily")
 
@@ -94,8 +95,8 @@ const Dashboard = () => {
 
   // Update the useEffect hook to fetch transactions from localStorage
   useEffect(() => {
-    // Get the first 4 FAQ items
-    setFaqs(faqItems.slice(0, 3))
+    // Get the first 2 FAQ items
+    setFaqs(faqItems.slice(0, 2))
 
     // Fetch transactions from localStorage
     const fetchTransactions = () => {
@@ -342,8 +343,6 @@ const Dashboard = () => {
     return currentSavingsRate - previousSavingsRate
   }
 
-  const hasData = transactions && transactions.length > 0
-
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -442,17 +441,18 @@ const Dashboard = () => {
                 </p>
               </div>
 
-              {activeChartTab === "daily" && hasData ? (
+              {/* Month/Year selector inside the card */}
+              {activeChartTab === "daily" ? (
                 <div className="month-selector">
                   <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
                     <ChevronDown size={20} />
                   </button>
-                  <h3 className="selected-month">{selectedMonth.toLocaleDateString("en-US", { month: "long" })}</h3>
+                  <h3 className="selected-month">{formatMonthYear(selectedMonth)}</h3>
                   <button className="month-nav-button" onClick={() => handleMonthChange("next")}>
                     <ChevronUp size={20} />
                   </button>
                 </div>
-              ) : activeChartTab === "monthly" && hasData ? (
+              ) : (
                 <div className="month-selector">
                   <button className="month-nav-button" onClick={() => handleYearChange("prev")}>
                     <ChevronDown size={20} />
@@ -462,9 +462,9 @@ const Dashboard = () => {
                     <ChevronUp size={20} />
                   </button>
                 </div>
-              ) : null}
+              )}
 
-              {/* Updated chart container with fixed height and flex styling */}
+              {/* Chart container with fixed height and flex styling */}
               <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column" }}>
                 {activeChartTab === "daily" ? (
                   <DailyCashflowChart transactions={filteredTransactions} />
@@ -527,65 +527,64 @@ const Dashboard = () => {
             <h3 className="card-title">Recent Transactions</h3>
             <p className="card-description">Your latest financial activities</p>
           </div>
-          <div className="goals-container">
-            {transactions && transactions.length > 0 ? (
-              <>
-                <div className="transactions-list">
-                  {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
-                    <div
-                      key={`${transaction.type}-${transaction.id}`}
-                      className={transaction.type === "income" ? "income-item" : "expense-item"}
-                    >
-                      <div className={transaction.type === "income" ? "income-info" : "expense-info"}>
-                        <div className={transaction.type === "income" ? "income-icon" : "expense-icon"}>
-                          {getCategoryIcon(transaction.category, transaction.type)}
-                        </div>
-                        <div>
-                          <div className={transaction.type === "income" ? "income-category" : "expense-category"}>
-                            {transaction.category}
-                          </div>
-                          <div className={transaction.type === "income" ? "income-description" : "expense-description"}>
-                            {transaction.description}
-                          </div>
-                        </div>
+
+          {transactions && transactions.length > 0 ? (
+            <>
+              <div className="transactions-list">
+                {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
+                  <div
+                    key={`${transaction.type}-${transaction.id}`}
+                    className={transaction.type === "income" ? "dashboard-income-item" : "dashboard-expense-item"}
+                  >
+                    <div className={transaction.type === "income" ? "income-info" : "expense-info"}>
+                      <div className={transaction.type === "income" ? "income-icon" : "expense-icon"}>
+                        {getCategoryIcon(transaction.category, transaction.type)}
                       </div>
-                      <div className={transaction.type === "income" ? "income-details" : "expense-details"}>
-                        <div className={transaction.type === "income" ? "income-amount" : "expense-amount"}>
-                          {transaction.type === "income"
-                            ? `$${transaction.value.toFixed(2)}`
-                            : `-$${transaction.value.toFixed(2)}`}
+                      <div>
+                        <div className={transaction.type === "income" ? "income-category" : "expense-category"}>
+                          {transaction.category}
                         </div>
-                        <div className={transaction.type === "income" ? "income-date" : "expense-date"}>
-                          {formatDate(transaction.date)}
+                        <div className={transaction.type === "income" ? "income-description" : "expense-description"}>
+                          {transaction.description}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                <div className="button-container">
-                  <div className="button-row">
-                    <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
-                      View All Income
-                      <ArrowRight className="btn-icon-sm" />
-                    </button>
-                    <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
-                      View All Expenses
-                      <ArrowRight className="btn-icon-sm" />
-                    </button>
+                    <div className={transaction.type === "income" ? "income-details" : "expense-details"}>
+                      <div className={transaction.type === "income" ? "income-amount" : "expense-amount"}>
+                        {transaction.type === "income"
+                          ? `$${transaction.value.toFixed(2)}`
+                          : `-$${transaction.value.toFixed(2)}`}
+                      </div>
+                      <div className={transaction.type === "income" ? "income-date" : "expense-date"}>
+                        {formatDate(transaction.date)}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </>
-            ) : (
-              <div className="empty-state-wrapper">
-                <EmptyState
-                  title="No Transaction Data Yet"
-                  message="Start by adding your income/expense transactions through the respective forms. Your transaction data will appear here."
-                  icon={<CreditCard size={48} className="text-[#8a4baf]" />}
-                />
+                ))}
               </div>
-            )}
-          </div>
+
+              <div className="button-container">
+                <div className="button-row">
+                  <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
+                    View All Income
+                    <ArrowRight className="btn-icon-sm" />
+                  </button>
+                  <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
+                    View All Expenses
+                    <ArrowRight className="btn-icon-sm" />
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="empty-state-wrapper">
+              <EmptyState
+                title="No Transaction Data Yet"
+                message="Start by adding your income/expense transactions through the respective forms. Your transaction data will appear here."
+                icon={<CreditCard size={48} className="text-[#8a4baf]" />}
+              />
+            </div>
+          )}
         </div>
 
         <div className="chart-card">
