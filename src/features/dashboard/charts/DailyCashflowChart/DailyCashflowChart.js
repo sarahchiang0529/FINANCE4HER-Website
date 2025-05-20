@@ -3,22 +3,25 @@ import { Line } from "react-chartjs-2"
 import "./DailyCashflowChart.css"
 
 const DailyCashflowChart = ({ transactions }) => {
-  // Get current month's date range
-  const getCurrentMonthDays = () => {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-
-    return Array.from({ length: daysInMonth }, (_, i) => i + 1)
-  }
-
   // Prepare data for the chart
   const chartData = useMemo(() => {
-    const days = getCurrentMonthDays()
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth()
+    // Get the date from the first transaction to determine which month we're viewing
+    let selectedDate = new Date()
+    if (transactions.length > 0) {
+      // Find the month/year from the transactions we received
+      const dates = transactions.map((t) => new Date(t.date))
+      if (dates.length > 0) {
+        // Use the most recent transaction date to determine month/year
+        selectedDate = new Date(Math.max(...dates.map((d) => d.getTime())))
+      }
+    }
+
+    const year = selectedDate.getFullYear()
+    const month = selectedDate.getMonth()
+
+    // Get days in the selected month
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1)
 
     // Initialize arrays with zeros for each day
     const incomeData = Array(days.length).fill(0)
@@ -28,7 +31,7 @@ const DailyCashflowChart = ({ transactions }) => {
     transactions.forEach((transaction) => {
       const transactionDate = new Date(transaction.date)
 
-      // Only include transactions from current month
+      // Only include transactions from the selected month
       if (transactionDate.getMonth() === month && transactionDate.getFullYear() === year) {
         const day = transactionDate.getDate() - 1 // Array is 0-indexed
 
