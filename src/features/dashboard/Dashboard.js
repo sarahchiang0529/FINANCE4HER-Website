@@ -53,6 +53,7 @@ const Dashboard = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
 
   // Format date to month format only (e.g., "May")
+  // eslint-disable-next-line no-unused-vars
   const formatMonthYear = (date) => {
     return date.toLocaleDateString("en-US", { month: "long" })
   }
@@ -84,6 +85,11 @@ const Dashboard = () => {
       return transactionDate >= startOfMonth && transactionDate <= endOfMonth
     })
   }, [transactions, selectedMonth])
+
+  // Check if there's data for the current month
+  const hasCurrentMonthData = useMemo(() => {
+    return filteredTransactions.length > 0
+  }, [filteredTransactions])
 
   // Filter transactions by selected year
   const filteredTransactionsByYear = useMemo(() => {
@@ -194,21 +200,21 @@ const Dashboard = () => {
     }
   }
 
-  // Get date range for current month
-  const getCurrentMonthRange = () => {
-    const now = new Date()
+  // Get date range for selected month
+  const getSelectedMonthRange = () => {
     return {
-      start: new Date(now.getFullYear(), now.getMonth(), 1),
-      end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
+      start: new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), 1),
+      end: new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0),
     }
   }
 
-  // Get date range for previous month
+  // Get date range for previous month relative to selected month
   const getPreviousMonthRange = () => {
-    const now = new Date()
+    const prevMonth = new Date(selectedMonth)
+    prevMonth.setMonth(prevMonth.getMonth() - 1)
     return {
-      start: new Date(now.getFullYear(), now.getMonth() - 1, 1),
-      end: new Date(now.getFullYear(), now.getMonth(), 0),
+      start: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), 1),
+      end: new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1, 0),
     }
   }
 
@@ -220,41 +226,37 @@ const Dashboard = () => {
     })
   }
 
-  // Calculate total for transactions
+  // Calculate total from a list of transactions
   const calculateTotal = (transactions) => {
     return transactions.reduce((sum, item) => sum + item.value, 0)
   }
 
-  // Calculate monthly income
+  // Calculate monthly income for selected month only
   const calculateMonthlyIncome = () => {
-    const currentMonthRange = getCurrentMonthRange()
-    const currentMonthIncome = filterTransactionsByDateRange(
+    const selectedMonthRange = getSelectedMonthRange()
+    const selectedMonthTransactions = filterTransactionsByDateRange(
       transactions.filter((t) => t.type === "income"),
-      currentMonthRange,
+      selectedMonthRange,
     )
-    return calculateTotal(currentMonthIncome)
+    return calculateTotal(selectedMonthTransactions)
   }
 
-  // Calculate monthly expenses
+  // Calculate monthly expenses for selected month only
   const calculateMonthlyExpenses = () => {
-    const currentMonthRange = getCurrentMonthRange()
-    const currentMonthExpenses = filterTransactionsByDateRange(
+    const selectedMonthRange = getSelectedMonthRange()
+    const selectedMonthTransactions = filterTransactionsByDateRange(
       transactions.filter((t) => t.type === "expense"),
-      currentMonthRange,
+      selectedMonthRange,
     )
-    return calculateTotal(currentMonthExpenses)
-  }
-
-  // Calculate total balance
-  const calculateTotalBalance = () => {
-    const totalIncome = calculateTotal(transactions.filter((t) => t.type === "income"))
-    const totalExpenses = calculateTotal(transactions.filter((t) => t.type === "expense"))
-    return totalIncome - totalExpenses
+    return calculateTotal(selectedMonthTransactions)
   }
 
   // Calculate income change percentage
   const calculateIncomeChange = () => {
-    const currentMonthIncome = calculateMonthlyIncome()
+    // If there's no data for the current month, don't show a change
+    if (!hasCurrentMonthData) return null
+
+    const selectedMonthIncome = calculateMonthlyIncome()
 
     const previousMonthRange = getPreviousMonthRange()
     const previousMonthIncome = calculateTotal(
@@ -264,13 +266,24 @@ const Dashboard = () => {
       ),
     )
 
-    if (previousMonthIncome === 0) return 0
-    return ((currentMonthIncome - previousMonthIncome) / previousMonthIncome) * 100
+    // Handle case where previous income is zero
+    if (previousMonthIncome === 0) {
+      // If we now have income, it's a 100% increase
+      if (selectedMonthIncome > 0) return 100
+      // If we still have no income, there's no change
+      return 0
+    }
+
+    // Calculate percentage change
+    return ((selectedMonthIncome - previousMonthIncome) / previousMonthIncome) * 100
   }
 
   // Calculate expense change percentage
   const calculateExpenseChange = () => {
-    const currentMonthExpenses = calculateMonthlyExpenses()
+    // If there's no data for the current month, don't show a change
+    if (!hasCurrentMonthData) return null
+
+    const selectedMonthExpenses = calculateMonthlyExpenses()
 
     const previousMonthRange = getPreviousMonthRange()
     const previousMonthExpenses = calculateTotal(
@@ -280,37 +293,139 @@ const Dashboard = () => {
       ),
     )
 
-    if (previousMonthExpenses === 0) return 0
-    return ((currentMonthExpenses - previousMonthExpenses) / previousMonthExpenses) * 100
+    // Handle case where previous expenses are zero
+    if (previousMonthExpenses === 0) {
+      // If we now have expenses, it's a 100% increase
+      if (selectedMonthExpenses > 0) return 100
+      // If we still have no expenses, there's no change
+      return 0
+    }
+
+    // Calculate percentage change
+    return ((selectedMonthExpenses - previousMonthExpenses) / previousMonthExpenses) * 100
   }
 
-  // Calculate balance change percentage
+  // Calculate total balance up to the selected month
+  const calculateTotalBalance = () => {
+    // Get the end date of the selected month
+    const endOfSelectedMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0)
+
+    // Filter transactions up to and including the selected month
+    const relevantTransactions = transactions.filter((t) => {
+      const transactionDate = new Date(t.date)
+      return transactionDate <= endOfSelectedMonth
+    })
+
+    // Calculate income and expenses for all transactions up to the selected month
+    const totalIncome = calculateTotal(relevantTransactions.filter((t) => t.type === "income"))
+    const totalExpenses = calculateTotal(relevantTransactions.filter((t) => t.type === "expense"))
+
+    // Return the balance for all transactions up to the selected month
+    return totalIncome - totalExpenses
+  }
+
+  // Calculate balance change percentage (month over month)
   const calculateBalanceChange = () => {
-    const currentMonthIncome = calculateMonthlyIncome()
-    const currentMonthExpenses = calculateMonthlyExpenses()
-    const currentBalance = currentMonthIncome - currentMonthExpenses
+    // Calculate total balance up to the selected month
+    const currentBalance = calculateTotalBalance()
 
-    const previousMonthRange = getPreviousMonthRange()
-    const previousMonthIncome = calculateTotal(
-      filterTransactionsByDateRange(
-        transactions.filter((t) => t.type === "income"),
-        previousMonthRange,
-      ),
-    )
-    const previousMonthExpenses = calculateTotal(
-      filterTransactionsByDateRange(
-        transactions.filter((t) => t.type === "expense"),
-        previousMonthRange,
-      ),
-    )
-    const previousBalance = previousMonthIncome - previousMonthExpenses
+    // Get the end date of the previous month
+    const prevMonth = new Date(selectedMonth)
+    prevMonth.setMonth(prevMonth.getMonth() - 1)
+    const endOfPrevMonth = new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1, 0)
 
-    if (previousBalance === 0) return 0
-    return ((currentBalance - previousBalance) / Math.abs(previousBalance)) * 100
+    // Filter transactions up to and including the previous month
+    const prevMonthTransactions = transactions.filter((t) => {
+      const transactionDate = new Date(t.date)
+      return transactionDate <= endOfPrevMonth
+    })
+
+    // Calculate income and expenses for all transactions up to the previous month
+    const prevMonthIncome = calculateTotal(prevMonthTransactions.filter((t) => t.type === "income"))
+    const prevMonthExpenses = calculateTotal(prevMonthTransactions.filter((t) => t.type === "expense"))
+
+    // Calculate the previous month's balance
+    const prevBalance = prevMonthIncome - prevMonthExpenses
+
+    // If there's no change in transactions between the previous month and the selected month,
+    // return null to indicate no change
+    if (currentBalance === prevBalance) {
+      return null
+    }
+
+    // Handle case where previous balance is zero or negative
+    if (prevBalance === 0) {
+      // If we now have a positive balance, it's a 100% increase
+      if (currentBalance > 0) return 100
+      // If we now have a negative balance, it's a -100% change
+      if (currentBalance < 0) return -100
+      // If both are zero, there's no change
+      return 0
+    }
+
+    // Calculate percentage change, handling negative values properly
+    return ((currentBalance - prevBalance) / Math.abs(prevBalance)) * 100
   }
 
-  // Calculate savings rate
-  const calculateSavingsRate = () => {
+  // Calculate savings rate up to the selected month
+  const calculateAllTimeSavingsRate = () => {
+    // Get the end date of the selected month
+    const endOfSelectedMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0)
+
+    // Filter transactions up to and including the selected month
+    const relevantTransactions = transactions.filter((t) => {
+      const transactionDate = new Date(t.date)
+      return transactionDate <= endOfSelectedMonth
+    })
+
+    // Calculate income and expenses for all transactions up to the selected month
+    const totalIncome = calculateTotal(relevantTransactions.filter((t) => t.type === "income"))
+    const totalExpenses = calculateTotal(relevantTransactions.filter((t) => t.type === "expense"))
+
+    // Calculate savings rate
+    if (totalIncome === 0) return 0
+    const savingsRate = ((totalIncome - totalExpenses) / totalIncome) * 100
+    return Math.round(savingsRate)
+  }
+
+  // Calculate savings rate change (month over month)
+  const calculateSavingsRateChange = () => {
+    // Calculate savings rate up to the selected month
+    const currentSavingsRate = calculateAllTimeSavingsRate()
+
+    // Get the end date of the previous month
+    const prevMonth = new Date(selectedMonth)
+    prevMonth.setMonth(prevMonth.getMonth() - 1)
+    const endOfPrevMonth = new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1, 0)
+
+    // Filter transactions up to and including the previous month
+    const prevMonthTransactions = transactions.filter((t) => {
+      const transactionDate = new Date(t.date)
+      return transactionDate <= endOfPrevMonth
+    })
+
+    // Calculate income and expenses for all transactions up to the previous month
+    const prevMonthIncome = calculateTotal(prevMonthTransactions.filter((t) => t.type === "income"))
+    const prevMonthExpenses = calculateTotal(prevMonthTransactions.filter((t) => t.type === "expense"))
+
+    // Calculate the previous month's savings rate
+    let prevSavingsRate = 0
+    if (prevMonthIncome > 0) {
+      prevSavingsRate = Math.round(((prevMonthIncome - prevMonthExpenses) / prevMonthIncome) * 100)
+    }
+
+    // If there's no change in transactions between the previous month and the selected month,
+    // return null to indicate no change
+    if (currentSavingsRate === prevSavingsRate) {
+      return null
+    }
+
+    // Return the difference in savings rates
+    return currentSavingsRate - prevSavingsRate
+  }
+
+  // Calculate monthly savings rate for the selected month
+  const calculateMonthlySavingsRate = () => {
     const monthlyIncome = calculateMonthlyIncome()
     const monthlyExpenses = calculateMonthlyExpenses()
 
@@ -319,33 +434,24 @@ const Dashboard = () => {
     return Math.round(savingsRate)
   }
 
-  // Calculate savings rate change
-  const calculateSavingsRateChange = () => {
-    const currentSavingsRate = calculateSavingsRate()
-
-    const previousMonthRange = getPreviousMonthRange()
-    const previousMonthIncome = calculateTotal(
-      filterTransactionsByDateRange(
-        transactions.filter((t) => t.type === "income"),
-        previousMonthRange,
-      ),
-    )
-    const previousMonthExpenses = calculateTotal(
-      filterTransactionsByDateRange(
-        transactions.filter((t) => t.type === "expense"),
-        previousMonthRange,
-      ),
-    )
-
-    if (previousMonthIncome === 0) return 0
-    const previousSavingsRate = Math.round(((previousMonthIncome - previousMonthExpenses) / previousMonthIncome) * 100)
-
-    return currentSavingsRate - previousSavingsRate
-  }
-
   // Check if there's data for the current selection
   const hasDataDaily = filteredTransactions && filteredTransactions.length > 0
   const hasDataMonthly = filteredTransactionsByYear && filteredTransactionsByYear.length > 0
+
+  // Render the percentage change with appropriate styling
+  const renderPercentageChange = (change) => {
+    // If change is null (no data for current month), show neutral message
+    if (change === null) {
+      return <span className="stat-change neutral">+0.0% from last month</span>
+    }
+
+    return (
+      <span className={`stat-change ${change >= 0 ? "positive" : "negative"}`}>
+        {change >= 0 ? "+" : ""}
+        {change.toFixed(1)}% from last month
+      </span>
+    )
+  }
 
   return (
     <div className="dashboard-container">
@@ -374,10 +480,7 @@ const Dashboard = () => {
             <DollarSign className="stat-icon" />
           </div>
           <div className="stat-value">${calculateTotalBalance().toFixed(2)}</div>
-          <div className={`stat-change ${calculateBalanceChange() >= 0 ? "positive" : "negative"}`}>
-            {calculateBalanceChange() >= 0 ? "+" : ""}
-            {calculateBalanceChange().toFixed(1)}% from last month
-          </div>
+          <div className="stat-context">{renderPercentageChange(calculateBalanceChange())}</div>
         </div>
 
         <div className="stat-card">
@@ -386,10 +489,7 @@ const Dashboard = () => {
             <TrendingUp className="stat-icon" />
           </div>
           <div className="stat-value">${calculateMonthlyIncome().toFixed(2)}</div>
-          <div className={`stat-change ${calculateIncomeChange() >= 0 ? "positive" : "negative"}`}>
-            {calculateIncomeChange() >= 0 ? "+" : ""}
-            {calculateIncomeChange().toFixed(1)}% from last month
-          </div>
+          <div className="stat-context">{renderPercentageChange(calculateIncomeChange())}</div>
         </div>
 
         <div className="stat-card">
@@ -398,10 +498,7 @@ const Dashboard = () => {
             <CreditCard className="stat-icon" />
           </div>
           <div className="stat-value">${calculateMonthlyExpenses().toFixed(2)}</div>
-          <div className={`stat-change ${calculateExpenseChange() >= 0 ? "positive" : "negative"}`}>
-            {calculateExpenseChange() >= 0 ? "+" : ""}
-            {calculateExpenseChange().toFixed(1)}% from last month
-          </div>
+          <div className="stat-context">{renderPercentageChange(calculateExpenseChange())}</div>
         </div>
 
         <div className="stat-card">
@@ -409,11 +506,8 @@ const Dashboard = () => {
             <div className="stat-title">Savings Rate</div>
             <ArrowUpRight className="stat-icon" />
           </div>
-          <div className="stat-value">{calculateSavingsRate()}%</div>
-          <div className={`stat-change ${calculateSavingsRateChange() >= 0 ? "positive" : "negative"}`}>
-            {calculateSavingsRateChange() >= 0 ? "+" : ""}
-            {calculateSavingsRateChange()}% from last month
-          </div>
+          <div className="stat-value">{calculateAllTimeSavingsRate()}%</div>
+          <div className="stat-context">{renderPercentageChange(calculateSavingsRateChange())}</div>
         </div>
       </div>
 
