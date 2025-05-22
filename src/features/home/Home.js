@@ -57,7 +57,7 @@ const Home = () => {
           </div>
           <h3 className="feature-title font-secondary">Expense Management</h3>
           <p className="feature-description">Monitor your spending habits and identify areas to save.</p>
-          <div className="feature-link font-secondary">
+          <div className="feature-link">
             Manage Expenses
             <ArrowRight className="link-icon" />
           </div>
