@@ -1,6 +1,3 @@
-/* Finance-specific styles that aren't shared across the app */
-
-/* Chart containers - restored to original larger size */
 .chart-wrapper {
   height: var(--chart-height) !important;
   min-height: var(--chart-height) !important;
@@ -24,14 +21,13 @@
   position: relative;
 }
 
-/* Update the chart container wrapper to have proper spacing */
 .chart-container-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: var(--chart-height);
   width: 100%;
-  margin-top: 8px; /* Add a small margin to match the design */
+  margin-top: 8px; 
 }
 
 /* Form styles specific to finance forms */
@@ -241,6 +237,11 @@
   width: 100%;
   overflow: hidden;
   text-align: center;
+}
+
+/* Add spacing between year sections */
+.year-section:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 /* Monthly charts */
