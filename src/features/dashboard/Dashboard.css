@@ -58,11 +58,14 @@ body {
   margin: 8px 0 0 0;
 }
 
+/* Edited */
 .dashboard-actions {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 8px; /* slightly smaller space between buttons */
   margin-top: 16px;
-  justify-content: center;
+  margin-bottom: 20px; /* adds space under the buttons */
+  align-items: stretch;
 }
 
 /* Button styles */
@@ -81,10 +84,14 @@ body {
   transition: all 0.2s ease;
   min-width: 160px;
 }
-
+/* Edited */ 
 @media (min-width: 768px) {
   .dashboard-actions {
+    flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 0;
   }
 }
 
@@ -797,3 +804,4 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
