@@ -4,7 +4,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Afacad Flux", sans-serif;
   background-color: #f8eeff;
 }
 
@@ -19,6 +19,10 @@ body {
   --max-width: 1200px;
   --border-radius: 12px;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  /* Font families */
+  --font-primary: "Afacad Flux", sans-serif;
+  --font-secondary: "Barlow Condensed", sans-serif;
 
   /* Colors */
   --color-bg: white;
@@ -98,6 +102,7 @@ body {
   font-weight: 700;
   margin: 0;
   color: var(--color-text-dark);
+  font-family: var(--font-secondary);
 }
 
 .page-subtitle {
@@ -129,6 +134,7 @@ body {
   font-weight: 600;
   margin: 0 0 8px 0;
   color: var(--color-text);
+  font-family: var(--font-secondary);
 }
 
 .card-description {
@@ -144,6 +150,7 @@ body {
   margin: 0 0 8px 0;
   color: var(--color-text);
   padding-top: 0;
+  font-family: var(--font-secondary);
 }
 
 .form-subtitle {
@@ -574,6 +581,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--color-text);
   text-align: center;
   width: 100%;
+  font-family: var(--font-secondary);
 }
 
 .section-subtitle {
@@ -686,4 +694,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .input-with-icon input {
   padding-left: 12px !important; /* Reset padding-left */
+}
+
+/* Font utility classes */
+.font-primary {
+  font-family: var(--font-primary);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+.font-heading {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+}
+
+.font-body {
+  font-family: var(--font-primary);
 }

@@ -1,44 +1,43 @@
-import { Router, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
+import { Router, Route, Switch } from "react-router-dom"
+import { Container } from "reactstrap"
 
 // Import components from their actual locations
-import Loading from "./components/Common/Loading";
-import NavBar from "./components/NavBar/NavBar";
-import Footer from "./components/Footer/Footer";
-import { useAuth0 } from "@auth0/auth0-react";
-import history from "./utils/history";
-import { FinancialProvider } from "./contexts/FinancialContext";
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import Loading from "./components/Common/Loading"
+import NavBar from "./components/NavBar/NavBar"
+import Footer from "./components/Footer/Footer"
+import { useAuth0 } from "@auth0/auth0-react"
+import history from "./utils/history"
+import { FinancialProvider } from "./contexts/FinancialContext"
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"
 
 // Import feature components
-import Dashboard from "./features/dashboard/Dashboard";
-import Expenses from "./features/finances/Expenses";
-import Income from "./features/finances/Income";
-import SavingGoal from "./features/savingGoal/SavingGoal";
-import LearningResources from "./features/learningResources/LearningResources";
-import PointsRewards from "./features/pointsRewards/PointsRewards";
-import FAQ from "./features/faq/FAQ";
-import Home from "./features/home/Home";
-import FinancialOverview from "./features/financialOverview/FinancialOverview";
-import Profile from "./features/profile/Profile";
+import Dashboard from "./features/dashboard/Dashboard"
+import Expenses from "./features/finances/Expenses"
+import Income from "./features/finances/Income"
+import SavingGoal from "./features/savingGoal/SavingGoal"
+import LearningResources from "./features/learningResources/LearningResources"
+import PointsRewards from "./features/pointsRewards/PointsRewards"
+import FAQ from "./features/faq/FAQ"
+import Home from "./features/home/Home"
+import FinancialOverview from "./features/financialOverview/FinancialOverview"
+import Profile from "./features/profile/Profile"
 
 import "./App.css"
 import "./features/finances/Finances.css"
 import "./features/savingGoal/SavingGoal.css"
 
-import initFontAwesome from "./utils/initFontAwesome";
-initFontAwesome();
-
+// Note: The application uses Afacad Flux as the primary font for body text
+// and Barlow Condensed as the secondary font for headings and titles
 
 const App = () => {
-  const { isLoading, error } = useAuth0();
+  const { isLoading, error } = useAuth0()
 
   if (error) {
-    return <div>Oops... {error.message}</div>;
+    return <div>Oops... {error.message}</div>
   }
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
@@ -66,7 +65,7 @@ const App = () => {
         </Router>
       </FinancialProvider>
     </ErrorBoundary>
-  );
-};
+  )
+}
 
-export default App;
+export default App

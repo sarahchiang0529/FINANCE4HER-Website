@@ -128,3 +128,13 @@
   height: 14px;
   margin-left: 4px;
 }
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+}
