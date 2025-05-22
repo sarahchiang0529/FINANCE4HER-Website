@@ -478,6 +478,7 @@ function Income() {
           )}
 
           {/* Summary Cards - Show totals for each category */}
+          <p className="scroll-hint">← Swipe to view more categories →</p>
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
             {/* Total Income Card */}
             <div className="summary-card" style={{ flex: "1 1 0" }}>
