@@ -47,7 +47,12 @@
   justify-content: center;
   gap: var(--space-md);
 }
-
+@media (max-width: 768px) {
+  .month-selector {
+    padding-top: 20px;
+  }
+  
+}
 .selected-month {
   font-size: 18px;
   font-weight: 600;
@@ -416,9 +421,9 @@
 }
 
 .summary-card {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: none !important;
+  /* flex: 1 1 0 !important; */
+  /* min-width: 0 !important; */
+  /* max-width: none !important; */
   background: white;
   border-radius: var(--border-radius);
   padding: 16px;
