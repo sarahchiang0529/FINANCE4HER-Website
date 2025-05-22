@@ -780,3 +780,18 @@ select,
   height: 38px;
   box-sizing: border-box;
 }
+
+.scroll-hint {
+  padding-top: 8px;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 8px;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .scroll-hint {
+    display: none; /* only show on small screens */
+  }
+}
