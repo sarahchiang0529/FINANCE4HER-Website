@@ -4,7 +4,7 @@ import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "l
 import EmptyState from "../../components/EmptyState"
 import { fetchSavingCategories, saveSavingGoal, fetchSavingGoals } from "../../utils/savingGoalAPI";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import { markGoalAsCompleted } from "../../utils/savingGoalAPI";
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
@@ -166,13 +166,19 @@ function SavingGoal() {
   }
 
   // Function to toggle goal completion status
-  const toggleGoalCompletion = (goalId) => {
-    const updatedGoals = goals.map((goal) => (goal.id === goalId ? { ...goal, completed: !goal.completed } : goal))
-    setGoals(updatedGoals)
-
-    // Save to localStorage
-    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
-  }
+  const toggleGoalCompletion = async (goalId) => {
+    try {
+      const updatedGoal = await markGoalAsCompleted(goalId);
+  
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal.id === updatedGoal.id ? { ...goal, completed: true } : goal
+        )
+      );
+    } catch (error) {
+      alert("Failed to mark goal as completed.");
+    }
+  };
 
   const getCategoryIcon = (category) => {
     switch (category) {
