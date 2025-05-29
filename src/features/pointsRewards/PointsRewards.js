@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import "./PointsRewards.css"
-import { Award, Gift, TrendingUp, Calendar, CheckCircle, PiggyBank, DollarSign, BookOpen, CreditCard, AlertCircle, Zap, Users, MessageSquare } from 'lucide-react'
+import { Award, Gift, TrendingUp, Calendar, CheckCircle, PiggyBank, DollarSign, BookOpen, CreditCard, AlertCircle, Zap, Users, MessageSquare, Upload } from 'lucide-react'
 
 function PointsRewards() {
   const [currentPoints, setCurrentPoints] = useState(0)
@@ -12,6 +12,8 @@ function PointsRewards() {
   const [weeklyScore, setWeeklyScore] = useState(weeklyAssets - weeklyLiabilities)
   const [activeTab, setActiveTab] = useState("rewards")
   const [redeemedRewards, setRedeemedRewards] = useState([])
+  const [uploadedFile, setUploadedFile] = useState(null)
+
 
   // Calculate next milestone and progress
   useEffect(() => {
@@ -89,6 +91,19 @@ function PointsRewards() {
     return false
   }
 
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0]
+    if (!file) return
+    if (file.type !== 'application/pdf') {
+      alert('Please upload a PDF file.')
+      return
+    }
+    setUploadedFile(file)          // store file for UI
+    addPoints(10)                  // award 10 points
+    alert(`You've uploaded ${file.name} and earned 10 points!`)
+  }
+
+
   return (
     <div className="container">
       {showPointsAdded && (
@@ -156,7 +171,7 @@ function PointsRewards() {
 
       <div className="tabs-container">
         <div className="tabs">
-          {["rewards", "assets", "liabilities", "bonus"].map((tab) => (
+          {["rewards", "assets", "liabilities", "bonus", "upload"].map((tab) => (
             <button key={tab} className={`tab ${activeTab === tab ? "active" : ""}`} onClick={() => setActiveTab(tab)}>
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -196,13 +211,12 @@ function PointsRewards() {
               <div className="reward-card">
                 <div className="reward-card-header">
                   <div
-                    className={`reward-badge ${
-                      redeemedRewards.includes("raffle100")
+                    className={`reward-badge ${redeemedRewards.includes("raffle100")
                         ? "redeemed"
                         : !isRewardAvailable(2)
                           ? "locked"
                           : "available"
-                    }`}
+                      }`}
                   >
                     {redeemedRewards.includes("raffle100")
                       ? "Redeemed"
@@ -215,20 +229,17 @@ function PointsRewards() {
                 <h3 className="reward-title">$100 Gift Card Raffle Entry</h3>
                 <p className="reward-description">Get entered into a raffle for a $100 gift card</p>
                 <div
-                  className={`reward-icon-container ${
-                    redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
-                  }`}
+                  className={`reward-icon-container ${redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                    }`}
                 >
                   <TrendingUp
-                    className={`reward-icon ${
-                      redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
-                    }`}
+                    className={`reward-icon ${redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                      }`}
                   />
                 </div>
                 <button
-                  className={`btn-primary ${
-                    redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
-                  }`}
+                  className={`btn-primary ${redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                    }`}
                   onClick={() => redeemReward("raffle100", 100, 2)}
                   disabled={redeemedRewards.includes("raffle100") || !isRewardAvailable(2) || currentPoints < 100}
                 >
@@ -246,13 +257,12 @@ function PointsRewards() {
               <div className="reward-card">
                 <div className="reward-card-header">
                   <div
-                    className={`reward-badge ${
-                      redeemedRewards.includes("empowerherMerch")
+                    className={`reward-badge ${redeemedRewards.includes("empowerherMerch")
                         ? "redeemed"
                         : !isRewardAvailable(3)
                           ? "locked"
                           : "available"
-                    }`}
+                      }`}
                   >
                     {redeemedRewards.includes("empowerherMerch")
                       ? "Redeemed"
@@ -265,20 +275,17 @@ function PointsRewards() {
                 <h3 className="reward-title">EmpowerHERto Merch</h3>
                 <p className="reward-description">Tote bag, T-shirt, or notebook with our logo</p>
                 <div
-                  className={`reward-icon-container ${
-                    redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
-                  }`}
+                  className={`reward-icon-container ${redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                    }`}
                 >
                   <Calendar
-                    className={`reward-icon ${
-                      redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
-                    }`}
+                    className={`reward-icon ${redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                      }`}
                   />
                 </div>
                 <button
-                  className={`btn-primary ${
-                    redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
-                  }`}
+                  className={`btn-primary ${redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                    }`}
                   onClick={() => redeemReward("empowerherMerch", 200, 3)}
                   disabled={redeemedRewards.includes("empowerherMerch") || !isRewardAvailable(3) || currentPoints < 200}
                 >
@@ -493,6 +500,31 @@ function PointsRewards() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "upload" && (
+          <div className="tab-content learning-tab">
+            <h3>Upload</h3>
+            <p>Attach your PDF to earn points.</p>
+            <div className="upload-container">
+              <label htmlFor="pdf-upload" className="upload-label">
+                <Upload className="upload-icon" /> Select PDF to Upload
+              </label>
+              <input
+                id="pdf-upload"
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
+              {uploadedFile && (
+                <div className="uploaded-file-info">
+                  <CheckCircle className="uploaded-icon" />
+                  <span>{uploadedFile.name} uploaded</span>
+                </div>
+              )}
             </div>
           </div>
         )}
