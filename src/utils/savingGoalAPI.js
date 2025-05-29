@@ -54,4 +54,18 @@ export const fetchSavingGoals = async (userId) => {
       return [];
     }
   };
+
+  export async function markGoalAsCompleted(goalId) {
+    const res = await fetch(`/api/saving-goals/${goalId}/complete`, {
+      method: "POST",
+    });
+  
+    if (!res.ok) {
+      throw new Error("Failed to mark goal as completed");
+    }
+  
+    const data = await res.json();
+    return data.goal;
+  }
+  
   
