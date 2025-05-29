@@ -3,12 +3,15 @@ import "./SavingGoal.css"
 import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
 import { fetchSavingCategories } from "../../utils/savingGoalAPI";
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
   const [goals, setGoals] = useState([])
   const [categories, setCategories] = useState([]);
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
 
   const [newGoal, setNewGoal] = useState({
     name: "",
@@ -60,40 +63,55 @@ function SavingGoal() {
     }))
   }
 
-  const handleAddGoal = () => {
-    const { name, targetAmount, currentAmount, targetDate, category, description } = newGoal
-
+  const handleAddGoal = async () => {
+    const { name, targetAmount, currentAmount, targetDate, category, description } = newGoal;
+  
     if (!name || !targetAmount || !targetDate || !category || !description) {
-      alert("Please fill in all required fields.")
-      return
+      alert("Please fill in all required fields.");
+      return;
     }
-
-    const newGoalObj = {
-      id: Date.now(),
+  
+    if (!user || !user.sub) {
+      alert("User not logged in.");
+      return;
+    }
+  
+    const goalPayload = {
       name,
       category,
       targetAmount: Number.parseFloat(targetAmount),
       currentAmount: currentAmount ? Number.parseFloat(currentAmount) : 0,
       targetDate,
       description,
-      completed: false,
+      user_id: user.sub,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:3001/api/saving-goals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(goalPayload),
+      });
+  
+      if (!response.ok) throw new Error("Failed to save goal");
+  
+      const result = await response.json();
+      setGoals((prev) => [...prev, result.goal]);
+  
+      setNewGoal({
+        name: "",
+        targetAmount: "",
+        currentAmount: "",
+        targetDate: "",
+        category: "",
+        description: "",
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Error saving goal.");
     }
-
-    const updatedGoals = [...goals, newGoalObj]
-    setGoals(updatedGoals)
-
-    // Save to localStorage
-    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
-
-    setNewGoal({
-      name: "",
-      targetAmount: "",
-      currentAmount: "",
-      targetDate: "",
-      category: "",
-      description: "",
-    })
-  }
+  };
+  
 
   // Function to start editing a goal
   const startEditGoal = (goal) => {
@@ -270,7 +288,7 @@ function SavingGoal() {
                     Select a category
                   </option>
                   {categories.map((cat) => (
-                    <option key={cat.id} value={cat.name}>
+                    <option key={cat.id} value={cat.id}>
                       {cat.name}
                     </option>
                   ))}
@@ -371,7 +389,7 @@ function SavingGoal() {
                             Select a category
                           </option>
                           {categories.map((cat) => (
-                            <option key={cat.id} value={cat.name}>
+                            <option key={cat.id} value={cat.id}>
                               {cat.name}
                             </option>
                           ))}
