@@ -64,6 +64,36 @@ try {
     res.status(500).json({ error: "Internal server error" });
 }
 });
+
+// In your savinggoal.js (Express route)
+
+router.get("/saving-goals", async (req, res) => {
+    const { userId } = req.query;
+    if (!userId) return res.status(400).json({ error: "Missing userId" });
+  
+    try {
+      const { data, error } = await supabase
+        .from("savings_goal")
+        .select("*")
+        .eq("user_id", userId);
+  
+      if (error) throw error;
+  
+      const toCamelCase = (obj) =>
+        Object.fromEntries(
+          Object.entries(obj).map(([key, val]) => [
+            key.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
+            val,
+          ])
+        );
+  
+      res.json({ goals: data.map(toCamelCase) });
+    } catch (err) {
+      console.error("Fetch error:", err);
+      res.status(500).json({ error: "Failed to fetch saving goals" });
+    }
+  });
+  
   
 const toCamelCase = (obj) =>
 Object.fromEntries(

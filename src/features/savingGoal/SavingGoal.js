@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import "./SavingGoal.css"
 import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
-import { fetchSavingCategories, saveSavingGoal } from "../../utils/savingGoalAPI";
+import { fetchSavingCategories, saveSavingGoal, saveSavingGoal } from "../../utils/savingGoalAPI";
 import { useAuth0 } from "@auth0/auth0-react";
 
 
@@ -27,16 +27,16 @@ function SavingGoal() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
 
   useEffect(() => {
-    // Load goals from localStorage when component mounts
-    const storedGoals = localStorage.getItem("savingGoals")
-    if (storedGoals) {
-      try {
-        setGoals(JSON.parse(storedGoals))
-      } catch (error) {
-        console.error("Error parsing goals from localStorage:", error)
-      }
-    }
-  }, [])
+    if (!user || !user.sub) return;
+  
+    const loadGoals = async () => {
+      const data = await fetchSavingGoals(user.sub);
+      setGoals(data);
+    };
+  
+    loadGoals();
+  }, [user]);
+
   // Load categories from API when component mounts
   useEffect(() => {
     const loadCategories = async () => {

@@ -39,3 +39,19 @@ export async function fetchSavingCategories() {
       throw error;
     }
   }
+
+export const fetchSavingGoals = async (userId) => {
+    if (!userId) return [];
+  
+    try {
+      const res = await fetch(`http://localhost:3001/api/saving-goals?userId=${userId}`);
+      if (!res.ok) throw new Error("Failed to fetch goals");
+  
+      const data = await res.json();
+      return data.goals || [];
+    } catch (err) {
+      console.error("Fetch goals error:", err);
+      return [];
+    }
+  };
+  
