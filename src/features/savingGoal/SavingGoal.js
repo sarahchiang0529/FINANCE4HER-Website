@@ -2,10 +2,13 @@ import { useState, useEffect } from "react"
 import "./SavingGoal.css"
 import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
+import { fetchSavingCategories } from "../../utils/savingGoalAPI";
+
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
   const [goals, setGoals] = useState([])
+  const [categories, setCategories] = useState([]);
 
   const [newGoal, setNewGoal] = useState({
     name: "",
@@ -31,6 +34,15 @@ function SavingGoal() {
       }
     }
   }, [])
+  // Load categories from API when component mounts
+  useEffect(() => {
+    const loadCategories = async () => {
+      const data = await fetchSavingCategories();
+      setCategories(data);
+    };
+    loadCategories();
+  }, []);
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -257,11 +269,11 @@ function SavingGoal() {
                   <option value="" disabled>
                     Select a category
                   </option>
-                  <option value="Emergency">Emergency</option>
-                  <option value="Tech">Tech</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Home">Home</option>
-                  <option value="Education">Education</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -352,15 +364,18 @@ function SavingGoal() {
                         <div className="edit-field">
                           <label>Category</label>
                           <select
-                            value={editingGoal.category}
-                            onChange={(e) => setEditingGoal({ ...editingGoal, category: e.target.value })}
-                          >
-                            <option value="Emergency">Emergency</option>
-                            <option value="Tech">Tech</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Home">Home</option>
-                            <option value="Education">Education</option>
-                          </select>
+                          value={editingGoal.category}
+                          onChange={(e) => setEditingGoal({ ...editingGoal, category: e.target.value })}
+                        >
+                          <option value="" disabled>
+                            Select a category
+                          </option>
+                          {categories.map((cat) => (
+                            <option key={cat.id} value={cat.name}>
+                              {cat.name}
+                            </option>
+                          ))}
+                        </select>
                         </div>
                         <div className="edit-field">
                           <label>Target Amount</label>
