@@ -93,6 +93,25 @@ router.get("/saving-goals", async (req, res) => {
       res.status(500).json({ error: "Failed to fetch saving goals" });
     }
   });
+
+  // POST /api/saving-goals/:id/complete
+
+router.post('/api/saving-goals/:id/complete', async (req, res) => {
+    const goalId = req.params.id;
+  
+    const { data, error } = await supabase
+      .from('saving_goals') // your table name
+      .update({ completed: true })
+      .eq('id', goalId)
+      .select(); // optional: returns the updated row
+  
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  
+    res.json({ goal: data[0] });
+  });
+  
   
   
 const toCamelCase = (obj) =>
