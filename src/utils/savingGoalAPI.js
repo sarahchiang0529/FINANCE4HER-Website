@@ -1,4 +1,3 @@
-
 export async function fetchSavingCategories() {
     try {
       const response = await fetch('http://localhost:3001/api/saving-categories'); // use .env variable for production
@@ -21,3 +20,22 @@ export async function fetchSavingCategories() {
     }
   }
   
+  export async function saveSavingGoal(goalPayload) {
+    try {
+      const response = await fetch("http://localhost:3001/api/saving-goals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(goalPayload),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to save goal");
+      }
+  
+      const result = await response.json();
+      return result.goal;
+    } catch (error) {
+      console.error("Error saving goal:", error);
+      throw error;
+    }
+  }

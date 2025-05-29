@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import "./SavingGoal.css"
 import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
-import { fetchSavingCategories } from "../../utils/savingGoalAPI";
+import { fetchSavingCategories, saveSavingGoal } from "../../utils/savingGoalAPI";
 import { useAuth0 } from "@auth0/auth0-react";
 
 
@@ -78,7 +78,7 @@ function SavingGoal() {
   
     const goalPayload = {
       name,
-      category,
+      category, // This is the category ID now
       targetAmount: Number.parseFloat(targetAmount),
       currentAmount: currentAmount ? Number.parseFloat(currentAmount) : 0,
       targetDate,
@@ -87,16 +87,8 @@ function SavingGoal() {
     };
   
     try {
-      const response = await fetch("http://localhost:3001/api/saving-goals", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(goalPayload),
-      });
-  
-      if (!response.ok) throw new Error("Failed to save goal");
-  
-      const result = await response.json();
-      setGoals((prev) => [...prev, result.goal]);
+      const savedGoal = await saveSavingGoal(goalPayload);
+      setGoals((prev) => [...prev, savedGoal]);
   
       setNewGoal({
         name: "",
@@ -107,11 +99,10 @@ function SavingGoal() {
         description: "",
       });
     } catch (err) {
-      console.error(err);
       alert("Error saving goal.");
     }
   };
-  
+
 
   // Function to start editing a goal
   const startEditGoal = (goal) => {
