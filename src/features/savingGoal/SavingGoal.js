@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import "./SavingGoal.css"
 import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
-import { fetchSavingCategories, saveSavingGoal, saveSavingGoal } from "../../utils/savingGoalAPI";
+import { fetchSavingCategories, saveSavingGoal, fetchSavingGoals } from "../../utils/savingGoalAPI";
 import { useAuth0 } from "@auth0/auth0-react";
 
 
