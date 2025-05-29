@@ -120,7 +120,7 @@ function SavingGoal() {
 
   const saveEditGoal = () => {
     if (
-      !editingGoal.name ||
+      !editingGoal.goalName ||
       !editingGoal.targetAmount ||
       !editingGoal.targetDate ||
       !editingGoal.category ||
@@ -476,7 +476,7 @@ function SavingGoal() {
                           </div>
                         </div>
 
-                        <h3 className="goal-title">{goal.name}</h3>
+                        <h3 className="goal-title">{goal.goalName}</h3>
                         <p className="goal-description">{goal.description}</p>
 
                         <div className="goal-progress-container">
