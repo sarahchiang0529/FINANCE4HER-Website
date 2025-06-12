@@ -6,8 +6,14 @@ const { createClient } = require("@supabase/supabase-js");
 const supabaseUrl = "https://hotylxrgwkghsjhyudvh.supabase.co";
 const supabaseKey = process.env.supabaseKey;
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 // GET /api/saving-categories
+const toCamelCase = (obj) =>
+  Object.fromEntries(
+    Object.entries(obj).map(([key, val]) => [
+      key.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
+      val,
+    ])
+  );
 router.get("/saving-categories", async (req, res) => {
   try {
     const { data, error } = await supabase.from("categories").select("id, name");
@@ -79,13 +85,7 @@ router.get("/saving-goals", async (req, res) => {
   
       if (error) throw error;
   
-      const toCamelCase = (obj) =>
-        Object.fromEntries(
-          Object.entries(obj).map(([key, val]) => [
-            key.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
-            val,
-          ])
-        );
+     
   
       res.json({ goals: data.map(toCamelCase) });
     } catch (err) {
@@ -164,13 +164,7 @@ router.put("/saving-goals/:id", async (req, res) => {
       return res.status(500).json({ error: "Failed to update goal" });
     }
 
-    const toCamelCase = (obj) =>
-      Object.fromEntries(
-        Object.entries(obj).map(([key, val]) => [
-          key.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
-          val,
-        ])
-      );
+
 
     res.json({ goal: toCamelCase(data) });
   } catch (err) {
