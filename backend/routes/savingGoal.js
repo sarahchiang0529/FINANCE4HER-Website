@@ -128,5 +128,56 @@ router.get("/saving-goals", async (req, res) => {
     res.json({ goal: data });
   });
   
+  // PUT /api/saving-goals/:id
+router.put("/saving-goals/:id", async (req, res) => {
+  const goalId = req.params.id;
+  const {
+    name,
+    category,
+    targetAmount,
+    currentAmount,
+    targetDate,
+    description,
+  } = req.body;
+
+  if (!name || !category || !targetAmount || !targetDate || !description) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("savings_goal")
+      .update({
+        goal_name: name,
+        category_id: category,
+        target_amount: targetAmount,
+        current_amount: currentAmount,
+        target_date: targetDate,
+        description,
+      })
+      .eq("id", goalId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Update error:", error);
+      return res.status(500).json({ error: "Failed to update goal" });
+    }
+
+    const toCamelCase = (obj) =>
+      Object.fromEntries(
+        Object.entries(obj).map(([key, val]) => [
+          key.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
+          val,
+        ])
+      );
+
+    res.json({ goal: toCamelCase(data) });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 module.exports = router;

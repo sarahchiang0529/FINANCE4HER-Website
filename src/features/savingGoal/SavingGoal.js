@@ -5,6 +5,7 @@ import EmptyState from "../../components/EmptyState"
 import { fetchSavingCategories, saveSavingGoal, fetchSavingGoals } from "../../utils/savingGoalAPI";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toggleGoalCompletionAPI } from "../../utils/savingGoalAPI";
+import { updateSavingGoal } from "../../utils/savingGoalAPI";
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
@@ -54,7 +55,19 @@ function SavingGoal() {
       [name]: value,
     }))
   }
-
+  const handleEdit = (goal) => {
+    setEditingGoal({
+      id: goal.id,
+      name: goal.goalName || goal.name || "", // Ensure name is set
+      category: goal.categoryId || goal.category || "", // ID for select
+      targetAmount: goal.targetAmount?.toString() || "",
+      currentAmount: goal.currentAmount?.toString() || "",
+      targetDate: goal.targetDate?.split("T")[0] || "",
+      description: goal.description || "",
+      completed: goal.completed || false,
+    });
+  };
+  
   const handleEditInputChange = (e) => {
     const { name, value } = e.target
     setEditingGoal((prev) => ({
@@ -108,17 +121,22 @@ function SavingGoal() {
   const startEditGoal = (goal) => {
     setEditingGoal({
       ...goal,
+      name: goal.goalName || goal.name || "",
+      category: goal.categoryId || goal.category || "",
       targetAmount: goal.targetAmount.toString(),
       currentAmount: goal.currentAmount.toString(),
-    })
-  }
+      targetDate: goal.targetDate,
+      description: goal.description || "",
+      completed: goal.completed || false,
+    });
+  };
 
   // Function to cancel editing
   const cancelEditGoal = () => {
     setEditingGoal(null)
   }
 
-  const saveEditGoal = () => {
+  const saveEditGoal = async () => {
     if (
       !editingGoal.goalName ||
       !editingGoal.targetAmount ||
@@ -126,24 +144,28 @@ function SavingGoal() {
       !editingGoal.category ||
       !editingGoal.description
     ) {
-      alert("Please fill in all required fields.")
-      return
+      alert("Please fill in all required fields.");
+      return;
     }
-
+  
     const updatedGoal = {
       ...editingGoal,
-      targetAmount: Number.parseFloat(editingGoal.targetAmount),
-      currentAmount: editingGoal.currentAmount ? Number.parseFloat(editingGoal.currentAmount) : 0,
+      targetAmount: parseFloat(editingGoal.targetAmount),
+      currentAmount: editingGoal.currentAmount ? parseFloat(editingGoal.currentAmount) : 0,
+    };
+  
+    try {
+      const savedGoal = await updateSavingGoal(updatedGoal);
+      const updatedGoals = goals.map((goal) =>
+        goal.id === savedGoal.id ? savedGoal : goal
+      );
+      setGoals(updatedGoals);
+      setEditingGoal(null);
+    } catch (err) {
+      alert("Failed to save goal changes.");
+      console.error(err);
     }
-
-    const updatedGoals = goals.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal))
-    setGoals(updatedGoals)
-
-    // Save to localStorage
-    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
-
-    setEditingGoal(null)
-  }
+  };
 
   // Function to confirm deletion
   const confirmDeleteGoal = (goalId) => {
@@ -382,9 +404,7 @@ function SavingGoal() {
                           value={editingGoal.category}
                           onChange={(e) => setEditingGoal({ ...editingGoal, category: e.target.value })}
                         >
-                          <option value="" disabled>
-                            Select a category
-                          </option>
+                          <option value="">Select category</option>
                           {categories.map((cat) => (
                             <option key={cat.id} value={cat.id}>
                               {cat.name}
@@ -421,7 +441,8 @@ function SavingGoal() {
                           <input
                             type="date"
                             value={editingGoal.targetDate}
-                            onChange={(e) => setEditingGoal({ ...editingGoal, date: e.target.value })}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, targetDate: e.target.value })}
+
                           />
                         </div>
                       </div>

@@ -67,3 +67,24 @@ export const fetchSavingGoals = async (userId) => {
     const data = await res.json();
     return data.goal;
   }
+
+  export async function updateSavingGoal(goal) {
+    try {
+      const response = await fetch(`http://localhost:3001/api/saving-goals/${goal.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(goal),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update goal");
+      }
+  
+      const result = await response.json();
+      return result.goal;
+    } catch (error) {
+      console.error("Error updating goal:", error);
+      throw error;
+    }
+  }
+  
