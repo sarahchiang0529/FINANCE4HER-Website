@@ -55,17 +55,15 @@ export const fetchSavingGoals = async (userId) => {
     }
   };
 
-  export async function markGoalAsCompleted(goalId) {
-    const res = await fetch(`/api/saving-goals/${goalId}/complete`, {
+  export async function toggleGoalCompletionAPI(goalId) {
+    const res = await fetch(`http://localhost:3001/api/saving-goals/${goalId}/toggle-complete`, {
       method: "POST",
     });
   
     if (!res.ok) {
-      throw new Error("Failed to mark goal as completed");
+      throw new Error("Failed to toggle goal completion");
     }
   
     const data = await res.json();
     return data.goal;
   }
-  
-  

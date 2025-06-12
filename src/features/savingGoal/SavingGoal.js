@@ -4,7 +4,7 @@ import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "l
 import EmptyState from "../../components/EmptyState"
 import { fetchSavingCategories, saveSavingGoal, fetchSavingGoals } from "../../utils/savingGoalAPI";
 import { useAuth0 } from "@auth0/auth0-react";
-import { markGoalAsCompleted } from "../../utils/savingGoalAPI";
+import { toggleGoalCompletionAPI } from "../../utils/savingGoalAPI";
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
@@ -168,15 +168,15 @@ function SavingGoal() {
   // Function to toggle goal completion status
   const toggleGoalCompletion = async (goalId) => {
     try {
-      const updatedGoal = await markGoalAsCompleted(goalId);
+      const updatedGoal = await toggleGoalCompletionAPI(goalId);
   
       setGoals((prevGoals) =>
         prevGoals.map((goal) =>
-          goal.id === updatedGoal.id ? { ...goal, completed: true } : goal
+          goal.id === updatedGoal.id ? { ...goal, completed: updatedGoal.completed } : goal
         )
       );
     } catch (error) {
-      alert("Failed to mark goal as completed.");
+      alert("Failed to toggle goal completion.");
     }
   };
 

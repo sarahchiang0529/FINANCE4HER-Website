@@ -96,30 +96,37 @@ router.get("/saving-goals", async (req, res) => {
 
   // POST /api/saving-goals/:id/complete
 
-router.post('/saving-goals/:id/complete', async (req, res) => {
+  router.post('/saving-goals/:id/toggle-complete', async (req, res) => {
     const goalId = req.params.id;
   
-    const { data, error } = await supabase
-      .from('saving_goals') // your table name
-      .update({ completed: true })
+    // First, fetch current state
+    const { data: currentData, error: fetchError } = await supabase
+      .from('savings_goal')
+      .select('completed')
       .eq('id', goalId)
-      .select(); // optional: returns the updated row
+      .single();
+  
+    if (fetchError) {
+      console.error(fetchError);
+      return res.status(500).json({ error: fetchError.message });
+    }
+  
+    const newStatus = !currentData.completed;
+  
+    const { data, error } = await supabase
+      .from('savings_goal')
+      .update({ completed: newStatus })
+      .eq('id', goalId)
+      .select()
+      .single();
   
     if (error) {
+      console.error(error);
       return res.status(500).json({ error: error.message });
     }
   
-    res.json({ goal: data[0] });
+    res.json({ goal: data });
   });
   
-  
-  
-const toCamelCase = (obj) =>
-Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [
-    key.replace(/_([a-z])/g, (_, char) => char.toUpperCase()),
-    value,
-    ])
-);
 
 module.exports = router;
