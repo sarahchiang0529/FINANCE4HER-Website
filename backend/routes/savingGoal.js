@@ -96,7 +96,7 @@ router.get("/saving-goals", async (req, res) => {
 
   // POST /api/saving-goals/:id/complete
 
-router.post('/api/saving-goals/:id/complete', async (req, res) => {
+router.post('/saving-goals/:id/complete', async (req, res) => {
     const goalId = req.params.id;
   
     const { data, error } = await supabase
