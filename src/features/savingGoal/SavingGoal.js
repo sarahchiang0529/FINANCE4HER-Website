@@ -2,10 +2,17 @@ import { useState, useEffect } from "react"
 import "./SavingGoal.css"
 import { Plus, Target, CheckCircle, Edit, Trash2, DollarSign, Calendar } from "lucide-react"
 import EmptyState from "../../components/EmptyState"
+import { fetchSavingCategories, saveSavingGoal, fetchSavingGoals } from "../../utils/savingGoalAPI";
+import { useAuth0 } from "@auth0/auth0-react";
+import { toggleGoalCompletionAPI } from "../../utils/savingGoalAPI";
+import { updateSavingGoal } from "../../utils/savingGoalAPI";
 
 function SavingGoal() {
   const [activeTab, setActiveTab] = useState("current")
   const [goals, setGoals] = useState([])
+  const [categories, setCategories] = useState([]);
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
 
   const [newGoal, setNewGoal] = useState({
     name: "",
@@ -21,16 +28,25 @@ function SavingGoal() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
 
   useEffect(() => {
-    // Load goals from localStorage when component mounts
-    const storedGoals = localStorage.getItem("savingGoals")
-    if (storedGoals) {
-      try {
-        setGoals(JSON.parse(storedGoals))
-      } catch (error) {
-        console.error("Error parsing goals from localStorage:", error)
-      }
-    }
-  }, [])
+    if (!user || !user.sub) return;
+  
+    const loadGoals = async () => {
+      const data = await fetchSavingGoals(user.sub);
+      setGoals(data);
+    };
+  
+    loadGoals();
+  }, [user]);
+
+  // Load categories from API when component mounts
+  useEffect(() => {
+    const loadCategories = async () => {
+      const data = await fetchSavingCategories();
+      setCategories(data);
+    };
+    loadCategories();
+  }, []);
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -39,7 +55,19 @@ function SavingGoal() {
       [name]: value,
     }))
   }
-
+  const handleEdit = (goal) => {
+    setEditingGoal({
+      id: goal.id,
+      name: goal.goalName || goal.name || "", // Ensure name is set
+      category: goal.categoryId || goal.category || "", // ID for select
+      targetAmount: goal.targetAmount?.toString() || "",
+      currentAmount: goal.currentAmount?.toString() || "",
+      targetDate: goal.targetDate?.split("T")[0] || "",
+      description: goal.description || "",
+      completed: goal.completed || false,
+    });
+  };
+  
   const handleEditInputChange = (e) => {
     const { name, value } = e.target
     setEditingGoal((prev) => ({
@@ -48,81 +76,96 @@ function SavingGoal() {
     }))
   }
 
-  const handleAddGoal = () => {
-    const { name, targetAmount, currentAmount, targetDate, category, description } = newGoal
-
+  const handleAddGoal = async () => {
+    const { name, targetAmount, currentAmount, targetDate, category, description } = newGoal;
+  
     if (!name || !targetAmount || !targetDate || !category || !description) {
-      alert("Please fill in all required fields.")
-      return
+      alert("Please fill in all required fields.");
+      return;
     }
-
-    const newGoalObj = {
-      id: Date.now(),
+  
+    if (!user || !user.sub) {
+      alert("User not logged in.");
+      return;
+    }
+  
+    const goalPayload = {
       name,
-      category,
+      category, // This is the category ID now
       targetAmount: Number.parseFloat(targetAmount),
       currentAmount: currentAmount ? Number.parseFloat(currentAmount) : 0,
       targetDate,
       description,
-      completed: false,
+      user_id: user.sub,
+    };
+  
+    try {
+      const savedGoal = await saveSavingGoal(goalPayload);
+      setGoals((prev) => [...prev, savedGoal]);
+  
+      setNewGoal({
+        name: "",
+        targetAmount: "",
+        currentAmount: "",
+        targetDate: "",
+        category: "",
+        description: "",
+      });
+    } catch (err) {
+      alert("Error saving goal.");
     }
+  };
 
-    const updatedGoals = [...goals, newGoalObj]
-    setGoals(updatedGoals)
-
-    // Save to localStorage
-    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
-
-    setNewGoal({
-      name: "",
-      targetAmount: "",
-      currentAmount: "",
-      targetDate: "",
-      category: "",
-      description: "",
-    })
-  }
 
   // Function to start editing a goal
   const startEditGoal = (goal) => {
     setEditingGoal({
       ...goal,
+      name: goal.goalName || goal.name || "",
+      category: goal.categoryId || goal.category || "",
       targetAmount: goal.targetAmount.toString(),
       currentAmount: goal.currentAmount.toString(),
-    })
-  }
+      targetDate: goal.targetDate,
+      description: goal.description || "",
+      completed: goal.completed || false,
+    });
+  };
 
   // Function to cancel editing
   const cancelEditGoal = () => {
     setEditingGoal(null)
   }
 
-  const saveEditGoal = () => {
+  const saveEditGoal = async () => {
     if (
-      !editingGoal.name ||
+      !editingGoal.goalName ||
       !editingGoal.targetAmount ||
       !editingGoal.targetDate ||
       !editingGoal.category ||
       !editingGoal.description
     ) {
-      alert("Please fill in all required fields.")
-      return
+      alert("Please fill in all required fields.");
+      return;
     }
-
+  
     const updatedGoal = {
       ...editingGoal,
-      targetAmount: Number.parseFloat(editingGoal.targetAmount),
-      currentAmount: editingGoal.currentAmount ? Number.parseFloat(editingGoal.currentAmount) : 0,
+      targetAmount: parseFloat(editingGoal.targetAmount),
+      currentAmount: editingGoal.currentAmount ? parseFloat(editingGoal.currentAmount) : 0,
+    };
+  
+    try {
+      const savedGoal = await updateSavingGoal(updatedGoal);
+      const updatedGoals = goals.map((goal) =>
+        goal.id === savedGoal.id ? savedGoal : goal
+      );
+      setGoals(updatedGoals);
+      setEditingGoal(null);
+    } catch (err) {
+      alert("Failed to save goal changes.");
+      console.error(err);
     }
-
-    const updatedGoals = goals.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal))
-    setGoals(updatedGoals)
-
-    // Save to localStorage
-    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
-
-    setEditingGoal(null)
-  }
+  };
 
   // Function to confirm deletion
   const confirmDeleteGoal = (goalId) => {
@@ -145,13 +188,19 @@ function SavingGoal() {
   }
 
   // Function to toggle goal completion status
-  const toggleGoalCompletion = (goalId) => {
-    const updatedGoals = goals.map((goal) => (goal.id === goalId ? { ...goal, completed: !goal.completed } : goal))
-    setGoals(updatedGoals)
-
-    // Save to localStorage
-    localStorage.setItem("savingGoals", JSON.stringify(updatedGoals))
-  }
+  const toggleGoalCompletion = async (goalId) => {
+    try {
+      const updatedGoal = await toggleGoalCompletionAPI(goalId);
+  
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal.id === updatedGoal.id ? { ...goal, completed: updatedGoal.completed } : goal
+        )
+      );
+    } catch (error) {
+      alert("Failed to toggle goal completion.");
+    }
+  };
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -257,11 +306,11 @@ function SavingGoal() {
                   <option value="" disabled>
                     Select a category
                   </option>
-                  <option value="Emergency">Emergency</option>
-                  <option value="Tech">Tech</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Home">Home</option>
-                  <option value="Education">Education</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -352,15 +401,16 @@ function SavingGoal() {
                         <div className="edit-field">
                           <label>Category</label>
                           <select
-                            value={editingGoal.category}
-                            onChange={(e) => setEditingGoal({ ...editingGoal, category: e.target.value })}
-                          >
-                            <option value="Emergency">Emergency</option>
-                            <option value="Tech">Tech</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Home">Home</option>
-                            <option value="Education">Education</option>
-                          </select>
+                          value={editingGoal.category}
+                          onChange={(e) => setEditingGoal({ ...editingGoal, category: e.target.value })}
+                        >
+                          <option value="">Select category</option>
+                          {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.name}
+                            </option>
+                          ))}
+                        </select>
                         </div>
                         <div className="edit-field">
                           <label>Target Amount</label>
@@ -391,7 +441,8 @@ function SavingGoal() {
                           <input
                             type="date"
                             value={editingGoal.targetDate}
-                            onChange={(e) => setEditingGoal({ ...editingGoal, date: e.target.value })}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, targetDate: e.target.value })}
+
                           />
                         </div>
                       </div>
@@ -452,7 +503,7 @@ function SavingGoal() {
                           </div>
                         </div>
 
-                        <h3 className="goal-title">{goal.name}</h3>
+                        <h3 className="goal-title">{goal.goalName}</h3>
                         <p className="goal-description">{goal.description}</p>
 
                         <div className="goal-progress-container">

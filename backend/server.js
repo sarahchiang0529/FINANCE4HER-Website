@@ -1,6 +1,15 @@
 // 1. Load environment variables from .env
 require("dotenv").config({debug: true}); // Set debug to true to see if .env is loaded correctly
 
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+const port = process.env.PORT || 3001;
+
+app.use(cors());
+app.use(express.json());
+
 // 2. Import Supabase
 const { createClient } = require("@supabase/supabase-js");
 
@@ -11,6 +20,14 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Log the key to confirm it's loaded (not recommended in production)
 console.log("Supabase key:", supabaseKey);
+
+// setup routes
+const savingGoalRoutes = require("./routes/savingGoal");
+app.use("/api", savingGoalRoutes);
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
 
 // 4. Optional: Test a query
 async function testQuery() {
