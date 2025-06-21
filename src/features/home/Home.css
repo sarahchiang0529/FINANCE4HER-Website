@@ -3,28 +3,31 @@
   margin: 0 auto;
   padding-top: 60px;
   padding-bottom: 60px;
+  background: #f1eee7;
 }
 
 .hero-section {
   text-align: center;
   margin-bottom: 48px;
+  background: linear-gradient(135deg, #a621f8 0%, #d553a9 50%, #ec804f 100%);
+  border-radius: 20px;
+  padding: 60px 40px;
+  box-shadow: 0 10px 30px rgba(166, 33, 248, 0.3);
 }
 
 .hero-title {
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: white;
 }
 
 .hero-subtitle {
   font-size: 18px;
-  color: #666;
+  color: white;
   max-width: 800px;
   margin: 0 auto 32px;
+  opacity: 0.95;
 }
 
 .hero-buttons {
@@ -42,13 +45,45 @@
 
 /* Special styling for the Get Started button */
 .get-started-btn {
-  width: auto !important; /* Override any width setting */
-  min-width: 160px !important; /* Set minimum width */
-  max-width: 200px !important; /* Set maximum width */
-  padding: 8px 20px !important; /* Slightly adjusted padding */
-  display: inline-flex !important; /* Use inline-flex for proper alignment */
-  align-items: center !important; /* Center items vertically */
-  justify-content: center !important; /* Center items horizontally */
+  width: auto !important;
+  min-width: 160px !important;
+  max-width: 200px !important;
+  padding: 12px 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+}
+
+.get-started-btn:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 160px;
+  backdrop-filter: blur(10px);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
 }
 
 .btn-icon {
@@ -90,16 +125,34 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+.feature-card:nth-child(1) .feature-icon {
+  background: #a621f8;
+  color: white;
+}
+
+.feature-card:nth-child(2) .feature-icon {
+  background: #ec804f;
+  color: white;
+}
+
+.feature-card:nth-child(3) .feature-icon {
+  background: #d553a9;
+  color: white;
+}
+
+.feature-card:nth-child(4) .feature-icon {
+  background: #f1eee7;
+  color: #a621f8;
+}
+
 .feature-icon {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #f8eeff;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  color: #8a4baf;
 }
 
 .feature-title {
@@ -118,9 +171,13 @@
 .feature-link {
   font-size: 14px;
   font-weight: 500;
-  color: #8a4baf;
+  color: #a621f8;
   display: flex;
   align-items: center;
+}
+
+.feature-card:hover .feature-link {
+  color: #d553a9;
 }
 
 .link-icon {
@@ -129,12 +186,33 @@
   margin-left: 4px;
 }
 
-.hero-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--color-primary);
-}
-
 .font-secondary {
   font-family: var(--font-secondary);
+}
+
+/* Responsive adjustments for the hero card */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 40px 24px;
+    margin: 0 16px 48px 16px;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .get-started-btn,
+  .btn-outline {
+    width: 100%;
+    max-width: 250px;
+  }
 }
