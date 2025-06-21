@@ -379,6 +379,7 @@ body {
 /* Date Input */
 .input-field input[type="date"] {
   padding-right: 32px;
+  position: relative;
 }
 
 .input-field input[type="date"]::-webkit-calendar-picker-indicator {
@@ -750,4 +751,4 @@ body {
 
 .input-with-icon input {
   padding-left: 12px !important;
-}  
+}
