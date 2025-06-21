@@ -1,47 +1,69 @@
-/* Main layout structure */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: "Afacad Flux", sans-serif;
-  background-color: #f8eeff;
-}
+/* ================================
+  FINANCE4HER OFFICIAL BRAND COLORS
+  ================================ */
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Use viewport height to ensure full page height */
-}
-
-/* CSS Variables for consistent theming */
 :root {
-  --max-width: 1200px;
-  --border-radius: 12px;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-  /* Font families */
+  /* Typography */
   --font-primary: "Afacad Flux", sans-serif;
   --font-secondary: "Barlow Condensed", sans-serif;
 
-  /* Colors */
-  --color-bg: white;
-  --color-text: #333;
-  --color-text-light: #666;
-  --color-text-dark: #000;
-  --color-border: #e0e0e0;
-  --color-border-focus: #a94caf;
-  --color-focus-shadow: rgba(169, 76, 175, 0.1);
-  --color-primary: linear-gradient(to right, #e94caf, #8a4baf);
-  --color-secondary: #9ca3af;
-  --color-secondary-hover: #6b7280;
-  --color-income: #10b981;
-  --color-expense: #ef4444;
+  /* Official Finance4Her Brand Colors */
+  --brand-purple: #a621f8;
+  --brand-orange: #ec804f;
+  --brand-beige: #f1eee7;
+  --brand-pink: #d553a9;
 
-  /* Tab colors */
-  --color-tab: #8a4baf;
-  --color-tab-hover: #f3e6fb;
-  --color-tab-active: #e2c6ff;
+  /* Color System Based on Brand */
+  --color-primary: var(--brand-purple);
+  --color-primary-dark: #8a1bd1;
+  --color-primary-light: #e6d0ff;
+  --color-secondary: var(--brand-orange);
+  --color-accent: var(--brand-pink);
+  --color-neutral: var(--brand-beige);
+
+  /* Background Colors */
+  --color-bg: #ffffff;
+  --color-bg-secondary: var(--brand-beige);
+  --color-bg-tertiary: #f8f8f8;
+
+  /* Text Colors */
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-text-lighter: #999999;
+  --color-text-dark: #000000;
+  --color-text-white: #ffffff;
+
+  /* Brand Gradients */
+  --color-primary-gradient: linear-gradient(135deg, var(--brand-purple) 0%, var(--brand-pink) 100%);
+  --color-secondary-gradient: linear-gradient(135deg, var(--brand-orange) 0%, var(--brand-pink) 100%);
+  --color-accent-gradient: linear-gradient(135deg, var(--brand-pink) 0%, var(--brand-purple) 100%);
+
+  /* Status Colors (using brand colors) */
+  --color-success: var(--brand-purple);
+  --color-success-light: var(--color-primary-light);
+  --color-error: #ef4444;
+  --color-error-light: #fef2f2;
+  --color-warning: var(--brand-orange);
+  --color-warning-light: #fff7ed;
+  --color-info: var(--brand-pink);
+  --color-info-light: #fdf2f8;
+
+  /* Income/Expense Colors */
+  --color-income: var(--brand-purple);
+  --color-income-light: var(--color-primary-light);
+  --color-expense: var(--brand-orange);
+  --color-expense-light: #fff7ed;
+
+  /* Border & Focus */
+  --color-border: #e0e0e0;
+  --color-border-light: #f0f0f0;
+  --color-border-focus: var(--brand-purple);
+  --color-focus-shadow: rgba(166, 33, 248, 0.1);
+
+  /* Tab Colors */
+  --color-tab: var(--brand-purple);
+  --color-tab-hover: var(--color-primary-light);
+  --color-tab-active: #d4b3ff;
 
   /* Spacing */
   --space-xs: 4px;
@@ -50,51 +72,82 @@ body {
   --space-lg: 24px;
   --space-xl: 32px;
 
-  /* Chart heights */
+  /* Layout */
+  --max-width: 1200px;
+  --border-radius: 12px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  /* Chart Heights */
   --chart-height: 400px;
   --mini-chart-height: 120px;
+
+  /* Transitions */
+  --transition-base: 0.2s ease;
 }
 
-/* Main content wrapper */
+/* ================================
+    BASE STYLES
+    ================================ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ================================
+    LAYOUT COMPONENTS
+    ================================ */
 .app-wrapper {
-  flex: 1 0 auto; /* This allows the content to grow but not shrink */
-  padding-top: 80px; /* Space for fixed navbar */
-  padding-bottom: 0; /* Remove bottom padding */
+  flex: 1 0 auto;
+  padding-top: 80px;
+  padding-bottom: 0;
 }
 
-/* Container for page content */
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 var(--space-md);
   width: 100%;
 }
 
-/* Content container with proper spacing */
 .content-container {
   margin-top: 5rem;
   padding-top: 80px;
   padding-bottom: 80px;
 }
 
-/* Footer styles */
 .footer-wrapper {
-  flex-shrink: 0; /* Prevent footer from shrinking */
+  flex-shrink: 0;
   width: 100%;
-  height: 80px !important;
-  padding: 0 !important;
-  background-color: #65328f;
-  color: #dda1d6;
+  height: 80px;
+  padding: 0;
+  background-color: var(--brand-purple);
+  color: var(--color-text-white);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 0; /* Remove margin top */
+  margin-top: 0;
 }
 
-/* Page header */
+/* ================================
+    TYPOGRAPHY
+    ================================ */
 .page-header {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-lg);
 }
 
 .page-title {
@@ -109,16 +162,36 @@ body {
   font-size: 18px;
   color: var(--color-text-light);
   margin: 8px 0 0 0;
-  padding-bottom: 1 rem;
+  padding-bottom: 1rem;
 }
 
-/* Card styles */
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  padding: 16px 0 16px;
+  color: var(--color-text);
+  text-align: center;
+  width: 100%;
+  font-family: var(--font-secondary);
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: var(--color-text-light);
+  margin: 0;
+  text-align: center;
+}
+
+/* ================================
+    CARD COMPONENTS
+    ================================ */
 .card {
-  background: white;
+  background: var(--color-bg);
   border-radius: var(--border-radius);
-  padding: 24px;
+  padding: var(--space-lg);
   box-shadow: var(--shadow);
-  margin-bottom: 0; /* Remove bottom margin */
+  margin-bottom: 0;
 }
 
 .card-header {
@@ -126,7 +199,7 @@ body {
   margin: 0;
   padding: 0;
   border-bottom: none;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-md);
 }
 
 .card-title {
@@ -143,7 +216,31 @@ body {
   margin: 0;
 }
 
-/* Form styles */
+.card-title-section {
+  padding: 24px 0 16px;
+}
+
+.finance-card-header {
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.finance-card-header .card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.finance-card-header .card-description {
+  font-size: 16px;
+  color: var(--color-text-light);
+  margin: 4px 0 0 0;
+}
+
+/* ================================
+    FORM COMPONENTS
+    ================================ */
 .form-title {
   font-size: 24px;
   font-weight: 600;
@@ -167,12 +264,14 @@ body {
   padding-bottom: 0;
 }
 
+.form-row,
 .input-row {
   display: flex;
   gap: var(--space-lg);
   width: 100%;
 }
 
+.form-field,
 .input-field {
   flex: 1;
   min-width: 0;
@@ -190,14 +289,44 @@ body {
   color: var(--color-text-dark);
 }
 
-/* Global input with icon styles - UPDATED */
+/* Input Styles */
+.input-field input:not(.input-with-icon input),
+.input-field select,
+.input-field textarea {
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  box-sizing: border-box;
+  transition: var(--transition-base);
+}
+
+.input-field input:focus:not(.input-with-icon input),
+.input-field select:focus,
+.input-field textarea:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+.input-field textarea {
+  height: auto;
+  min-height: 96px;
+  resize: vertical;
+}
+
+/* Input with Icon */
 .input-with-icon {
   position: relative;
   display: flex;
   border-radius: 6px;
   border: 1px solid var(--color-border);
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
 }
 
 .input-with-icon:focus-within {
@@ -215,8 +344,8 @@ body {
   color: var(--color-text-light);
   background-color: #f0f0f0;
   border-right: 1px solid var(--color-border);
-  position: static; /* Changed from absolute to static */
-  left: auto; /* Remove left positioning */
+  position: static;
+  left: auto;
 }
 
 .input-with-icon input {
@@ -227,38 +356,12 @@ body {
   outline: none;
   font-size: 16px;
   color: var(--color-text);
-  background-color: white;
-  padding-left: 12px; /* Reset padding-left */
+  background-color: var(--color-bg);
+  padding-left: 12px;
 }
 
-/* Fix placeholder alignment in amount fields */
-.input-with-icon input::placeholder {
-  color: #999;
-}
-
-.input-field input:not(.input-with-icon input),
+/* Select Styling */
 .input-field select {
-  width: 100%;
-  height: 48px;
-  padding: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 16px;
-  color: var(--color-text);
-  background-color: white;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.input-field input:focus:not(.input-with-icon input),
-.input-field select:focus {
-  outline: none;
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 2px var(--color-focus-shadow);
-}
-
-/* Custom select styling */
-select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -269,17 +372,16 @@ select {
   padding-right: 32px;
 }
 
-select::-ms-expand {
+.input-field select::-ms-expand {
   display: none;
 }
 
-/* Date input styling */
-input[type="date"] {
-  position: relative;
+/* Date Input */
+.input-field input[type="date"] {
   padding-right: 32px;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+.input-field input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
   right: 12px;
   top: 50%;
@@ -290,56 +392,28 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
-/* Ensure consistent spacing for both select and date inputs */
-.input-field select,
-.input-field input[type="date"] {
-  padding-left: 12px;
-  padding-right: 32px;
-}
-
-/* Amount input with dollar sign styling - UPDATED */
-.input-field .input-with-icon {
-  display: flex;
-  align-items: center;
-}
-
-.input-field .input-with-icon .input-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 48px;
-  background-color: #f0f0f0;
-  border-right: 1px solid var(--color-border);
-  position: static; /* Changed from absolute to static */
-  left: auto; /* Remove left positioning */
-}
-
-.input-field .input-with-icon input {
-  padding-left: 12px;
-  text-align: left;
-}
-
-/* Button styles */
+/* ================================
+    BUTTON COMPONENTS
+    ================================ */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-sm) var(--space-md);
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-primary-gradient);
+  color: var(--color-text-white);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   height: 48px;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(166, 33, 248, 0.3);
 }
 
 .btn-primary:disabled {
@@ -353,19 +427,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   justify-content: center;
   padding: var(--space-sm) var(--space-md);
-  background: var(--color-secondary);
-  color: white;
+  background: var(--brand-orange);
+  color: var(--color-text-white);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   height: 40px;
 }
 
 .btn-secondary:hover {
-  background: var(--color-secondary-hover);
+  background: #d4703f;
   transform: translateY(-1px);
 }
 
@@ -380,45 +454,79 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-right: var(--space-sm);
 }
 
-/* Tabs container */
+/* ================================
+    TAB COMPONENTS
+    ================================ */
 .tabs-container {
-  margin-bottom: 0; /* Remove bottom margin */
+  margin-bottom: 0;
 }
 
-/* Card title section */
-.card-title-section {
-  padding: 24px 0 16px;
+.view-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+  gap: var(--space-md);
 }
 
-/* Finance card header */
-.finance-card-header {
-  padding: 0 0 16px;
-  border-bottom: 1px solid var(--color-border);
+.view-tabs {
+  display: flex;
+  gap: var(--space-md);
 }
 
-.finance-card-header .card-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--color-text);
+.view-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px var(--space-md);
+  border: none;
+  background-color: var(--color-bg);
+  border-radius: var(--space-sm);
+  font-weight: 500;
+  color: var(--color-tab);
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-size: 14px;
 }
 
-.finance-card-header .card-description {
-  font-size: 16px;
-  color: var(--color-text-light);
-  margin: 4px 0 0 0;
+.view-tab:hover {
+  background-color: var(--color-tab-hover);
 }
 
-/* Base layout styles for financial components */
-.income-container,
-.expenses-container,
-.saving-goals-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
+.view-tab.active {
+  background-color: var(--color-tab-active);
 }
 
-/* Card styles for financial components */
+/* ================================
+    GRID LAYOUTS
+    ================================ */
+.income-grid,
+.expenses-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+  margin-top: var(--space-lg);
+}
+
+.data-income-grid,
+.data-expenses-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+  margin-top: var(--space-lg);
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+/* ================================
+    COMPONENT CARDS
+    ================================ */
 .income-card,
 .expense-card,
 .goal-card {
@@ -430,21 +538,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-/* New styles for data display cards */
 .income-data-card,
 .expense-data-card,
 .goal-data-card {
   background: var(--color-bg);
   border-radius: var(--border-radius);
-  padding: 24px 32px; /* Adjust padding to match the screenshot */
+  padding: 24px 32px;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
 }
 
-/* Empty states */
+/* ================================
+    EMPTY STATES
+    ================================ */
 .empty-state-card {
-  background: white;
+  background: var(--color-bg);
   border-radius: var(--border-radius);
   padding: 48px var(--space-xl);
   box-shadow: var(--shadow);
@@ -475,148 +584,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin: 0 auto;
 }
 
-/* No data message */
-.no-data-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--color-text-light);
-  font-size: 16px;
-  text-align: center;
-}
-
-/* View selector styles */
-.view-selector {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: var(--space-xl);
-  flex-wrap: wrap;
-  gap: var(--space-md);
-}
-
-.view-tabs {
-  display: flex;
-  gap: var(--space-md);
-}
-
-.view-tab {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 10px var(--space-md);
-  border: none;
-  background-color: white;
-  border-radius: var(--space-sm);
-  font-weight: 500;
-  color: var(--color-tab);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-}
-
-.view-tab:hover {
-  background-color: var(--color-tab-hover);
-}
-
-.view-tab.active {
-  background-color: var(--color-tab-active);
-}
-
-/* Grid layouts - Income and Expenses only */
-.income-grid,
-.expenses-grid {
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: 1fr;
-  margin-top: var(--space-lg);
-}
-
-/* Separate goals grid styling */
-.goals-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-/* Responsive grid layouts - Income and Expenses only */
-@media (min-width: 768px) {
-  .income-grid,
-  .expenses-grid {
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
-  }
-
-  .income-grid .income-card,
-  .expenses-grid .expense-card,
-  .income-grid .income-data-card,
-  .expenses-grid .expense-data-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-}
-
-/* Responsive grid layouts - Goals only */
-@media (max-width: 1024px) {
-  .goals-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .goals-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Section title */
-.section-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin: 0;
-  padding: 16px 0 16px;
-  color: var(--color-text);
-  text-align: center;
-  width: 100%;
-  font-family: var(--font-secondary);
-}
-
-.section-subtitle {
-  font-size: 15px;
-  color: var(--color-text-light);
-  margin: 0;
-  text-align: center;
-}
-
-/* Add new data grid classes */
-.data-income-grid,
-.data-expenses-grid {
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: 1fr;
-  margin-top: var(--space-lg);
-}
-
-/* Responsive grid layouts for data grids */
-@media (min-width: 768px) {
-  .data-income-grid,
-  .data-expenses-grid {
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
-  }
-
-  .data-income-grid .income-data-card,
-  .data-expenses-grid .expense-data-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-}
-
-/* Universal Empty State Component */
 .universal-empty-state {
   display: flex;
   flex-direction: column;
@@ -633,70 +600,36 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .universal-empty-state-icon svg {
-  color: #8a4baf;
+  color: var(--brand-purple);
 }
 
 .universal-empty-state h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   margin: 0 0 8px 0;
 }
 
 .universal-empty-state p {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 0;
   max-width: 400px;
 }
 
-/* Fix for edit form input with icon */
-.edit-transaction-form .edit-field .input-with-icon {
-  width: 100%;
-}
-
-.edit-transaction-form .edit-field .input-with-icon .input-icon {
+.no-data-message {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 48px;
-  background-color: #f0f0f0;
-  border-right: 1px solid var(--color-border);
-  position: static; /* Changed from absolute to static */
-  left: auto; /* Remove left positioning */
-}
-
-.edit-transaction-form .edit-field .input-with-icon input {
-  flex: 1;
-  height: 48px;
-  padding: 12px;
-  border: none;
-  outline: none;
+  height: 200px;
+  color: var(--color-text-light);
   font-size: 16px;
-  color: var(--color-text);
-  background-color: white;
+  text-align: center;
 }
 
-/* Make sure all edit form inputs have consistent height */
-.edit-transaction-form .edit-field input,
-.edit-transaction-form .edit-field select {
-  height: 48px;
-  box-sizing: border-box;
-}
-
-/* Remove any conflicting styles that might be causing the issue */
-.input-with-icon .input-icon {
-  position: static !important; /* Force static positioning */
-  left: auto !important; /* Remove left positioning */
-  pointer-events: auto !important; /* Enable pointer events */
-}
-
-.input-with-icon input {
-  padding-left: 12px !important; /* Reset padding-left */
-}
-
-/* Font utility classes */
+/* ================================
+    FONT UTILITIES
+    ================================ */
 .font-primary {
   font-family: var(--font-primary);
 }
@@ -713,3 +646,108 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .font-body {
   font-family: var(--font-primary);
 }
+
+/* ================================
+    RESPONSIVE DESIGN
+    ================================ */
+@media (min-width: 768px) {
+  .income-grid,
+  .expenses-grid,
+  .data-income-grid,
+  .data-expenses-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .income-grid .income-card,
+  .expenses-grid .expense-card,
+  .income-grid .income-data-card,
+  .expenses-grid .expense-data-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .form-row,
+  .input-row {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 1024px) {
+  .goals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row,
+  .input-row {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .page-title {
+    font-size: 28px;
+  }
+
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .view-selector {
+    padding-top: var(--space-lg);
+  }
+}
+
+@media (max-width: 640px) {
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================================
+    EDIT FORM FIXES
+    ================================ */
+.edit-transaction-form .edit-field .input-with-icon {
+  width: 100%;
+}
+
+.edit-transaction-form .edit-field .input-with-icon .input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 48px;
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+  position: static;
+  left: auto;
+}
+
+.edit-transaction-form .edit-field .input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+.edit-transaction-form .edit-field input,
+.edit-transaction-form .edit-field select {
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.input-with-icon .input-icon {
+  position: static !important;
+  left: auto !important;
+  pointer-events: auto !important;
+}
+
+.input-with-icon input {
+  padding-left: 12px !important;
+}  
