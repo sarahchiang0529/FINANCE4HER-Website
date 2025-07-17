@@ -500,21 +500,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8a4baf; /* Make all buttons purple by default */
+  color: var(--brand-purple); /* Make all buttons purple by default */
 }
 
 .action-btn:hover {
-  color: #e94caf; /* Turn pink on hover */
+  color: var(--brand-orange); /* Turn pink on hover */
   transform: translateY(-1px); /* Add subtle lift effect on hover */
 }
 
 .delete-btn {
-  color: #8a4baf; /* Make delete button purple to match f button */
+  color: var(--brand-purple); /* Make delete button purple to match f button */
   background-color: transparent; /* Remove background */
 }
 
 .delete-btn:hover {
-  color: #e94caf; /* Make delete button turn pink on hover */
+  color: var(--brand-orange); /* Make delete button turn pink on hover */
   background-color: transparent; /* Remove background on hover */
 }
 
@@ -562,7 +562,7 @@
 
 .btn-secondary {
   background-color: #f1f1f1;
-  color: #333;
+  color: var(--color-text);
   height: 36px; /* Ensure consistent height */
 }
 
@@ -571,8 +571,8 @@
 }
 
 .btn-danger {
-  background-color: #e74c3c;
-  color: white;
+  color: var(--color-error);
+  color: var(--color-text);
   height: 36px; /* Ensure consistent height */
 }
 
