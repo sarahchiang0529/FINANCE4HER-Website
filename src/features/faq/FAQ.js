@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { ChevronDown, ChevronUp, Search } from 'lucide-react'
+import { ChevronDown, ChevronUp, Search, Send, MessageCircle } from 'lucide-react'
+import emailjs from '@emailjs/browser'
 import "./FAQ.css"
 
 export const faqItems = [
@@ -103,14 +104,113 @@ export const faqItems = [
     answer:
       "Talk to a trusted adult, teacher, or financial advisor. You can also connect with programs like Finance 4 HER, attend workshops, or watch YouTube videos from reliable sources.",
   },
+  // New FAQs
+  {
+    question: "What should I do with my first paycheck?",
+    answer:
+      "Girl, congratulations! Set aside a little for fun, a little for saving (even $10 is good), and a little for things you need. Try a 50/30/20 split: 50% needs, 30% wants, 20% savings.",
+  },
+  {
+    question: "Is Buy Now Pay Later bad?",
+    answer:
+      "Not always but it can get risky fast. Only use it for stuff you truly need and know you can pay off. Missing payments can hurt your credit. If you wouldn't buy it with cash today, skip it.",
+  },
+  {
+    question: "How do I start saving if I don't make a lot of money?",
+    answer:
+      "Start small. Even $5/week adds up. Call it your Freedom Fund. Hide it in a separate savings account so you're not tempted.",
+  },
+  {
+    question: "What's one money tip you wish you knew at my age?",
+    answer:
+      "Credit cards aren't free money. Only spend what you can pay back in full. And start building good credit early—your future self will thank you.",
+  },
+  {
+    question: "How can I learn about investing?",
+    answer:
+      "Start by following women of color investing influencers on Instagram or YouTube. Look up things like index funds and ETFs. It's not just for rich folks—you belong in those conversations too.",
+  },
 ]
 
 function FAQ() {
   const [searchQuery, setSearchQuery] = useState("")
   const [expandedIndex, setExpandedIndex] = useState(null)
+  const [showMessageForm, setShowMessageForm] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState(null)
 
   const handleToggle = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index)
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.message) {
+      setSubmitStatus({ type: 'error', message: 'Please fill in your name and message.' })
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      // EmailJS Configuration - Using environment variables
+      const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID
+      const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID
+      const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+
+      // Validate environment variables
+      if (!serviceId || !templateId || !publicKey) {
+        const missing = []
+        if (!serviceId) missing.push('REACT_APP_EMAILJS_SERVICE_ID')
+        if (!templateId) missing.push('REACT_APP_EMAILJS_TEMPLATE_ID')  
+        if (!publicKey) missing.push('REACT_APP_EMAILJS_PUBLIC_KEY')
+        
+        throw new Error(`Missing environment variables: ${missing.join(', ')}. Check your .env.local file.`)
+      }
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email || 'No email provided',
+        message: formData.message,
+        to_email: 'programming@empowherto.org'
+      }
+
+      // Send email using EmailJS
+      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+
+      setSubmitStatus({ 
+        type: 'success', 
+        message: 'Your message has been sent! We\'ll get back to you soon.' 
+      })
+      setFormData({ name: "", email: "", message: "" })
+      
+      setTimeout(() => {
+        setShowMessageForm(false)
+        setSubmitStatus(null)
+      }, 3000)
+
+    } catch (error) {
+      console.error('Error sending message:', error)
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'There was an error sending your message. Please try again.' 
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const filteredFAQs = faqItems.filter(
@@ -163,6 +263,109 @@ function FAQ() {
           ) : (
             <div className="no-results">
               <p>No matching questions found. Try a different search term.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Message Form Section */}
+        <div className="message-form-section">
+          {!showMessageForm ? (
+            <div className="message-form-prompt">
+              <div className="prompt-content">
+                <MessageCircle className="prompt-icon" size={24} />
+                <div className="prompt-text">
+                  <h3>Didn't find what you're looking for?</h3>
+                  <p>Send us your question and we'll get back to you with an answer!</p>
+                </div>
+                <button 
+                  className="ask-question-btn"
+                  onClick={() => setShowMessageForm(true)}
+                >
+                  Ask a Question
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="message-form-container">
+              <div className="form-header">
+                <h3>Ask Your Question</h3>
+                <p>We'd love to help! Send us your financial question and we'll get back to you.</p>
+              </div>
+
+              <div className="message-form">
+                <div className="form-group">
+                  <label htmlFor="name">Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email (optional)</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message">Your Question *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="What would you like to know about money and finances?"
+                    rows={4}
+                  />
+                </div>
+
+                {submitStatus && (
+                  <div className={`status-message ${submitStatus.type}`}>
+                    {submitStatus.message}
+                  </div>
+                )}
+
+                <div className="form-actions">
+                  <button
+                    type="button"
+                    className="cancel-btn"
+                    onClick={() => {
+                      setShowMessageForm(false)
+                      setFormData({ name: "", email: "", message: "" })
+                      setSubmitStatus(null)
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="submit-btn"
+                    disabled={isSubmitting}
+                    onClick={handleSubmit}
+                  >
+                    {isSubmitting ? (
+                      <>Sending...</>
+                    ) : (
+                      <>
+                        <Send size={16} />
+                        Send Question
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
