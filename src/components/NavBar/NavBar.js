@@ -68,6 +68,7 @@ const NavBar = () => {
                   {renderNavLink("/saving-goals", "Saving Goals")}
                   {renderNavLink("/learning-resources", "Learning Resources")}
                   {renderNavLink("/points-rewards", "Points & Rewards")}
+                  {renderNavLink("/admin", "Admin Page")}
                   {renderNavLink("/faq", "FAQ")}
                 </>
               )}
