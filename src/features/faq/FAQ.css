@@ -1,4 +1,6 @@
 /* FAQ Page Styles */
+@import "../education-colors.css";
+
 .faq-container {
   max-width: 1200px;
   margin: 0 auto;

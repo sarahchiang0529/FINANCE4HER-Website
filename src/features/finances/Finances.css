@@ -1,3 +1,5 @@
+@import "../education-colors.css";
+
 /* Finance-specific styles that aren't shared across the app */
 
 /* Chart containers - restored to original larger size */
@@ -494,21 +496,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8a4baf; /* Make all buttons purple by default */
+  color: var(--edu-purple); /* Make all buttons purple by default */
 }
 
 .action-btn:hover {
-  color: #e94caf; /* Turn pink on hover */
+  color: var(--edu-orange); /* Turn pink on hover */
   transform: translateY(-1px); /* Add subtle lift effect on hover */
 }
 
 .delete-btn {
-  color: #8a4baf; /* Make delete button purple to match f button */
+  color: var(--edu-purple); /* Make delete button purple to match f button */
   background-color: transparent; /* Remove background */
 }
 
 .delete-btn:hover {
-  color: #e94caf; /* Make delete button turn pink on hover */
+  color: var(--edu-orange); /* Make delete button turn pink on hover */
   background-color: transparent; /* Remove background on hover */
 }
 

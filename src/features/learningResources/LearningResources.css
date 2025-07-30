@@ -1,3 +1,5 @@
+@import "../education-colors.css";
+
 /* Tabs Container */
 .tabs-container {
   margin-bottom: 32px;
@@ -19,7 +21,7 @@
   background-color: #fff;
   border-radius: 8px;
   font-weight: 500;
-  color: #8a4baf;
+  color: var(--edu-purple);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
@@ -31,7 +33,7 @@
 
 .tab.active {
   background-color: #e2c6ff;
-  border-color: #8a4baf;
+  border-color: var(--edu-purple);
 }
 
 .tab-label {

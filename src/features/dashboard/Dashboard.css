@@ -1,11 +1,14 @@
 /* Base styles */
+@import "../education-colors.css";
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
-  background-color: #f8eeff;
+  /* switched from #f8eeff */
+  background-color: var(--edu-beige);
 }
 
 /* Dashboard container */
@@ -72,7 +75,7 @@ body {
   justify-content: center;
   padding: 8px 16px;
   background: white;
-  color: #8a4baf;
+  color: var(--edu-purple);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
@@ -93,7 +96,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  /* switched from manual gradient to var */
+  background: var(--edu-gradient-primary);
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -198,13 +202,12 @@ body {
   color: #666;
 }
 
-/* Add these new CSS classes after the .stat-change class */
 .stat-change.positive {
-  color: #10b981; /* Green color for positive values */
+  color: #10b981;
 }
 
 .stat-change.negative {
-  color: #ef4444; /* Red color for negative values */
+  color: #ef4444;
 }
 
 /* Tabs */
@@ -230,7 +233,7 @@ body {
 }
 
 .tab.active {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .tab.active::after {
@@ -240,7 +243,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: #8a4baf;
+  background: var(--edu-purple);
 }
 
 /* Charts grid */
@@ -294,7 +297,8 @@ body {
 
 .chart-placeholder {
   height: 300px;
-  background: linear-gradient(to right, #f9e6f3, #f0e7fa);
+  /* simplified from gradient of identical stops */
+  background: var(--edu-beige);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -342,7 +346,7 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: var(--edu-gradient-primary);
   border-radius: 4px;
 }
 
@@ -504,7 +508,6 @@ body {
   flex: 1;
 }
 
-/* Universal Empty State Component */
 .universal-empty-state {
   display: flex;
   flex-direction: column;
@@ -520,7 +523,7 @@ body {
 }
 
 .universal-empty-state-icon svg {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .universal-empty-state h3 {
@@ -649,7 +652,6 @@ body {
   width: 100%;
 }
 
-/* Ensure both chart containers have the same height */
 .chart-container {
   height: 350px;
   width: 100%;
@@ -659,7 +661,6 @@ body {
   flex: 1;
 }
 
-/* Make sure both chart wrappers fill their containers */
 .daily-chart-wrapper canvas,
 .monthly-comparison-wrapper canvas {
   height: 100% !important;
