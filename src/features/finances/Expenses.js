@@ -324,26 +324,6 @@ function Expenses() {
   const deleteExpense = (expenseId) => {
     const updatedExpenses = expenses.filter((entry) => entry.id !== expenseId)
     setExpenses(updatedExpenses)
-
-    // Explicitly update localStorage to ensure changes are persisted
-    localStorage.setItem("expensesData", JSON.stringify(updatedExpenses))
-
-    // Reset selected month details if the deleted item was part of the selected month
-    if (selectedMonthDetails) {
-      const deletedItemMonth = expenses.find((item) => item.id === expenseId)?.date
-      if (deletedItemMonth) {
-        const deletedDate = new Date(deletedItemMonth)
-        const selectedDate = selectedMonthDetails.month
-
-        if (
-          deletedDate.getMonth() === selectedDate.getMonth() &&
-          deletedDate.getFullYear() === selectedDate.getFullYear()
-        ) {
-          setSelectedMonthDetails(null)
-        }
-      }
-    }
-
     setShowDeleteConfirm(null)
   }
 
@@ -481,7 +461,6 @@ function Expenses() {
           )}
 
           {/* Summary Cards - Show totals for each category */}
-          <p className="scroll-hint">← Swipe to view more categories →</p>
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
             {/* Total Expense Card */}
             <div className="summary-card" style={{ flex: "1 1 0" }}>

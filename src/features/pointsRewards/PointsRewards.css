@@ -1,3 +1,5 @@
+@import "../education-colors.css";
+
 /* Points Added Notification */
 .points-added-notification {
   position: fixed;
@@ -26,7 +28,7 @@
 
 /* Purple for redeeming */
 .points-added-notification.redeem {
-  background-color: #8a4baf;
+  background-color: var(--edu-purple);
 }
 
 @keyframes slideIn {
@@ -47,7 +49,7 @@
 
 /* Points Overview Card */
 .points-overview-card {
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
   border-radius: 12px;
   padding: 32px;
   margin-bottom: 24px;
@@ -172,7 +174,7 @@
 }
 
 .score-label.total {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .score-value {
@@ -190,7 +192,7 @@
 }
 
 .score-value.total {
-  color: #8a4baf;
+  color: var(--edu-purple);
   font-size: 36px;
 }
 
@@ -227,7 +229,7 @@
 }
 
 .tab.active {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .tab.active::after {
@@ -237,7 +239,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: #8a4baf;
+  background: var(--edu-purple);
 }
 
 /* Rewards Grid */
@@ -328,7 +330,7 @@
 
 .reward-icon-container {
   height: 160px;
-  background: linear-gradient(to right, #f9e6f3, #f0e7fa);
+  background: linear-gradient(to right, var(--edu-beige), var(--edu-beige));
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -347,7 +349,7 @@
 .reward-icon {
   width: 64px;
   height: 64px;
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 /* Added redeemed icon style */
@@ -362,7 +364,7 @@
 .reward-button {
   width: 100%;
   padding: 12px;
-  background-color: #8a4baf;
+  background-color: var(--edu-purple);
   color: white;
   border: none;
   border-radius: 8px;
@@ -387,7 +389,7 @@
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -520,7 +522,7 @@
 }
 
 .bonus-icon.zap {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .bonus-icon.users {
@@ -572,13 +574,13 @@
 }
 
 .bonus-points-button {
-  color: #8a4baf;
-  background-color: #f9e6f3;
-  border: 1px solid #8a4baf;
+  color: var(--edu-purple);
+  background-color: var(--edu-beige);
+  border: 1px solid var(--edu-purple);
 }
 
 .bonus-points-button:hover {
-  background-color: #8a4baf;
+  background-color: var(--edu-purple);
   color: white;
 }
 

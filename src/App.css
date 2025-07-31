@@ -1,11 +1,14 @@
+/* 1) Pull in the education palette */
+@import '../src/features/education-colors.css';
+
 /* Main layout structure */
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Afacad Flux", sans-serif;
-  background-color: #f8eeff;
+  font-family: "Inter", sans-serif;
+  background-color: var(--edu-beige);       /* was #f8eeff */
 }
 
 body {
@@ -20,28 +23,25 @@ body {
   --border-radius: 12px;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
-  /* Font families */
-  --font-primary: "Afacad Flux", sans-serif;
-  --font-secondary: "Barlow Condensed", sans-serif;
-
   /* Colors */
   --color-bg: white;
   --color-text: #333;
   --color-text-light: #666;
   --color-text-dark: #000;
   --color-border: #e0e0e0;
-  --color-border-focus: #a94caf;
-  --color-focus-shadow: rgba(169, 76, 175, 0.1);
-  --color-primary: linear-gradient(to right, #e94caf, #8a4baf);
-  --color-secondary: #9ca3af;
-  --color-secondary-hover: #6b7280;
+  --color-border-focus: var(--edu-purple);         /* was #a94caf */
+  --color-focus-shadow: rgba(166, 33, 248, 0.1);   /* was rgba(169,76,175,0.1) */
+  --color-primary: var(--edu-gradient-primary);    /* was linear-gradient(to right, #e94caf, #8a4baf) */
+  --color-secondary: var(--edu-pink);              /* replaced #9ca3af */
+  --color-secondary-hover: var(--edu-beige);       /* replaced #6b7280 */
+
   --color-income: #10b981;
   --color-expense: #ef4444;
 
   /* Tab colors */
-  --color-tab: #8a4baf;
-  --color-tab-hover: #f3e6fb;
-  --color-tab-active: #e2c6ff;
+  --color-tab: var(--edu-purple);                  /* was #8a4baf */
+  --color-tab-hover: var(--edu-beige);             /* was #f3e6fb */
+  --color-tab-active: var(--edu-purple);           /* was #e2c6ff */
 
   /* Spacing */
   --space-xs: 4px;
@@ -83,8 +83,8 @@ body {
   width: 100%;
   height: 80px !important;
   padding: 0 !important;
-  background-color: #65328f;
-  color: #dda1d6;
+  background-color: var(--edu-purple); /* was #65328f */
+  color: white;                         /* was #dda1d6 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,7 +102,6 @@ body {
   font-weight: 700;
   margin: 0;
   color: var(--color-text-dark);
-  font-family: var(--font-secondary);
 }
 
 .page-subtitle {
@@ -134,7 +133,6 @@ body {
   font-weight: 600;
   margin: 0 0 8px 0;
   color: var(--color-text);
-  font-family: var(--font-secondary);
 }
 
 .card-description {
@@ -150,7 +148,6 @@ body {
   margin: 0 0 8px 0;
   color: var(--color-text);
   padding-top: 0;
-  font-family: var(--font-secondary);
 }
 
 .form-subtitle {
@@ -190,7 +187,7 @@ body {
   color: var(--color-text-dark);
 }
 
-/* Global input with icon styles - UPDATED */
+/* Global input with icon styles */
 .input-with-icon {
   position: relative;
   display: flex;
@@ -215,8 +212,8 @@ body {
   color: var(--color-text-light);
   background-color: #f0f0f0;
   border-right: 1px solid var(--color-border);
-  position: static; /* Changed from absolute to static */
-  left: auto; /* Remove left positioning */
+  position: static;
+  left: auto;
 }
 
 .input-with-icon input {
@@ -228,7 +225,7 @@ body {
   font-size: 16px;
   color: var(--color-text);
   background-color: white;
-  padding-left: 12px; /* Reset padding-left */
+  padding-left: 12px;
 }
 
 /* Fix placeholder alignment in amount fields */
@@ -262,7 +259,7 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px;
@@ -297,7 +294,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding-right: 32px;
 }
 
-/* Amount input with dollar sign styling - UPDATED */
+/* Amount input with dollar sign styling */
 .input-field .input-with-icon {
   display: flex;
   align-items: center;
@@ -311,8 +308,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 48px;
   background-color: #f0f0f0;
   border-right: 1px solid var(--color-border);
-  position: static; /* Changed from absolute to static */
-  left: auto; /* Remove left positioning */
+  position: static;
+  left: auto;
 }
 
 .input-field .input-with-icon input {
@@ -409,7 +406,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin: 4px 0 0 0;
 }
 
-/* Base layout styles for financial components */
+/* Layout for financial components */
 .income-container,
 .expenses-container,
 .saving-goals-container {
@@ -418,7 +415,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 0 var(--space-md);
 }
 
-/* Card styles for financial components */
 .income-card,
 .expense-card,
 .goal-card {
@@ -430,13 +426,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-/* New styles for data display cards */
 .income-data-card,
 .expense-data-card,
 .goal-data-card {
   background: var(--color-bg);
   border-radius: var(--border-radius);
-  padding: 24px 32px; /* Adjust padding to match the screenshot */
+  padding: 24px 32px;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -524,7 +519,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: var(--color-tab-active);
 }
 
-/* Grid layouts - Income and Expenses only */
+/* Grids */
 .income-grid,
 .expenses-grid {
   display: grid;
@@ -533,15 +528,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: var(--space-lg);
 }
 
-/* Separate goals grid styling */
-.goals-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-/* Responsive grid layouts - Income and Expenses only */
 @media (min-width: 768px) {
   .income-grid,
   .expenses-grid {
@@ -559,7 +545,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
-/* Responsive grid layouts - Goals only */
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
 @media (max-width: 1024px) {
   .goals-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -581,7 +573,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--color-text);
   text-align: center;
   width: 100%;
-  font-family: var(--font-secondary);
 }
 
 .section-subtitle {
@@ -591,7 +582,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   text-align: center;
 }
 
-/* Add new data grid classes */
+/* Data grids */
 .data-income-grid,
 .data-expenses-grid {
   display: grid;
@@ -600,7 +591,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: var(--space-lg);
 }
 
-/* Responsive grid layouts for data grids */
 @media (min-width: 768px) {
   .data-income-grid,
   .data-expenses-grid {
@@ -633,7 +623,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .universal-empty-state-icon svg {
-  color: #8a4baf;
+  color: var(--edu-purple); /* was #8a4baf */
 }
 
 .universal-empty-state h3 {
@@ -650,7 +640,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   max-width: 400px;
 }
 
-/* Fix for edit form input with icon */
+/* Edit form fixes */
 .edit-transaction-form .edit-field .input-with-icon {
   width: 100%;
 }
@@ -663,8 +653,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 48px;
   background-color: #f0f0f0;
   border-right: 1px solid var(--color-border);
-  position: static; /* Changed from absolute to static */
-  left: auto; /* Remove left positioning */
+  position: static !important;
+  left: auto !important;
 }
 
 .edit-transaction-form .edit-field .input-with-icon input {
@@ -678,38 +668,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: white;
 }
 
-/* Make sure all edit form inputs have consistent height */
 .edit-transaction-form .edit-field input,
 .edit-transaction-form .edit-field select {
   height: 48px;
   box-sizing: border-box;
-}
-
-/* Remove any conflicting styles that might be causing the issue */
-.input-with-icon .input-icon {
-  position: static !important; /* Force static positioning */
-  left: auto !important; /* Remove left positioning */
-  pointer-events: auto !important; /* Enable pointer events */
-}
-
-.input-with-icon input {
-  padding-left: 12px !important; /* Reset padding-left */
-}
-
-/* Font utility classes */
-.font-primary {
-  font-family: var(--font-primary);
-}
-
-.font-secondary {
-  font-family: var(--font-secondary);
-}
-
-.font-heading {
-  font-family: var(--font-secondary);
-  font-weight: 600;
-}
-
-.font-body {
-  font-family: var(--font-primary);
 }

@@ -1,3 +1,8 @@
+@import "../education-colors.css";
+
+/* Finance-specific styles that aren't shared across the app */
+
+/* Chart containers - restored to original larger size */
 .chart-wrapper {
   height: var(--chart-height) !important;
   min-height: var(--chart-height) !important;
@@ -21,13 +26,14 @@
   position: relative;
 }
 
+/* Update the chart container wrapper to have proper spacing */
 .chart-container-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: var(--chart-height);
   width: 100%;
-  margin-top: 8px; 
+  margin-top: 8px; /* Add a small margin to match the design */
 }
 
 /* Form styles specific to finance forms */
@@ -43,12 +49,7 @@
   justify-content: center;
   gap: var(--space-md);
 }
-@media (max-width: 768px) {
-  .month-selector {
-    padding-top: 20px;
-  }
-  
-}
+
 .selected-month {
   font-size: 18px;
   font-weight: 600;
@@ -244,11 +245,6 @@
   text-align: center;
 }
 
-/* Add spacing between year sections */
-.year-section:not(:last-child) {
-  margin-bottom: 1rem;
-}
-
 /* Monthly charts */
 .monthly-charts {
   display: flex;
@@ -422,9 +418,9 @@
 }
 
 .summary-card {
-  /* flex: 1 1 0 !important; */
-  /* min-width: 0 !important; */
-  /* max-width: none !important; */
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
   background: white;
   border-radius: var(--border-radius);
   padding: 16px;
@@ -500,21 +496,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8a4baf; /* Make all buttons purple by default */
+  color: var(--edu-purple); /* Make all buttons purple by default */
 }
 
 .action-btn:hover {
-  color: #e94caf; /* Turn pink on hover */
+  color: var(--edu-orange); /* Turn pink on hover */
   transform: translateY(-1px); /* Add subtle lift effect on hover */
 }
 
 .delete-btn {
-  color: #8a4baf; /* Make delete button purple to match f button */
+  color: var(--edu-purple); /* Make delete button purple to match f button */
   background-color: transparent; /* Remove background */
 }
 
 .delete-btn:hover {
-  color: #e94caf; /* Make delete button turn pink on hover */
+  color: var(--edu-orange); /* Make delete button turn pink on hover */
   background-color: transparent; /* Remove background on hover */
 }
 
@@ -779,19 +775,4 @@ select,
 .input-with-icon input {
   height: 38px;
   box-sizing: border-box;
-}
-
-.scroll-hint {
-  padding-top: 8px;
-  font-size: 13px;
-  color: #888;
-  text-align: center;
-  margin-bottom: 8px;
-  display: block;
-}
-
-@media (min-width: 768px) {
-  .scroll-hint {
-    display: none; /* only show on small screens */
-  }
 }

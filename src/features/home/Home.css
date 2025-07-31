@@ -1,3 +1,5 @@
+@import "../education-colors.css";
+
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -14,7 +16,7 @@
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -99,7 +101,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .feature-title {
@@ -118,7 +120,7 @@
 .feature-link {
   font-size: 14px;
   font-weight: 500;
-  color: #8a4baf;
+  color: var(--edu-purple);
   display: flex;
   align-items: center;
 }
@@ -127,14 +129,4 @@
   width: 14px;
   height: 14px;
   margin-left: 4px;
-}
-
-.hero-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--color-primary);
-}
-
-.font-secondary {
-  font-family: var(--font-secondary);
 }

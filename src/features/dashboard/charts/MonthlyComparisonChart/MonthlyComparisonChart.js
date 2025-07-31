@@ -3,29 +3,10 @@ import { Bar } from "react-chartjs-2"
 import "./MonthlyComparisonChart.css"
 
 const MonthlyComparisonChart = ({ transactions }) => {
-  // Get monthly data for the selected year
+  // Get monthly data for the current year
   const getMonthlyData = useMemo(() => {
-    // Determine the year from the transactions
-    let selectedYear = new Date().getFullYear()
-
-    if (transactions.length > 0) {
-      // Find the year from the transactions we received
-      const years = transactions.map((t) => new Date(t.date).getFullYear())
-      // Get the most common year in the transactions
-      const yearCounts = {}
-      years.forEach((year) => {
-        yearCounts[year] = (yearCounts[year] || 0) + 1
-      })
-
-      // Find the year with the most transactions
-      let maxCount = 0
-      Object.entries(yearCounts).forEach(([year, count]) => {
-        if (count > maxCount) {
-          maxCount = count
-          selectedYear = Number.parseInt(year)
-        }
-      })
-    }
+    const now = new Date()
+    const currentYear = now.getFullYear()
 
     // Initialize arrays with zeros for each month
     const incomeByMonth = Array(12).fill(0)
@@ -35,8 +16,8 @@ const MonthlyComparisonChart = ({ transactions }) => {
     transactions.forEach((transaction) => {
       const transactionDate = new Date(transaction.date)
 
-      // Only include transactions from selected year
-      if (transactionDate.getFullYear() === selectedYear) {
+      // Only include transactions from current year
+      if (transactionDate.getFullYear() === currentYear) {
         const month = transactionDate.getMonth()
 
         if (transaction.type === "income") {
@@ -50,7 +31,6 @@ const MonthlyComparisonChart = ({ transactions }) => {
     return {
       incomeByMonth,
       expensesByMonth,
-      selectedYear,
     }
   }, [transactions])
 
@@ -184,6 +164,8 @@ const MonthlyComparisonChart = ({ transactions }) => {
   // Check if there's data to display
   const hasData = chartData.datasets.some((dataset) => dataset.data.some((value) => value > 0))
 
+  const currentYear = new Date().getFullYear()
+
   return (
     <div className="monthly-comparison-container">
       {hasData ? (
@@ -202,10 +184,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
         </div>
       ) : (
         <div className="monthly-comparison-no-data">
-          <p>
-            No transaction data available for {getMonthlyData.selectedYear}. Add transactions to see your monthly
-            comparison.
-          </p>
+          <p>No transaction data available for {currentYear}. Add transactions to see your monthly comparison.</p>
         </div>
       )}
     </div>

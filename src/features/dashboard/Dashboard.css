@@ -1,11 +1,14 @@
 /* Base styles */
+@import "../education-colors.css";
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
-  background-color: #f8eeff;
+  /* switched from #f8eeff */
+  background-color: var(--edu-beige);
 }
 
 /* Dashboard container */
@@ -75,7 +78,7 @@ body {
   justify-content: center;
   padding: 8px 16px;
   background: white;
-  color: #8a4baf;
+  color: var(--edu-purple);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
@@ -100,7 +103,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  /* switched from manual gradient to var */
+  background: var(--edu-gradient-primary);
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -205,13 +209,12 @@ body {
   color: #666;
 }
 
-/* Add these new CSS classes after the .stat-change class */
 .stat-change.positive {
-  color: #10b981; /* Green color for positive values */
+  color: #10b981;
 }
 
 .stat-change.negative {
-  color: #ef4444; /* Red color for negative values */
+  color: #ef4444;
 }
 
 /* Tabs */
@@ -237,7 +240,7 @@ body {
 }
 
 .tab.active {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .tab.active::after {
@@ -247,7 +250,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: #8a4baf;
+  background: var(--edu-purple);
 }
 
 /* Charts grid */
@@ -301,7 +304,8 @@ body {
 
 .chart-placeholder {
   height: 300px;
-  background: linear-gradient(to right, #f9e6f3, #f0e7fa);
+  /* simplified from gradient of identical stops */
+  background: var(--edu-beige);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -314,6 +318,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 16px 0;
   flex: 1;
 }
 
@@ -348,7 +353,7 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: var(--edu-gradient-primary);
   border-radius: 4px;
 }
 
@@ -378,23 +383,6 @@ body {
   display: flex;
   flex-direction: column;
   color: #000;
-}
-
-/* New transaction item styles with colored backgrounds */
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-
-.transaction-item.income {
-  background-color: rgba(46, 204, 113, 0.1);
-}
-
-.transaction-item.expense {
-  background-color: rgba(231, 76, 60, 0.1);
 }
 
 .transaction {
@@ -477,92 +465,6 @@ body {
   color: #666;
 }
 
-/* Income/expense items */
-.dashboard-income-item,
-.dashboard-expense-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-
-.dashboard-income-item {
-  background-color: rgba(46, 204, 113, 0.1); /* Light green background for income */
-}
-
-.dashboard-expense-item {
-  background-color: rgba(231, 76, 60, 0.1); /* Light red background for expenses */
-}
-
-/* Remove the border-bottom since we're using card-style items now */
-.dashboard-income-item,
-.edashboard-xpense-item {
-  border-bottom: none;
-}
-
-.dashboard-income-item:last-child,
-.dashboard-expense-item:last-child {
-  border-bottom: none;
-}
-
-.dashboard-income-info,
-.dashboard-expense-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.dashboard-income-icon,
-.dashboard-texpense-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  background: #f5f5f5;
-}
-
-.income-category,
-.expense-category {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-.income-description,
-.expense-description {
-  font-size: 12px;
-  color: #666;
-}
-
-.income-details,
-.expense-details {
-  text-align: right;
-}
-
-.income-amount,
-.expense-amount {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.income-amount {
-  color: #10b981;
-}
-
-.expense-amount {
-  color: #ef4444;
-}
-
-.income-date,
-.expense-date {
-  font-size: 12px;
-  color: #666;
-}
-
 /* FAQs */
 .faqs-list {
   display: flex;
@@ -613,7 +515,6 @@ body {
   flex: 1;
 }
 
-/* Universal Empty State Component */
 .universal-empty-state {
   display: flex;
   flex-direction: column;
@@ -629,7 +530,7 @@ body {
 }
 
 .universal-empty-state-icon svg {
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .universal-empty-state h3 {
@@ -644,6 +545,11 @@ body {
   color: #666;
   margin: 0;
   max-width: 400px;
+}
+
+/* Button container */
+.button-container {
+  margin-top: 16px;
 }
 
 /* Chart container styles - updated for consistent height */
@@ -675,6 +581,77 @@ body {
   min-height: 400px;
 }
 
+/* Income/expense items */
+.income-item,
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.income-item:last-child,
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.income-info,
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.income-icon,
+.expense-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: #f5f5f5;
+}
+
+.income-category,
+.expense-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.income-description,
+.expense-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.income-details,
+.expense-details {
+  text-align: right;
+}
+
+.income-amount,
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.income-amount {
+  color: #10b981;
+}
+
+.expense-amount {
+  color: #ef4444;
+}
+
+.income-date,
+.expense-date {
+  font-size: 12px;
+  color: #666;
+}
+
 /* Add this to your Dashboard.css file */
 .daily-chart-wrapper,
 .monthly-comparison-wrapper {
@@ -682,7 +659,6 @@ body {
   width: 100%;
 }
 
-/* Ensure both chart containers have the same height */
 .chart-container {
   height: 350px;
   width: 100%;
@@ -692,12 +668,12 @@ body {
   flex: 1;
 }
 
-/* Make sure both chart wrappers fill their containers */
 .daily-chart-wrapper canvas,
 .monthly-comparison-wrapper canvas {
   height: 100% !important;
   width: 100% !important;
 }
+<<<<<<< HEAD
 
 .date-selector-container {
   display: flex;
@@ -805,3 +781,5 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+=======
+>>>>>>> 3b1c8d46cdb0b3c1469647de89854b3be9a908b0

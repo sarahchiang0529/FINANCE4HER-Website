@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { NavLink as RouterNavLink, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -27,11 +27,18 @@ const NavBar = () => {
   const { user, isAuthenticated, logout } = useAuth0()
 
   const toggle = () => setIsOpen(!isOpen)
-  const logoutWithRedirect = () => logout({ logoutParams: { returnTo: window.location.origin } })
+  const logoutWithRedirect = () =>
+    logout({ logoutParams: { returnTo: window.location.origin } })
 
   const renderNavLink = (to, label) => (
     <NavItem>
-      <NavLink tag={RouterNavLink} to={to} exact activeClassName="active-link" className="nav-link">
+      <NavLink
+        tag={RouterNavLink}
+        to={to}
+        exact
+        activeClassName="active-link"
+        className="nav-link"
+      >
         {label}
       </NavLink>
     </NavItem>
@@ -39,10 +46,14 @@ const NavBar = () => {
 
   return (
     <div className="nav-container">
-      <Navbar dark expand="md" className={`custom-navbar ${isSelectedPage ? "custom-navbar--white" : ""}`}>
+      <Navbar
+        dark
+        expand="md"
+        className={`custom-navbar ${isSelectedPage ? "custom-navbar--white" : ""}`}
+      >
         <Container fluid className="navbar-container">
           <NavbarBrand href="/" className="navbar-brand">
-            <img src={logo || "/placeholder.svg"} alt="App Logo" className="navbar-logo" />
+            <img src={logo} alt="App Logo" className="navbar-logo" />
           </NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
@@ -72,7 +83,7 @@ const NavBar = () => {
                   <DropdownToggle nav>
                     <div className="dropdown-profile">
                       <img
-                        src={user.picture || "/placeholder.svg"}
+                        src={user.picture}
                         alt="Profile"
                         className="nav-user-profile rounded-circle"
                         width="40"

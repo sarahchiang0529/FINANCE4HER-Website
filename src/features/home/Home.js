@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
-        <h1 className="hero-title font-secondary">Welcome to EmpowerHERTo</h1>
+        <h1 className="hero-title">FINANCE4HER</h1>
         <p className="hero-subtitle">
           Your space to learn, grow, and take control of your financial future. Track your earnings, set savings goals,
           and build healthy money habits—one step at a time.
@@ -31,7 +31,7 @@ const Home = () => {
           <div className="feature-icon">
             <BarChart3 />
           </div>
-          <h3 className="feature-title font-secondary">Dashboard</h3>
+          <h3 className="feature-title">Dashboard</h3>
           <p className="feature-description">Get a complete overview of your financial health at a glance.</p>
           <div className="feature-link">
             View Dashboard
@@ -43,7 +43,7 @@ const Home = () => {
           <div className="feature-icon">
             <DollarSign />
           </div>
-          <h3 className="feature-title font-secondary">Income Tracking</h3>
+          <h3 className="feature-title">Income Tracking</h3>
           <p className="feature-description">Record and categorize all your income sources in one place.</p>
           <div className="feature-link">
             Track Income
@@ -55,7 +55,7 @@ const Home = () => {
           <div className="feature-icon">
             <CreditCard />
           </div>
-          <h3 className="feature-title font-secondary">Expense Management</h3>
+          <h3 className="feature-title">Expense Management</h3>
           <p className="feature-description">Monitor your spending habits and identify areas to save.</p>
           <div className="feature-link">
             Manage Expenses
@@ -67,7 +67,7 @@ const Home = () => {
           <div className="feature-icon">
             <PiggyBank />
           </div>
-          <h3 className="feature-title font-secondary">Saving Goals</h3>
+          <h3 className="feature-title">Saving Goals</h3>
           <p className="feature-description">Set financial goals and track your progress toward achieving them.</p>
           <div className="feature-link">
             Set Goals

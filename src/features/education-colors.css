@@ -1,0 +1,14 @@
+/* education-colors.css */
+:root {
+  /* Primary */
+  --edu-purple: #A621F8;
+  --edu-orange: #EC804F;
+
+  /* Support */
+  --edu-beige:  #F1EEE7;
+  --edu-pink:   #D553A9;
+
+  /* Gradients */
+  --edu-gradient-primary:   linear-gradient(to right, var(--edu-purple), var(--edu-orange));
+  --edu-gradient-secondary: linear-gradient(to right, var(--edu-purple), var(--edu-orange), var(--edu-beige));
+}

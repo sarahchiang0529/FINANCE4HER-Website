@@ -1,3 +1,6 @@
+@import "../education-colors.css";
+
+
 /* Base styles */
 .goals-container {
   max-width: 1200px;
@@ -182,13 +185,13 @@ input[type="number"] {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #8a4baf;
+  color: var(--edu-purple);
   padding: 4px;
   transition: all 0.2s ease;
 }
 
 .goal-actions .icon-button:hover {
-  color: #e94caf;
+  color: var(--edu-orange);
   transform: translateY(-1px);
 }
 
@@ -220,7 +223,7 @@ input[type="number"] {
 .goal-progress-fill {
   height: 10px;
   border-radius: 6px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
   transition: width 0.3s ease-in-out;
 }
 
@@ -253,7 +256,7 @@ input[type="number"] {
 .goal-detail-icon {
   width: 20px;
   height: 20px;
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 .goal-detail-label {
@@ -318,7 +321,7 @@ input[type="number"] {
   width: 40px;
   height: 40px;
   margin-bottom: 12px;
-  color: #8a4baf;
+  color: var(--edu-purple);
 }
 
 /* Tabs Container */
@@ -343,7 +346,7 @@ input[type="number"] {
   background-color: #fff;
   border-radius: 8px;
   font-weight: 500;
-  color: #8a4baf;
+  color: var(--edu-purple);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
@@ -374,7 +377,7 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: linear-gradient(to right, #e94caf, #8a4baf);
+  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -556,7 +559,7 @@ input[type="number"] {
   top: 0;
   width: 18px;
   height: 18px;
-  border: 2px solid #8a4baf;
+  border: 2px solid var(--edu-purple);
   border-radius: 4px;
   background-color: white;
   transition: all 0.2s ease;
@@ -564,7 +567,7 @@ input[type="number"] {
 
 /* Checkbox checked state */
 .checkbox-field input[type="checkbox"]:checked + .checkbox-label::before {
-  background-color: #8a4baf;
+  background-color: var(--edu-purple);
 }
 
 /* Checkmark */
@@ -587,7 +590,7 @@ input[type="number"] {
 
 /* Hover state */
 .checkbox-label:hover::before {
-  border-color: #e94caf;
+  border-color: var(--edu-orange);
 }
 
 /* Goal content and button container */
@@ -607,8 +610,8 @@ input[type="number"] {
 
 .btn-toggle-completion {
   background: transparent;
-  border: 1px solid #8a4baf;
-  color: #8a4baf;
+  border: 1px solid var(--edu-purple);
+  color: var(--edu-purple);
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
@@ -626,8 +629,8 @@ input[type="number"] {
 /* Make both buttons look the same with purple outline */
 .btn-toggle-completion.completed {
   background: transparent;
-  color: #8a4baf;
-  border-color: #8a4baf;
+  color: var(--edu-purple);
+  border-color: var(--edu-purple);
 }
 
 .btn-toggle-completion.completed:hover {

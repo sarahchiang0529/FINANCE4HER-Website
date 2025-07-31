@@ -1,3 +1,6 @@
+@import "../education-colors.css";
+
+
 /* Profile Page Styles */
 .profile-container {
     max-width: 1200px;
@@ -204,7 +207,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background: linear-gradient(to right, #e94caf, #8a4baf);
+    background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
     color: white;
     font-weight: 600;
     font-size: 14px;

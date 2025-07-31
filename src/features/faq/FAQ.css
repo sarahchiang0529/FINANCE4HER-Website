@@ -1,4 +1,6 @@
 /* FAQ Page Styles */
+@import "../education-colors.css";
+
 .faq-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -99,4 +101,228 @@
   padding: 24px;
   text-align: center;
   color: #666;
+}
+
+/* Message Form Section */
+.message-form-section {
+  margin-top: 32px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 32px;
+}
+
+/* Message Form Prompt */
+.message-form-prompt {
+  background: linear-gradient(135deg, #f9f0ff 0%, #f0e6ff 100%);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.prompt-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.prompt-icon {
+  color: #65328f;
+  background: white;
+  padding: 12px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(101, 50, 143, 0.1);
+}
+
+.prompt-text h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.prompt-text p {
+  margin: 4px 0 0 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.ask-question-btn {
+  background: #65328f;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ask-question-btn:hover {
+  background: #563075;
+  transform: translateY(-1px);
+}
+
+/* Message Form Container */
+.message-form-container {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.form-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.form-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-header p {
+  margin: 8px 0 0 0;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Form Styles */
+.message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #65328f;
+  box-shadow: 0 0 0 3px rgba(101, 50, 143, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* Status Messages */
+.status-message {
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.cancel-btn {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.cancel-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.submit-btn {
+  background: #65328f;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #563075;
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .faq-container {
+    padding: 0 12px;
+  }
+
+  .faq-card {
+    padding: 20px;
+  }
+
+  .faq-container .page-title {
+    font-size: 28px;
+  }
+
+  .prompt-content {
+    gap: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+    justify-content: center;
+  }
 }

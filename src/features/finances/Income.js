@@ -6,7 +6,7 @@ import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent
 import EmptyState from "../../components/EmptyState"
 import "./Finances.css"
 
-// Register required Chart. vjs components for bar chart visualization
+// Register required Chart.js components for bar chart visualization
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 // Update the CATEGORY_ICONS
@@ -327,26 +327,6 @@ function Income() {
   const deleteIncome = (incomeId) => {
     const updatedIncome = income.filter((entry) => entry.id !== incomeId)
     setIncome(updatedIncome)
-
-    // Explicitly update localStorage to ensure changes are persisted
-    localStorage.setItem("incomeData", JSON.stringify(updatedIncome))
-
-    // Reset selected month details if the deleted item was part of the selected month
-    if (selectedMonthDetails) {
-      const deletedItemMonth = income.find((item) => item.id === incomeId)?.date
-      if (deletedItemMonth) {
-        const deletedDate = new Date(deletedItemMonth)
-        const selectedDate = selectedMonthDetails.month
-
-        if (
-          deletedDate.getMonth() === selectedDate.getMonth() &&
-          deletedDate.getFullYear() === selectedDate.getFullYear()
-        ) {
-          setSelectedMonthDetails(null)
-        }
-      }
-    }
-
     setShowDeleteConfirm(null)
   }
 
@@ -478,7 +458,6 @@ function Income() {
           )}
 
           {/* Summary Cards - Show totals for each category */}
-          <p className="scroll-hint">← Swipe to view more categories →</p>
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
             {/* Total Income Card */}
             <div className="summary-card" style={{ flex: "1 1 0" }}>
@@ -491,7 +470,7 @@ function Income() {
                 <p className="summary-period">
                   {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
                 </p>
-              </div>der5
+              </div>
             </div>
 
             {/* Category Summary Cards - One card for each predefined category */}
