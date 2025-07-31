@@ -4,15 +4,14 @@
   margin: auto;
 }
 
-/* --- Page Titles --- */
 .glossary-container h1 {
   font-size: 36px;
   font-weight: bold;
-  color: #000;  /* Black like Saving Goals title */
+  color: #000;
 }
 
 .subtitle {
-  color: #666;  /* Muted gray like descriptions under titles */
+  color: #666;
   font-size: 1.1rem;
   margin-bottom: 20px;
 }
@@ -22,10 +21,9 @@ h2 {
   margin-bottom: 30px;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333333;  /* Greyish black like "Financial Summary" */
+  color: #333333;
 }
 
-/* --- Glossary Cards (Financial Terms) --- */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -59,7 +57,6 @@ h2 {
   line-height: 1.4;
 }
 
-/* --- Tips Dropdowns (FAQ Style) --- */
 .tips-container {
   margin-top: 15px;
 }
@@ -69,15 +66,14 @@ h2 {
   border: 1px solid #e5e5e5;
   margin-bottom: 12px;
   overflow: hidden;
-  background: #fff;   /* Default white */
+  background: #fff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Header (clickable) */
 .tip-header {
-  background: #fff;        /* White by default */
-  color: #333;             /* Normal black text */
-  font-weight: 500;
+  background: #fff;
+  color: #000;
+  font-weight: bold;
   padding: 15px 20px;
   cursor: pointer;
   display: flex;
@@ -86,20 +82,17 @@ h2 {
   transition: background-color 0.2s ease;
 }
 
-/* Hover effect */
 .tip-header:hover {
-  background: #f9eaff;     /* Soft pink/purple on hover */
+  background: #f9eaff;
 }
 
-/* When expanded, keep white (not pink) */
 .tip-item.active .tip-header {
-  background: #fff;        /* Stay white when open */
+  background: #fff;
 }
 
-/* Content inside */
 .tip-content {
   background: #fff;
-  color: #444;             /* Dark grey text */
+  color: #666;
   padding: 15px 20px;
   font-size: 1rem;
   border-top: 1px solid #e5e5e5;
@@ -107,5 +100,5 @@ h2 {
 
 .arrow {
   font-size: 0.9rem;
-  color: #5e2b97;          /* Keep purple arrow */
+  color: #5e2b97;
 }
