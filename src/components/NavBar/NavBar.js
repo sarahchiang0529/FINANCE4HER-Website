@@ -69,6 +69,8 @@ const NavBar = () => {
                   {renderNavLink("/learning-resources", "Learning Resources")}
                   {renderNavLink("/points-rewards", "Points & Rewards")}
                   {renderNavLink("/faq", "FAQ")}
+                  {renderNavLink("/glossary", "Glossary & Tips")}
+
                 </>
               )}
 

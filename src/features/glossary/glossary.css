@@ -1,0 +1,111 @@
+.glossary-container {
+  padding: 0 16px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* --- Page Titles --- */
+.glossary-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #000;  /* Black like Saving Goals title */
+}
+
+.subtitle {
+  color: #666;  /* Muted gray like descriptions under titles */
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333333;  /* Greyish black like "Financial Summary" */
+}
+
+/* --- Glossary Cards (Financial Terms) --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.info-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+}
+
+.info-card h3 {
+  color: #5E2B97;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.info-card p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* --- Tips Dropdowns (FAQ Style) --- */
+.tips-container {
+  margin-top: 15px;
+}
+
+.tip-item {
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #fff;   /* Default white */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Header (clickable) */
+.tip-header {
+  background: #fff;        /* White by default */
+  color: #333;             /* Normal black text */
+  font-weight: 500;
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect */
+.tip-header:hover {
+  background: #f9eaff;     /* Soft pink/purple on hover */
+}
+
+/* When expanded, keep white (not pink) */
+.tip-item.active .tip-header {
+  background: #fff;        /* Stay white when open */
+}
+
+/* Content inside */
+.tip-content {
+  background: #fff;
+  color: #444;             /* Dark grey text */
+  padding: 15px 20px;
+  font-size: 1rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.arrow {
+  font-size: 0.9rem;
+  color: #5e2b97;          /* Keep purple arrow */
+}

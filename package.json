@@ -20,6 +20,7 @@
     "@babel/core": "^7.23",
     "@babel/plugin-syntax-flow": "^7.23",
     "@babel/plugin-transform-react-jsx": "^7.23",
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
