@@ -5,6 +5,10 @@ import * as serviceWorker from "./serviceWorker"
 import { Auth0Provider } from "@auth0/auth0-react"
 import history from "./utils/history"
 import { getConfig } from "./config/config"
+import initFonts from "./utils/fonts"
+
+// Initialize fonts (both Font Awesome and web fonts)
+initFonts()
 
 const onRedirectCallback = (appState) => {
   history.push(
