@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
-        <h1 className="hero-title">FINANCE4HER</h1>
+        <h1 className="hero-title">Welcome to FINANCE4HER</h1>
         <p className="hero-subtitle">
           Your space to learn, grow, and take control of your financial future. Track your earnings, set savings goals,
           and build healthy money habits—one step at a time.
