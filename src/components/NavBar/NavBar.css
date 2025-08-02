@@ -5,12 +5,12 @@
   left: 0;
   right: 0;
   z-index: 1050;
-  background-color: #65328f;
-  color: #dda1d6;
+  background-color: var(--brand-purple);
+  color: var(--brand-beige);
   display: flex;
   align-items: center;
   padding: 1rem 1rem !important;
-  font-family: "Inter-SemiBold", sans-serif;
+  font-family: var(--font-secondary);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   backface-visibility: hidden;
 }
@@ -49,8 +49,8 @@
 }
 
 .nav-link {
-  color: #dda1d6 !important;
-  font-family: "Inter-SemiBold", sans-serif !important;
+  color: var(--brand-beige) !important;
+  font-family: var(--font-secondary) !important;
   font-size: 0.95rem !important;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -58,22 +58,22 @@
   padding: 8px 12px;
 }
 
-/* No hover underline or color change */
+/* Hover = slightly darker beige */
 .nav-link:hover {
-  color: #dda1d6 !important;
+  color: #d9d6ce !important; /* ~10% darker than #f1eee7 */
   text-decoration: none;
 }
 
-/* Click = text turns darker pink */
+/* Active click = slightly darker beige */
 .nav-link:active {
-  color: #cc94c2 !important;
+  color: #cfcac2 !important; /* ~20% darker than #f1eee7 */
 }
 
-/* Active link or focus = no underline */
+/* Active route or focus */
 .nav-link.active-link,
 .nav-link.active-link:focus,
 .nav-link.active-link:hover {
-  color: #dda1d6 !important;
+  color: #d9d6ce !important;
   text-decoration: none !important;
 }
 
