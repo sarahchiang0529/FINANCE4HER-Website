@@ -50,10 +50,8 @@
   --color-info-light: #fdf2f8;
 
   /* Income/Expense Colors */
-  --color-income: var(--brand-purple);
-  --color-income-light: var(--color-primary-light);
-  --color-expense: var(--brand-orange);
-  --color-expense-light: #fff7ed;
+  --color-income: #10b981;
+  --color-expense: #ef4444;
 
   /* Border & Focus */
   --color-border: #e0e0e0;
