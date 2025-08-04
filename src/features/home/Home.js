@@ -15,12 +15,14 @@ const Home = () => {
         </p>
         <div className="hero-buttons">
           <div className="button-wrapper">
-            <button className="btn-primary get-started-btn" onClick={() => history.push("/dashboard")}>
-              Get Started
-              <ArrowRight className="btn-icon" />
+            <button className="btn-primary home-btn" onClick={() => history.push("/dashboard")}>
+              <span className="home-btn-content">
+                Get Started
+                <ArrowRight className="btn-icon" />
+              </span>
             </button>
           </div>
-          <button className="btn-outline" onClick={() => history.push("/learning-resources")}>
+          <button className="btn-primary explore-btn" onClick={() => history.push("/learning-resources")}>
             Explore Resources
           </button>
         </div>
