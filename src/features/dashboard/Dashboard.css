@@ -74,12 +74,12 @@ body {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: white;
+  background: var(--edu-beige);
   color: var(--edu-purple);
+  border: 1px solid #e0e0e0;
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 160px;
@@ -89,32 +89,6 @@ body {
   .dashboard-actions {
     justify-content: flex-end;
   }
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  /* switched from manual gradient to var */
-  background: var(--edu-gradient-primary);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-sm {
-  font-size: 12px;
-  padding: 6px 12px;
 }
 
 .full-width {
@@ -136,7 +110,6 @@ body {
 .button-row {
   display: flex;
   gap: 10px;
-  margin-top: 12px;
 }
 
 .button-row .btn-outline {
@@ -355,6 +328,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
+  align-items: stretch; /* ensures equal height */
 }
 
 @media (min-width: 768px) {
@@ -468,12 +442,13 @@ body {
 }
 
 .faq {
-  padding-bottom: 12px;
+  padding-bottom: 13px;
   border-bottom: 1px solid #f0f0f0;
 }
 
 .faq:last-of-type {
   border-bottom: none;
+  padding-bottom: 7px !important;
 }
 
 .faq-title {
@@ -541,9 +516,7 @@ body {
 }
 
 /* Button container */
-.button-container {
-  margin-top: 16px;
-}
+
 
 /* Chart container styles - updated for consistent height */
 .chart-container {
@@ -559,7 +532,13 @@ body {
 .chart-card {
   display: flex;
   flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  height: 100%; /* 🔥 ensures fills parent */
 }
+
 
 .chart-card .card-header {
   flex: 0 0 auto;
@@ -586,6 +565,7 @@ body {
 .income-item:last-child,
 .expense-item:last-child {
   border-bottom: none;
+  padding-bottom: 10px !important;
 }
 
 .income-info,

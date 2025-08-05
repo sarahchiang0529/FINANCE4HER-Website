@@ -41,9 +41,9 @@ const Dashboard = () => {
   // State for saving goals
   const [savingGoals, setSavingGoals] = useState([])
   // Maximum number of goals to display
-  const MAX_GOALS = 4
+  const MAX_GOALS = 5
   // Maximum number of transactions to display
-  const MAX_TRANSACTIONS = 6
+  const MAX_TRANSACTIONS = 7
   // State for active chart tab
   const [activeChartTab, setActiveChartTab] = useState("daily")
 
@@ -94,8 +94,8 @@ const Dashboard = () => {
 
   // Update the useEffect hook to fetch transactions from localStorage
   useEffect(() => {
-    // Get the first 4 FAQ items
-    setFaqs(faqItems.slice(0, 3))
+    // Get the first 3 FAQ items
+    setFaqs(faqItems.slice(0, 4))
 
     // Fetch transactions from localStorage
     const fetchTransactions = () => {
@@ -464,13 +464,16 @@ const Dashboard = () => {
               )}
 
               {/* Updated chart container with fixed height and flex styling */}
-              <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column" }}>
-                {activeChartTab === "daily" ? (
-                  <DailyCashflowChart transactions={filteredTransactions} />
-                ) : (
-                  <MonthlyComparisonChart transactions={filteredTransactionsByYear} />
-                )}
+              <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: "100%", maxWidth: "100%", display: "flex", justifyContent: "center", marginTop: "16px"}}>
+                  {activeChartTab === "daily" ? (
+                    <DailyCashflowChart transactions={filteredTransactions} />
+                  ) : (
+                    <MonthlyComparisonChart transactions={filteredTransactionsByYear} />
+                  )}
+                </div>
               </div>
+
             </div>
 
             <div className="chart-card">
@@ -562,17 +565,15 @@ const Dashboard = () => {
                   ))}
                 </div>
 
-                <div className="button-container">
-                  <div className="button-row">
-                    <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
-                      View All Income
-                      <ArrowRight className="btn-icon-sm" />
-                    </button>
-                    <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
-                      View All Expenses
-                      <ArrowRight className="btn-icon-sm" />
-                    </button>
-                  </div>
+                <div className="button-row">
+                  <button className="btn-outline btn-sm" onClick={() => history.push("/income")}>
+                    View All Income
+                    <ArrowRight className="btn-icon-sm" />
+                  </button>
+                  <button className="btn-outline btn-sm" onClick={() => history.push("/expenses")}>
+                    View All Expenses
+                    <ArrowRight className="btn-icon-sm" />
+                  </button>
                 </div>
               </>
             ) : (
