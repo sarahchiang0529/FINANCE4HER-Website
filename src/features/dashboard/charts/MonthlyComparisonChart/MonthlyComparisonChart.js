@@ -184,7 +184,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
         </div>
       ) : (
         <div className="monthly-comparison-no-data">
-          <p>No transaction data available for {currentYear}. Add transactions to see your monthly comparison.</p>
+          <p>No transaction data available for the current year. Add transactions to see your monthly comparison.</p>
         </div>
       )}
     </div>
