@@ -486,7 +486,8 @@
 }
 
 /* Make the action buttons more compact */
-.action-btn {
+.action-btn,
+.delete-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -499,19 +500,10 @@
   color: var(--edu-purple); /* Make all buttons purple by default */
 }
 
-.action-btn:hover {
-  color: var(--edu-orange); /* Turn pink on hover */
-  transform: translateY(-1px); /* Add subtle lift effect on hover */
-}
-
-.delete-btn {
-  color: var(--edu-purple); /* Make delete button purple to match f button */
-  background-color: transparent; /* Remove background */
-}
-
+.action-btn:hover,
 .delete-btn:hover {
-  color: var(--edu-orange); /* Make delete button turn pink on hover */
-  background-color: transparent; /* Remove background on hover */
+  color: var(--edu-orange); /* Turn orange on hover */
+  transform: translateY(-1px); /* Add subtle lift effect on hover */
 }
 
 /* Delete confirmation */
