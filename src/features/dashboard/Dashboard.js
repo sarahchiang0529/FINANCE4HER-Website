@@ -134,15 +134,25 @@ const Dashboard = () => {
     // Fetch saving goals from localStorage or API
     const fetchSavingGoals = () => {
       try {
-        // In a real app, this would be an API call or database query
-        // For this example, we'll check if there are any goals in localStorage
         const storedGoals = localStorage.getItem("savingGoals")
         if (storedGoals) {
           const parsedGoals = JSON.parse(storedGoals)
-          // Sort by most recently added (assuming id is timestamp-based)
-          const sortedGoals = parsedGoals.sort((a, b) => b.id - a.id)
-          // Get the most recent 4 goals
-          setSavingGoals(sortedGoals.slice(0, MAX_GOALS))
+
+          const sortedGoals = [...parsedGoals]
+            .sort((a, b) => {
+              const aComplete = a.currentAmount >= a.targetAmount
+              const bComplete = b.currentAmount >= b.targetAmount
+
+              if (aComplete !== bComplete) {
+                return aComplete - bComplete // incomplete before complete
+              }
+
+              return b.id - a.id // newest goals first
+            })
+            .slice(0, MAX_GOALS)
+
+
+          setSavingGoals(sortedGoals)
         } else {
           setSavingGoals([])
         }
