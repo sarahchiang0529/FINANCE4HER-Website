@@ -1,0 +1,770 @@
+@import "../education-colors.css";
+
+/* Finance-specific styles that aren't shared across the app */
+
+/* Chart containers - restored to original larger size */
+.chart-wrapper {
+  height: var(--chart-height) !important;
+  min-height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+  width: 100%;
+  margin: var(--space-md) 0 0 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-container {
+  height: 100% !important;
+  max-height: var(--chart-height) !important;
+  width: 100%;
+  position: relative;
+}
+
+/* Update the chart container wrapper to have proper spacing */
+.chart-container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--chart-height);
+  width: 100%;
+  margin-top: 8px; /* Add a small margin to match the design */
+}
+
+/* Form styles specific to finance forms */
+.income-form,
+.expense-form {
+  width: 100%;
+}
+
+/* Month selector */
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.selected-month {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.month-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-nav-button:hover {
+  background: var(--color-tab-hover);
+  border-color: var(--color-tab);
+}
+
+/* Summary cards - completely revised for 1xN layout */
+.summary-cards {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px !important;
+  margin-top: var(--space-lg);
+  width: 100%;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+/* Update the summary-icon-wrapper to ensure perfect centering */
+.summary-icon-wrapper {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 8px auto !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  position: relative !important;
+}
+
+/* Force the summary icon to be perfectly centered */
+.summary-icon {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-size: 24px !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center !important;
+  line-height: 1 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Remove all background colors */
+.total-icon,
+.salary-icon,
+.food-icon,
+.investments-icon,
+.transport-icon,
+.government-icon,
+.entertainment-icon,
+.shopping-icon,
+.utilities-icon,
+.other-icon {
+  background-color: transparent !important;
+}
+
+/* Ensure the income list has proper spacing */
+.income-list,
+.expenses-list {
+  max-height: 400px !important;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 8px 0 0 0; /* Add top margin to match the chart spacing */
+}
+
+/* Improve the income/expense item layout */
+.income-item,
+.expense-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 0;
+  min-height: auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* When not editing or deleting, use row layout */
+.income-item:not(:has(.edit-transaction-form, .delete-confirm)),
+.expense-item:not(:has(.edit-transaction-form, .delete-confirm)) {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.income-info,
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Keep the summary icon styling consistent */
+/* Keep transaction icons clean without backgrounds */
+.income-icon,
+.expense-icon,
+.category-icon {
+  background-color: transparent !important;
+  background: none !important;
+  box-shadow: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.income-category,
+.expense-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.income-description,
+.expense-description {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+/* Update the transaction details layout */
+.income-details,
+.expense-details {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 120px; /* Add minimum width to prevent squishing */
+}
+
+.income-amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-income);
+}
+
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-expense);
+}
+
+.income-date,
+.expense-date {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+/* Monthly view */
+.monthly-view {
+  margin-top: var(--space-lg);
+}
+
+.year-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow);
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Monthly charts */
+.monthly-charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  width: 100%;
+  justify-content: flex-start;
+  padding: var(--space-lg);
+  padding: var(--space-md);
+}
+
+.monthly-single-chart-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  margin-bottom: var(--space-lg);
+}
+
+.single-month {
+  max-width: 180px;
+}
+
+.month-chart-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 160px;
+  max-width: 160px;
+  flex: 0 0 auto;
+}
+
+.month-chart {
+  width: 100%;
+  height: var(--mini-chart-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.month-chart .chart-wrapper,
+.monthly-chart-wrapper {
+  height: var(--mini-chart-height) !important;
+  min-height: var(--mini-chart-height) !important;
+  max-height: var(--mini-chart-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.month-total {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-top: var(--space-xs);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+/* Monthly details */
+.monthly-details-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  margin-top: var(--space-lg);
+  text-align: center;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.monthly-details-content {
+  width: 100%;
+  margin-top: var(--space-md);
+}
+
+.monthly-details-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.details-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background-color: #f9f0ff;
+  border-radius: var(--space-sm);
+}
+
+.details-label,
+.details-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.details-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.details-category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px var(--space-md);
+  background-color: #f8f8f8;
+  border-radius: var(--space-sm);
+  transition: all 0.2s ease;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.category-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.category-amount {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.monthly-details-chart {
+  height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+}
+
+.monthly-view .chart-wrapper {
+  height: var(--chart-height) !important;
+  max-height: var(--chart-height) !important;
+  width: 100%;
+  margin: 0;
+}
+
+.monthly-view .chart-container {
+  height: 100% !important;
+  max-height: var(--chart-height) !important;
+}
+
+/* Summary card styles */
+.summary-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.summary-card {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.summary-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--color-text) !important;
+  margin: 0 0 4px 0 !important;
+}
+
+.summary-value {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--color-text-dark) !important;
+  margin: 0 !important;
+}
+
+.summary-period {
+  font-size: 11px !important;
+  color: var(--color-text-light) !important;
+  margin: 2px 0 0 0 !important;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  /* On mobile, allow horizontal scrolling for summary cards */
+  .summary-cards {
+    display: flex !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .summary-card {
+    flex: 0 0 140px;
+  }
+}
+
+/* Add padding around distribution & transaction headers */
+.income-data-card > .finance-card-header,
+.expense-data-card > .finance-card-header {
+  background-color: #f5f5f5; /* light grey */
+  padding: 16px 24px; /* top/bottom 16px, left/right 24px */
+  border-bottom: 1px solid var(--color-border); /* divider line */
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+/* Edit and Delete functionality styles */
+.transaction-actions {
+  display: flex;
+  gap: 8px; /* Increase gap for better spacing */
+  margin-top: 4px;
+  align-items: center;
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+/* Make the action buttons more compact */
+.action-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--edu-purple); /* Make all buttons purple by default */
+}
+
+.action-btn:hover,
+.delete-btn:hover {
+  color: var(--edu-orange); /* Turn orange on hover */
+  transform: translateY(-1px); /* Add subtle lift effect on hover */
+}
+
+/* Delete confirmation */
+.delete-confirm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: #fff9f9;
+  border-radius: 8px;
+  border: 1px solid #ffdddd;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.delete-confirm p {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Make both buttons in delete confirmation the same height */
+.delete-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  height: 36px; /* Set a fixed height for both buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.btn-secondary {
+  background-color: #f1f1f1;
+  color: #333;
+  height: 36px; /* Ensure consistent height */
+}
+
+.btn-secondary:hover {
+  background-color: #e5e5e5;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+  height: 36px; /* Ensure consistent height */
+}
+
+.btn-danger:hover {
+  background-color: #d44333;
+}
+
+/* Edit transaction form */
+.edit-transaction-form {
+  width: 100%;
+  padding: 16px;
+  background-color: #f9f0ff;
+  border-radius: 8px;
+  border: 1px solid #e6d0ff;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.edit-form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.edit-form-row .edit-field {
+  flex: 1;
+  min-width: 200px; /* Ensure fields don't get too narrow */
+}
+
+.edit-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.edit-field input,
+.edit-field select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  height: 38px; /* Set a consistent height for all inputs */
+  box-sizing: border-box;
+}
+
+/* Replace the existing input-with-icon styles with the ones from App.css */
+
+/* Edit transaction form input with icon */
+.edit-field .input-with-icon {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.edit-field .input-with-icon:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+.edit-field .input-with-icon .input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 48px;
+  font-size: 16px;
+  color: var(--color-text-light);
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.edit-field .input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  padding-left: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: white;
+  width: 100%;
+}
+
+/* Global input with icon styles */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px var(--color-focus-shadow);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  font-size: 16px;
+  color: var(--color-text-light);
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.input-with-icon input {
+  flex: 1;
+  height: 48px;
+  padding: 12px;
+  padding-left: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: white;
+}
+
+/* Fix placeholder alignment in amount fields */
+.input-with-icon input::placeholder {
+  color: #999;
+}
+
+/* Amount input with dollar sign styling */
+.input-field .input-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.input-field .input-with-icon .input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 48px;
+  background-color: #f0f0f0;
+  border-right: 1px solid var(--color-border);
+}
+
+.input-field .input-with-icon input {
+  padding-left: 12px;
+  text-align: left;
+}
+
+/* Make sure all other inputs match the height */
+.input-field input:not(.input-with-icon input),
+.input-field select {
+  height: 48px;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 10px;
+  font-weight: 500;
+  color: #666;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.input-with-icon input {
+  padding-left: 24px;
+  width: 100%;
+}
+
+.edit-field .input-with-icon {
+  width: 100%;
+}
+
+.edit-field .input-with-icon input {
+  width: 100%;
+}
+
+/* Also fix the main form input with icon */
+
+/* Make sure all form inputs have consistent height */
+.input-field input,
+.input-field select {
+  height: 38px;
+  box-sizing: border-box;
+}
+
+/* Add a new class for the transaction info row */
+.transaction-info-row {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Reduce the gap between amount and buttons */
+}
+
+input,
+select,
+.input-with-icon input {
+  height: 38px;
+  box-sizing: border-box;
+}

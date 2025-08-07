@@ -1,0 +1,92 @@
+@import "../education-colors.css";
+
+/* Tabs Container */
+.tabs-container {
+  margin-bottom: 32px;
+}
+
+.tabs {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  background-color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  color: var(--edu-purple);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.tab:hover {
+  background-color: #f3e6fb;
+}
+
+.tab.active {
+  background-color: #e2c6ff;
+  border-color: var(--edu-purple);
+}
+
+.tab-label {
+  font-size: 14px;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Card Grid (2x4 Layout) */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual Card Style */
+.resource-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-4px);
+}
+
+.resource-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.resource-card-description {
+  font-size: 14px;
+  color: #666;
+}

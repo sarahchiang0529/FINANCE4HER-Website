@@ -1,0 +1,15 @@
+.footer-wrapper {
+  width: 100%;
+  height: 80px !important;
+  padding: 0 !important;
+  background-color: var(--brand-purple);
+  color: var(--brand-beige);
+  display: flex;
+  align-items: center;      /* vertical centering */
+  justify-content: center;  /* horizontal centering */
+  text-align: center;
+}
+
+.footer-wrapper p {
+  margin: 0;  /* remove default top/bottom margins */
+}

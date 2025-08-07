@@ -1,0 +1,125 @@
+/* Custom Navbar */
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background-color: var(--brand-purple);
+  color: var(--brand-beige);
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem !important;
+  font-family: var(--font-secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backface-visibility: hidden;
+}
+
+/* Navbar inner layout */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+/* Brand logo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  margin-left: 0 !important;
+}
+
+.navbar-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Navigation links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  margin-left: auto;
+}
+
+.nav-link {
+  color: var(--brand-beige) !important;
+  font-family: var(--font-secondary) !important;
+  font-size: 0.95rem !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+/* Hover = slightly darker beige */
+.nav-link:hover {
+  color: #d9d6ce !important; /* ~10% darker than #f1eee7 */
+  text-decoration: none;
+}
+
+/* Active click = slightly darker beige */
+.nav-link:active {
+  color: #cfcac2 !important; /* ~20% darker than #f1eee7 */
+}
+
+/* Active route or focus */
+.nav-link.active-link,
+.nav-link.active-link:focus,
+.nav-link.active-link:hover {
+  color: #d9d6ce !important;
+  text-decoration: none !important;
+}
+
+/* User profile avatar */
+.nav-user-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.nav-user-profile:hover {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Caret triangle */
+.dropdown-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.caret-triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #dda1d6;
+  margin-left: 0.4rem;
+  align-self: center;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links {
+    margin-left: 0;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
