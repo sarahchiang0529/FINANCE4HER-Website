@@ -1,6 +1,12 @@
-import { useMemo } from "react"
-import { Line } from "react-chartjs-2"
-import "./DailyCashflowChart.css"
+import { useMemo } from "react";
+import { Line } from "react-chartjs-2";
+import "./DailyCashflowChart.css";
+import { Chart as ChartJS } from "chart.js";
+
+// Pull in the primary font from your CSS variables
+const rootStyles   = getComputedStyle(document.documentElement);
+const primaryFont  = rootStyles.getPropertyValue("--font-primary").trim();
+ChartJS.defaults.font.family = primaryFont;
 
 const DailyCashflowChart = ({ transactions }) => {
   // Get current month's date range

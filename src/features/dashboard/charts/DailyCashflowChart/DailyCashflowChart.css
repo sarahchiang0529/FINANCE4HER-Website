@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
   background-color: transparent;
+  font-family: inherit;
 }
 
 .daily-chart-wrapper {
@@ -26,6 +27,7 @@
   font-size: 10px;
   margin: 0;
   background-color: transparent;
+  font-family: var(--font-primary);
 }
 
 .legend-item {
@@ -33,7 +35,6 @@
   align-items: center;
   font-size: 10px;
   color: #666;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .legend-color {
