@@ -112,7 +112,7 @@
 
 /* Message Form Prompt */
 .message-form-prompt {
-  background: linear-gradient(135deg, #f9f0ff 0%, #f0e6ff 100%);
+  background: #f9f0ff;
   border-radius: 12px;
   padding: 24px;
   text-align: center;
@@ -147,7 +147,7 @@
 }
 
 .ask-question-btn {
-  background: #65328f;
+  background: var(--brand-purple);;
   color: white;
   border: none;
   padding: 12px 24px;

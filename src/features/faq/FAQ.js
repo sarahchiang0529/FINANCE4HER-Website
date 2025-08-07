@@ -272,7 +272,6 @@ function FAQ() {
           {!showMessageForm ? (
             <div className="message-form-prompt">
               <div className="prompt-content">
-                <MessageCircle className="prompt-icon" size={24} />
                 <div className="prompt-text">
                   <h3>Didn't find what you're looking for?</h3>
                   <p>Send us your question and we'll get back to you with an answer!</p>
