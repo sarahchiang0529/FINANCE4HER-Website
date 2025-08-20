@@ -293,7 +293,7 @@ function FAQ() {
 
               <div className="message-form">
                 <div className="form-group">
-                  <label htmlFor="name">Name *</label>
+                  <label htmlFor="name">Name</label>
                   <input
                     type="text"
                     id="name"
@@ -318,7 +318,7 @@ function FAQ() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="message">Your Question *</label>
+                  <label htmlFor="message">Your Question</label>
                   <textarea
                     id="message"
                     name="message"
