@@ -3,16 +3,16 @@
   margin: 0 auto;
   padding-top: 60px;
   padding-bottom: 60px;
-  background: #f1eee7;
+  background: var(--brand-offwhite);
 }
 
 .hero-section {
   text-align: center;
   margin-bottom: 48px;
-  background: linear-gradient(135deg, #a621f8 0%, #d553a9 50%, #ec804f 100%);
+  background: var( --color-primary-gradient);
   border-radius: 20px;
   padding: 60px 40px;
-  box-shadow: 0 10px 30px rgba(166, 33, 248, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .hero-title {
@@ -141,37 +141,36 @@
 }
 
 .feature-card {
-  background: white;
+  color: white;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card:nth-child(1) .feature-icon {
-  background: var(--brand-purple);
-  color: white;
+  background: var(--brand-pink);
+  color: var(--brand-offwhite);
 }
 
 .feature-card:nth-child(2) .feature-icon {
-  background: #b63de3;
-  color: white;
+  background: #d59b93;
+  color: var(--brand-offwhite);
 }
 
 .feature-card:nth-child(3) .feature-icon {
-  background: #e06386;
-  color: white;
+  background: var(--brand-limegreen);
+  color: var(--brand-offwhite);
 }
 
 .feature-card:nth-child(4) .feature-icon {
-  background: var(--brand-orange);
-  color: white;
+  background: var(--brand-lilac);
+  color: var(--brand-offwhite);
 }
 
 .feature-icon {
@@ -200,13 +199,13 @@
 .feature-link {
   font-size: 14px;
   font-weight: 500;
-  color: #a621f8;
+  color: var(--brand-indigo);
   display: flex;
   align-items: center;
 }
 
 .feature-card:hover .feature-link {
-  color: #d553a9;
+  color: var(--brand-lilac);
 }
 
 .link-icon {

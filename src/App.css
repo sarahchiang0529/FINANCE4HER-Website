@@ -136,7 +136,7 @@ body {
   height: 80px;
   padding: 0;
   background-color: var(--brand-indigo);
-  color: var(--color-text-white);
+  color: var(--brand-offwhite);
   display: flex;
   align-items: center;
   justify-content: center;
