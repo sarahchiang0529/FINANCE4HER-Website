@@ -9,45 +9,47 @@
   --font-secondary: "Barlow Condensed", sans-serif;
 
   /* Official Finance4Her Brand Colors */
-  --brand-purple: #a621f8;
-  --brand-orange: #ec804f;
-  --brand-beige: #f1eee7;
-  --brand-pink: #d553a9;
+  --brand-pink: #df44a6;
+  --brand-limegreen: #ccf281;
+  --brand-orange: #e89f56;
+  --brand-lilac: #ba92e8;
+  --brand-indigo: #1a162c;
+  --brand-offwhite: #efefef;
 
   /* Color System Based on Brand */
-  --color-primary: var(--brand-purple);
-  --color-primary-dark: #8a1bd1;
-  --color-primary-light: #e6d0ff;
+  --color-primary: var(--brand-lilac);
+  --color-primary-dark: #9a73d7;
+  --color-primary-light: #efe7fb;
   --color-secondary: var(--brand-orange);
   --color-accent: var(--brand-pink);
-  --color-neutral: var(--brand-beige);
+  --color-neutral: var(--brand-offwhite);
 
   /* Background Colors */
   --color-bg: #ffffff;
-  --color-bg-secondary: var(--brand-beige);
+  --color-bg-secondary: var(--brand-offwhite);
   --color-bg-tertiary: #f8f8f8;
 
   /* Text Colors */
   --color-text: #333333;
   --color-text-light: #666666;
   --color-text-lighter: #999999;
-  --color-text-dark: #000000;
+  --color-text-dark: var(--brand-indigo);
   --color-text-white: #ffffff;
 
   /* Brand Gradients */
-  --color-primary-gradient: linear-gradient(135deg, var(--brand-purple) 0%, var(--brand-pink) 100%);
+  --color-primary-gradient: linear-gradient(135deg, #df44a6 0%, #ccf281 50%, #ba92e8 100%);
   --color-secondary-gradient: linear-gradient(135deg, var(--brand-orange) 0%, var(--brand-pink) 100%);
-  --color-accent-gradient: linear-gradient(135deg, var(--brand-pink) 0%, var(--brand-purple) 100%);
+  --color-accent-gradient: linear-gradient(135deg, var(--brand-pink) 0%, var(--brand-lilac) 100%);
 
-  /* Status Colors (using brand colors) */
-  --color-success: var(--brand-purple);
-  --color-success-light: var(--color-primary-light);
+  /* Status Colors */
+  --color-success: var(--brand-limegreen);
+  --color-success-light: #eefbe0;
   --color-error: #ef4444;
   --color-error-light: #fef2f2;
   --color-warning: var(--brand-orange);
-  --color-warning-light: #fff7ed;
+  --color-warning-light: #fff5ea;
   --color-info: var(--brand-pink);
-  --color-info-light: #fdf2f8;
+  --color-info-light: #fdeaf5;
 
   /* Income/Expense Colors */
   --color-income: #10b981;
@@ -56,13 +58,13 @@
   /* Border & Focus */
   --color-border: #e0e0e0;
   --color-border-light: #f0f0f0;
-  --color-border-focus: var(--brand-purple);
-  --color-focus-shadow: rgba(166, 33, 248, 0.1);
+  --color-border-focus: var(--brand-lilac);
+  --color-focus-shadow: rgba(186, 146, 232, 0.25);
 
   /* Tab Colors */
-  --color-tab: var(--brand-purple);
-  --color-tab-hover: var(--color-primary-light);
-  --color-tab-active: #d4b3ff;
+  --color-tab: var(--brand-indigo);
+  --color-tab-hover: #efe7fb;
+  --color-tab-active: #e2d6fb;
 
   /* Spacing */
   --space-xs: 4px;
@@ -133,7 +135,7 @@ body {
   width: 100%;
   height: 80px;
   padding: 0;
-  background-color: var(--brand-purple);
+  background-color: var(--brand-indigo);
   color: var(--color-text-white);
   display: flex;
   align-items: center;
@@ -396,7 +398,7 @@ body {
     BUTTON COMPONENTS
 ================================ */
 .btn-rainbow {
-  background: linear-gradient(135deg, #a621f8 0%, #d553a9 50%, #ec804f 100%);
+  background: linear-gradient(135deg, #df44a6 0%, #ccf281 50%, #ba92e8 100%);
   color: white;
   border: none;
   padding: 12px 28px;
@@ -410,12 +412,12 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 8px 20px rgba(166, 33, 248, 0.25);
+  box-shadow: 0 8px 20px rgba(186, 146, 232, 0.25);
 }
 
 .btn-rainbow:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(166, 33, 248, 0.35);
+  box-shadow: 0 12px 28px rgba(186, 146, 232, 0.35);
   filter: brightness(1.05);
 }
 
@@ -442,7 +444,7 @@ body {
 }
 
 .btn-secondary:hover {
-  background: #d4703f;
+  background: #d58c45;
   transform: translateY(-1px);
 }
 
@@ -452,7 +454,7 @@ body {
   justify-content: center;
   padding: 8px 16px;
   background: white;
-  color: #8a4baf;
+  color: var(--brand-indigo);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
@@ -463,8 +465,8 @@ body {
 }
 
 .btn-outline:hover {
-  background-color: #f9f2fc;
-  box-shadow: 0 2px 6px rgba(138, 75, 175, 0.1);
+  background-color: var(--color-tab-hover);
+  box-shadow: 0 2px 6px rgba(26, 22, 44, 0.08);
   transform: translateY(-1px);
 }
 
