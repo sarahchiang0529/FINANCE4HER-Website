@@ -1,6 +1,3 @@
-/* FAQ Page Styles */
-@import "../education-colors.css";
-
 .faq-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -147,7 +144,7 @@
 }
 
 .ask-question-btn {
-  background: var(--brand-purple);;
+  background: var(--brand-pink);;
   color: white;
   border: none;
   padding: 12px 24px;
