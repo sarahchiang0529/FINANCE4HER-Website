@@ -1,7 +1,3 @@
-@import "../education-colors.css";
-
-/* Finance-specific styles that aren't shared across the app */
-
 /* Chart containers - restored to original larger size */
 .chart-wrapper {
   height: var(--chart-height) !important;

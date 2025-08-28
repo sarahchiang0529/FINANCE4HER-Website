@@ -195,7 +195,7 @@ function PointsRewards() {
                   <Gift className={`reward-icon ${redeemedRewards.includes("amazon10") ? "redeemed" : ""}`} />
                 </div>
                 <button
-                  className={`btn-primary ${redeemedRewards.includes("amazon10") ? "redeemed" : ""}`}
+                  className={`btn-rainbow ${redeemedRewards.includes("amazon10") ? "redeemed" : ""}`}
                   onClick={() => redeemReward("amazon10", 50, 1)}
                   disabled={redeemedRewards.includes("amazon10") || currentPoints < 50}
                 >
@@ -238,7 +238,7 @@ function PointsRewards() {
                   />
                 </div>
                 <button
-                  className={`btn-primary ${redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
+                  className={`btn-rainbow ${redeemedRewards.includes("raffle100") ? "redeemed" : !isRewardAvailable(2) ? "locked" : ""
                     }`}
                   onClick={() => redeemReward("raffle100", 100, 2)}
                   disabled={redeemedRewards.includes("raffle100") || !isRewardAvailable(2) || currentPoints < 100}
@@ -284,7 +284,7 @@ function PointsRewards() {
                   />
                 </div>
                 <button
-                  className={`btn-primary ${redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
+                  className={`btn-rainbow ${redeemedRewards.includes("empowerherMerch") ? "redeemed" : !isRewardAvailable(3) ? "locked" : ""
                     }`}
                   onClick={() => redeemReward("empowerherMerch", 200, 3)}
                   disabled={redeemedRewards.includes("empowerherMerch") || !isRewardAvailable(3) || currentPoints < 200}
