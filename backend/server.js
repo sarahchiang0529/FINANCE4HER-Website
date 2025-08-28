@@ -1,28 +1,40 @@
 // 1. Load environment variables from .env
-require("dotenv").config({debug: true}); // Set debug to true to see if .env is loaded correctly
+require("dotenv").config({ debug: true });
 
-// 2. Import Supabase
+// 2. Imports
 const { createClient } = require("@supabase/supabase-js");
+const express = require("express");
+const cors = require("cors");
 
-// 3. Use your Supabase URL and the key from .env
-const supabaseUrl = "https://hotylxrgwkghsjhyudvh.supabase.co";
-const supabaseKey = process.env.supabaseKey; // Must match .env variable name
+const app = express();
+
+// 3. Middleware
+app.use(cors());
+app.use(express.json());
+
+// 4. Supabase client
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || "https://hotylxrgwkghsjhyudvh.supabase.co";
+const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY; // <-- .env must define SUPABASE_KEY
+if (!supabaseKey) {
+  console.error("Missing SUPABASE_KEY in .env");
+  process.exit(1);
+}
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Log the key to confirm it's loaded (not recommended in production)
-console.log("Supabase key:", supabaseKey);
+// Make supabase available on every request
+app.use((req, res, next) => {
+  req.supabase = supabase;
+  next();
+});
 
-// 4. Optional: Test a query
-async function testQuery() {
-  // Replace 'my_table' with an actual table in your Supabase project
-  const { data, error } = await supabase.from("my_table").select("*");
+// 5. Routes
+app.get("/health", (_req, res) => res.json({ ok: true }));
 
-  if (error) {
-    console.error("Error fetching data:", error);
-  } else {
-    console.log("Data:", data);
-  }
-}
+app.use("/api/admin", require("./routes/admin")); // e.g. GET /api/admin/my-table
+app.use("/api/users", require("./routes/users")); // e.g. POST /api/users/:userId/incomes
 
-// Call the test function
-testQuery();
+// 6. Start server
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

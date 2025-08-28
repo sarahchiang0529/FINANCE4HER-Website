@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import { useAuth0 } from "@auth0/auth0-react"
 import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, DollarSign, Edit, Trash2 } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
@@ -6,339 +7,305 @@ import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent
 import EmptyState from "../../components/EmptyState"
 import "./Finances.css"
 
-// Register required Chart.js components for bar chart visualization
+// Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Update the CATEGORY_ICONS
+// Category emoji used in UI
 const CATEGORY_ICONS = {
   Salary: "💼",
   "Government Benefit": "🏛️",
   Investments: "📈",
   Other: "📋",
-  default: "💰", // Fallback icon for undefined categories and Total Income
+  default: "💰",
+}
+
+// --- tiny fetch helper ---
+//const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""
+const BASE_URL = "http://localhost:4000"
+console.log("hello: ",BASE_URL)
+async function api(path, { method = "GET", body, token } = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || err.message || `Request failed: ${res.status}`)
+  }
+  return res.status === 204 ? null : res.json()
 }
 
 function Income() {
-  // View state - controls which view is active (transactions or monthly summary)
-  const [activeView, setActiveView] = useState("transactions")
+  const { user, getAccessTokenSilently, isAuthenticated } = useAuth0()
 
-  // Date and filtering state - manages the currently selected month and date range for filtering
+  // View state
+  const [activeView, setActiveView] = useState("transactions")
   const [selectedMonth, setSelectedMonth] = useState(new Date())
   const [dateRange, setDateRange] = useState({
-    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1), // First day of current month
-    end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Last day of current month
+    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
   })
 
-  // Income data state - stores all income entries and derived data
-  const [income, setIncome] = useState([]) // All income transactions
-  const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
-  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
-
-  useEffect(() => {
-    // Load income data from localStorage when component mounts
-    const storedIncome = localStorage.getItem("incomeData")
-    if (storedIncome) {
-      try {
-        setIncome(JSON.parse(storedIncome))
-      } catch (error) {
-        console.error("Error parsing income data from localStorage:", error)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    // Save income data to localStorage whenever it changes
-    localStorage.setItem("incomeData", JSON.stringify(income))
-  }, [income])
-
+  // Data + UI state
+  const [income, setIncome] = useState([])
+  const [monthlySummaries, setMonthlySummaries] = useState([])
+  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null)
   const [editingIncome, setEditingIncome] = useState(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
 
-  // Form state - manages the new income entry form
+  // Form state
   const [newIncome, setNewIncome] = useState({
     amount: "",
     description: "",
     category: "",
-    date: "", // Empty string instead of default date
+    date: "",
   })
 
-  // Refs - used for scrolling to elements
-  const monthlyDetailsRef = useRef(null) // Reference to monthly details section for smooth scrolling
+  // Categories: label <-> id maps
+  const [categories, setCategories] = useState([])
+  const [labelToCategoryId, setLabelToCategoryId] = useState({})
+  const [categoryIdToLabel, setCategoryIdToLabel] = useState({})
 
-  // Generate monthly summaries from income data whenever income data changes
+  const monthlyDetailsRef = useRef(null)
+
+  // ---------- Load categories + income from API ----------
+  useEffect(() => {
+    (async () => {
+      if (!isAuthenticated || !user) return
+      const token = await getAccessTokenSilently()
+
+      // 1) categories
+      const cats = await api(`/api/admin/categories`, { token })
+      console.log(cats)
+      setCategories(cats)
+      const labelToId = Object.fromEntries(cats.map(c => [c.name, c.id]))
+      const idToLabel = Object.fromEntries(cats.map(c => [String(c.id), c.name]))
+      setLabelToCategoryId(labelToId)
+      setCategoryIdToLabel(idToLabel)
+
+      // 2) income list
+      const rows = await api(`/api/users/${user.sub}/incomes`, { token })
+      // map API -> UI shape (value as number, category label for display)
+      const uiRows = rows.map(r => ({
+        id: r.id,
+        categoryId: r.category_id,
+        category: idToLabel[String(r.category_id)] || "Other",
+        value: Number(r.amount),
+        description: r.description,
+        date: r.date,
+      }))
+      // newest first by date
+      uiRows.sort((a, b) => new Date(b.date) - new Date(a.date))
+      setIncome(uiRows)
+    })().catch(console.error)
+  }, [isAuthenticated, user, getAccessTokenSilently])
+
+  // ---------- Derived monthly summaries ----------
   useEffect(() => {
     if (income.length === 0) {
       setMonthlySummaries([])
       return
     }
-
-    // Group income by month and calculate totals for each category
     const summaries = income.reduce((acc, item) => {
       const date = new Date(item.date)
-      // Create a unique key for each month-year combination
-      const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
-
-      // Initialize month data if it doesn't exist
-      if (!acc[monthYear]) {
-        acc[monthYear] = {
-          month: new Date(date.getFullYear(), date.getMonth(), 1),
-          total: 0,
-          categories: {},
-        }
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+      if (!acc[key]) {
+        acc[key] = { month: new Date(date.getFullYear(), date.getMonth(), 1), total: 0, categories: {} }
       }
-
-      // Add item value to month total
-      acc[monthYear].total += item.value
-
-      // Add item value to category total for the month
-      if (!acc[monthYear].categories[item.category]) {
-        acc[monthYear].categories[item.category] = 0
-      }
-      acc[monthYear].categories[item.category] += item.value
-
+      acc[key].total += item.value
+      acc[key].categories[item.category] = (acc[key].categories[item.category] || 0) + item.value
       return acc
     }, {})
-
-    // Convert to array and sort by date (newest first) for display
     const summariesArray = Object.values(summaries).sort((a, b) => b.month - a.month)
     setMonthlySummaries(summariesArray)
   }, [income])
 
-  // Filter income by selected date range and sort by date (newest first)
-  // Using useMemo to avoid recalculation on every render
+  // ---------- Filtering / charts ----------
   const filteredIncome = useMemo(() => {
     return income
       .filter((item) => {
-        const itemDate = new Date(item.date)
-        return itemDate >= dateRange.start && itemDate <= dateRange.end
+        const d = new Date(item.date)
+        return d >= dateRange.start && d <= dateRange.end
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date))
   }, [income, dateRange])
 
-  // Prepare chart data from filtered income
-  // Using useMemo to avoid recalculation on every render
-  const chartData = useMemo(() => {
-    return filteredIncome.map((item) => ({
-      category: item.category,
-      value: item.value,
-    }))
-  }, [filteredIncome])
+  const chartData = useMemo(
+    () => filteredIncome.map((i) => ({ category: i.category, value: i.value })),
+    [filteredIncome]
+  )
 
-  // Calculate totals based on the active view (monthly or transactions)
-  // Using useMemo to avoid recalculation on every render
   const { currentViewTotal, categoryTotals } = useMemo(() => {
     if (activeView === "monthly") {
-      // For Monthly Summary view, calculate all-time totals from all income entries
-      const allTimeTotals = income.reduce(
+      const all = income.reduce(
         (acc, item) => {
           acc.total += item.value
-
-          // Initialize category if it doesn't exist
-          if (!acc.categories[item.category]) {
-            acc.categories[item.category] = 0
-          }
-          acc.categories[item.category] += item.value
-
+          acc.categories[item.category] = (acc.categories[item.category] || 0) + item.value
           return acc
         },
-        { total: 0, categories: {} },
+        { total: 0, categories: {} }
       )
-
-      return {
-        currentViewTotal: allTimeTotals.total,
-        categoryTotals: allTimeTotals.categories,
-      }
+      return { currentViewTotal: all.total, categoryTotals: all.categories }
     } else {
-      // For Transactions view, use the filtered income (by selected month)
-      const monthlyTotal = filteredIncome.reduce((sum, item) => sum + item.value, 0)
-
-      // Calculate totals for each category in the filtered income
-      const catTotals = filteredIncome.reduce((acc, item) => {
-        if (!acc[item.category]) {
-          acc[item.category] = 0
-        }
-        acc[item.category] += item.value
+      const monthlyTotal = filteredIncome.reduce((sum, i) => sum + i.value, 0)
+      const catTotals = filteredIncome.reduce((acc, i) => {
+        acc[i.category] = (acc[i.category] || 0) + i.value
         return acc
       }, {})
-
-      return {
-        currentViewTotal: monthlyTotal,
-        categoryTotals: catTotals,
-      }
+      return { currentViewTotal: monthlyTotal, categoryTotals: catTotals }
     }
   }, [activeView, income, filteredIncome])
 
-  // Handle form input changes with useCallback to prevent unnecessary re-renders
+  // ---------- Form + actions ----------
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target
-    setNewIncome((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setNewIncome((prev) => ({ ...prev, [name]: value }))
   }, [])
 
-  // Add new income entry to the income state
-  // Validates form data and creates a new entry with unique ID
-  const handleAddIncome = useCallback(() => {
+  const handleAddIncome = useCallback(async () => {
     const { amount, description, category, date } = newIncome
     const numericAmount = Number.parseFloat(amount)
-
-    // Validate all required fields
-    if (!amount || isNaN(numericAmount) || !category || !date || !description) {
+    if (!amount || Number.isNaN(numericAmount) || !category || !date || !description) {
       alert("Please fill in all required fields.")
       return
     }
-
-    // Create new income entry with unique ID
-    const newEntry = {
-      id: Date.now(), // Use timestamp as unique ID
-      category,
-      value: numericAmount,
-      description,
-      date,
-    }
-
-    // Add new entry to the beginning of the income array
-    setIncome((prev) => [newEntry, ...prev])
-
-    // Reset form fields after successful submission
-    setNewIncome({
-      amount: "",
-      description: "",
-      category: "",
-      date: "",
-    })
-  }, [newIncome])
-
-  // Handle month navigation (previous/next) in transactions view
-  // Updates selected month and date range for filtering
-  const handleMonthChange = useCallback(
-    (direction) => {
-      const newMonth = new Date(selectedMonth)
-      if (direction === "prev") {
-        newMonth.setMonth(newMonth.getMonth() - 1)
-      } else {
-        newMonth.setMonth(newMonth.getMonth() + 1)
+    try {
+      const token = await getAccessTokenSilently()
+      const category_id = labelToCategoryId[category]
+      if (!category_id) {
+        alert("Unknown category. Pick one from the list.")
+        return
       }
-      setSelectedMonth(newMonth)
-
-      // Update date range for filtering based on new selected month
-      setDateRange({
-        start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1), // First day of month
-        end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0), // Last day of month
+      const created = await api(`/api/users/${user.sub}/incomes`, {
+        method: "POST",
+        token,
+        body: { amount: numericAmount, category_id, date, description },
       })
-    },
-    [selectedMonth],
-  )
-
-  // Handle month selection in monthly summary view
-  // Sets the selected month details and scrolls to the details section
-  const handleMonthSelect = useCallback((summary) => {
-    setSelectedMonthDetails(summary)
-
-    // Scroll to details section after a short delay to ensure render is complete
-    setTimeout(() => {
-      if (monthlyDetailsRef.current) {
-        monthlyDetailsRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        })
+      const uiRow = {
+        id: created.id,
+        categoryId: created.category_id,
+        category,
+        value: Number(created.amount),
+        description: created.description,
+        date: created.date,
       }
-    }, 100)
-  }, [])
+      setIncome(prev => [uiRow, ...prev])
+      setNewIncome({ amount: "", description: "", category: "", date: "" })
+    } catch (e) {
+      console.error(e)
+      alert(e.message || "Failed to add income")
+    }
+  }, [newIncome, user, getAccessTokenSilently, labelToCategoryId])
 
-  // Utility function to get category icon based on category name
-  const getCategoryIcon = useCallback((category) => {
-    // Return just the emoji without any wrapper or styling
-    return CATEGORY_ICONS[category] || CATEGORY_ICONS.default
-  }, [])
-
-  // Format date string to readable format (e.g., "Jan 1, 2023")
-  const formatDate = useCallback((dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }, [])
-
-  // Format date to month and year format (e.g., "January 2023")
-  const formatMonthYear = useCallback((date) => {
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
-  }, [])
-
-  // Check if there's any income data to determine whether to show empty state
-  const hasIncomeData = income.length > 0
-
-  // Function to start editing an income entry
   const startEditIncome = (entry) => {
-    // Make a deep copy to avoid modifying the original entry
-    setEditingIncome({
-      ...entry,
-      amount: entry.value.toString(),
-    })
-
-    // Clear any delete confirmation that might be showing
+    setEditingIncome({ ...entry, amount: entry.value.toString() })
     setShowDeleteConfirm(null)
   }
+  const cancelEditIncome = () => setEditingIncome(null)
 
-  // Function to cancel editing
-  const cancelEditIncome = () => {
-    setEditingIncome(null)
-  }
-
-  // Function to save edited income
-  const saveEditIncome = () => {
+  const saveEditIncome = useCallback(async () => {
+    if (!editingIncome) return
     if (!editingIncome.category || !editingIncome.amount || !editingIncome.date || !editingIncome.description) {
       alert("Please fill in all required fields.")
       return
     }
-
-    // Validate amount is a valid number
     const numericAmount = Number.parseFloat(editingIncome.amount)
-    if (isNaN(numericAmount)) {
+    if (Number.isNaN(numericAmount)) {
       alert("Please enter a valid amount.")
       return
     }
-
-    const updatedEntry = {
-      ...editingIncome,
-      value: numericAmount,
+    try {
+      const token = await getAccessTokenSilently()
+      const category_id = labelToCategoryId[editingIncome.category]
+      const updated = await api(`/api/users/${user.sub}/incomes/${editingIncome.id}`, {
+        method: "PUT",
+        token,
+        body: {
+          amount: numericAmount,
+          category_id,
+          date: editingIncome.date,
+          description: editingIncome.description,
+        },
+      })
+      setIncome(list =>
+        list.map(e =>
+          e.id === updated.id
+            ? {
+                id: updated.id,
+                categoryId: updated.category_id,
+                category: categoryIdToLabel[String(updated.category_id)] || editingIncome.category,
+                value: Number(updated.amount),
+                description: updated.description,
+                date: updated.date,
+              }
+            : e
+        )
+      )
+      setEditingIncome(null)
+    } catch (e) {
+      console.error(e)
+      alert(e.message || "Failed to update")
     }
-    delete updatedEntry.amount
+  }, [editingIncome, user, getAccessTokenSilently, labelToCategoryId, categoryIdToLabel])
 
-    const updatedIncome = income.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry))
-    setIncome(updatedIncome)
-    setEditingIncome(null)
-  }
+  const confirmDeleteIncome = (id) => setShowDeleteConfirm(id)
+  const cancelDeleteIncome = () => setShowDeleteConfirm(null)
 
-  // Function to confirm deletion
-  const confirmDeleteIncome = (incomeId) => {
-    setShowDeleteConfirm(incomeId)
-  }
+  const deleteIncome = useCallback(async (id) => {
+    try {
+      const token = await getAccessTokenSilently()
+      await api(`/api/users/${user.sub}/incomes/${id}`, { method: "DELETE", token })
+      setIncome(list => list.filter(e => e.id !== id))
+      setShowDeleteConfirm(null)
+    } catch (e) {
+      console.error(e)
+      alert(e.message || "Failed to delete")
+    }
+  }, [getAccessTokenSilently, user])
 
-  // Function to cancel deletion
-  const cancelDeleteIncome = () => {
-    setShowDeleteConfirm(null)
-  }
+  // ---------- UI helpers ----------
+  const handleMonthChange = useCallback((direction) => {
+    const newMonth = new Date(selectedMonth)
+    newMonth.setMonth(newMonth.getMonth() + (direction === "prev" ? -1 : 1))
+    setSelectedMonth(newMonth)
+    setDateRange({
+      start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1),
+      end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0),
+    })
+  }, [selectedMonth])
 
-  // Function to delete income entry
-  const deleteIncome = (incomeId) => {
-    const updatedIncome = income.filter((entry) => entry.id !== incomeId)
-    setIncome(updatedIncome)
-    setShowDeleteConfirm(null)
-  }
+  const handleMonthSelect = useCallback((summary) => {
+    setSelectedMonthDetails(summary)
+    setTimeout(() => {
+      if (monthlyDetailsRef.current) {
+        monthlyDetailsRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
+    }, 100)
+  }, [])
 
+  const getCategoryIcon = useCallback((category) => CATEGORY_ICONS[category] || CATEGORY_ICONS.default, [])
+  const formatDate = useCallback((dateString) => {
+    const d = new Date(dateString)
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+  }, [])
+  const formatMonthYear = useCallback((date) => date.toLocaleDateString("en-US", { month: "long", year: "numeric" }), [])
+
+  const hasIncomeData = income.length > 0
+
+  // ---------- Render ----------
   return (
     <div className="income-container">
-      {/* Header Section */}
+      {/* Header */}
       <div className="page-header">
         <h1 className="page-title">Income</h1>
         <p className="page-subtitle">Track and manage your income sources</p>
       </div>
 
-      {/* Add Income Form Section */}
+      {/* Add Income */}
       <div className="income-card">
         <h2 className="form-title">Add Income</h2>
         <p className="form-subtitle">Record a new income transaction</p>
@@ -364,13 +331,11 @@ function Income() {
               <div className="input-field">
                 <label htmlFor="category">Category</label>
                 <select id="category" name="category" value={newIncome.category} onChange={handleInputChange} required>
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="Salary">Salary</option>
-                  <option value="Government Benefit">Government Benefit</option>
-                  <option value="Investments">Investments</option>
-                  <option value="Other">Other</option>
+                  <option value="" disabled>Select</option>
+                  {/* Render from categories so it matches DB */}
+                  {["Salary","Government Benefit","Investments","Other"].map((label) => (
+                    <option key={label} value={label}>{label}</option>
+                  ))}
                 </select>
               </div>
 
@@ -424,42 +389,29 @@ function Income() {
         </div>
       ) : (
         <>
-          {/* View Selector - Toggle between transactions and monthly summary views */}
+          {/* View selector */}
           <div className="view-selector">
             <div className="view-tabs">
-              <button
-                className={`view-tab ${activeView === "transactions" ? "active" : ""}`}
-                onClick={() => setActiveView("transactions")}
-              >
-                <Calendar size={16} />
-                Transactions
+              <button className={`view-tab ${activeView === "transactions" ? "active" : ""}`} onClick={() => setActiveView("transactions")}>
+                <Calendar size={16} /> Transactions
               </button>
-              <button
-                className={`view-tab ${activeView === "monthly" ? "active" : ""}`}
-                onClick={() => setActiveView("monthly")}
-              >
-                <BarChart3 size={16} />
-                Monthly Summary
+              <button className={`view-tab ${activeView === "monthly" ? "active" : ""}`} onClick={() => setActiveView("monthly")}>
+                <BarChart3 size={16} /> Monthly Summary
               </button>
             </div>
           </div>
 
-          {/* Month Selector - Only shown in transactions view */}
+          {/* Month selector */}
           {activeView === "transactions" && (
             <div className="month-selector">
-              <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
-                <ChevronDown size={20} />
-              </button>
+              <button className="month-nav-button" onClick={() => handleMonthChange("prev")}><ChevronDown size={20} /></button>
               <h3 className="selected-month">{formatMonthYear(selectedMonth)}</h3>
-              <button className="month-nav-button" onClick={() => handleMonthChange("next")}>
-                <ChevronUp size={20} />
-              </button>
+              <button className="month-nav-button" onClick={() => handleMonthChange("next")}><ChevronUp size={20} /></button>
             </div>
           )}
 
-          {/* Summary Cards - Show totals for each category */}
+          {/* Summary cards */}
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
-            {/* Total Income Card */}
             <div className="summary-card" style={{ flex: "1 1 0" }}>
               <div className="summary-content">
                 <div className="summary-icon-wrapper total-icon">
@@ -467,13 +419,10 @@ function Income() {
                 </div>
                 <h3 className="summary-title">Total Income</h3>
                 <p className="summary-value">${currentViewTotal.toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
-                </p>
+                <p className="summary-period">{activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}</p>
               </div>
             </div>
 
-            {/* Category Summary Cards - One card for each predefined category */}
             {["Salary", "Investments", "Government Benefit", "Other"].map((category) => (
               <div className="summary-card" key={category} style={{ flex: "1 1 0" }}>
                 <div className="summary-content">
@@ -482,9 +431,7 @@ function Income() {
                   </div>
                   <h3 className="summary-title">{category}</h3>
                   <p className="summary-value">${(categoryTotals[category] || 0).toFixed(2)}</p>
-                  <p className="summary-period">
-                    {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
-                  </p>
+                  <p className="summary-period">{activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}</p>
                 </div>
               </div>
             ))}
@@ -497,7 +444,6 @@ function Income() {
                   <h2 className="card-title">Income Distribution</h2>
                   <p className="card-description">Breakdown of your income</p>
                 </div>
-
                 {chartData.length > 0 ? (
                   <div className="chart-container-wrapper">
                     <ChartComponent data={chartData} chartType="doughnut" isIncome={true} />
@@ -522,12 +468,8 @@ function Income() {
                         <div className="delete-confirm">
                           <p>Delete this transaction?</p>
                           <div className="delete-actions">
-                            <button className="btn-secondary" onClick={cancelDeleteIncome}>
-                              Cancel
-                            </button>
-                            <button className="btn-danger" onClick={() => deleteIncome(entry.id)}>
-                              Delete
-                            </button>
+                            <button className="btn-secondary" onClick={cancelDeleteIncome}>Cancel</button>
+                            <button className="btn-danger" onClick={() => deleteIncome(entry.id)}>Delete</button>
                           </div>
                         </div>
                       ) : editingIncome && editingIncome.id === entry.id ? (
@@ -576,12 +518,8 @@ function Income() {
                             </div>
                           </div>
                           <div className="edit-actions">
-                            <button className="btn-secondary" onClick={cancelEditIncome}>
-                              Cancel
-                            </button>
-                            <button className="btn-primary" onClick={saveEditIncome}>
-                              Save
-                            </button>
+                            <button className="btn-secondary" onClick={cancelEditIncome}>Cancel</button>
+                            <button className="btn-primary" onClick={saveEditIncome}>Save</button>
                           </div>
                         </div>
                       ) : (
@@ -618,27 +556,18 @@ function Income() {
             <div className="monthly-view">
               {monthlySummaries.length > 0 ? (
                 <>
-                  {Array.from(new Set(monthlySummaries.map((summary) => summary.month.getFullYear()))).map((year) => {
-                    const yearSummaries = monthlySummaries.filter((summary) => summary.month.getFullYear() === year)
+                  {Array.from(new Set(monthlySummaries.map((s) => s.month.getFullYear()))).map((year) => {
+                    const yearSummaries = monthlySummaries.filter((s) => s.month.getFullYear() === year)
                     const isSingleMonth = yearSummaries.length === 1
-
                     return (
                       <div key={year} className="year-section">
                         <h2 className="section-title">{year} Monthly Income</h2>
-
                         {isSingleMonth ? (
                           <div className="monthly-single-chart-container">
-                            {yearSummaries.map((summary, index) => {
-                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({
-                                category,
-                                value,
-                              }))
+                            {yearSummaries.map((summary, i) => {
+                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({ category, value }))
                               return (
-                                <div
-                                  key={index}
-                                  className="month-chart-card single-month"
-                                  onClick={() => handleMonthSelect(summary)}
-                                >
+                                <div key={i} className="month-chart-card single-month" onClick={() => handleMonthSelect(summary)}>
                                   <div className="month-chart">
                                     <MonthlyChartComponent month={summary.month} data={monthData} isIncome={true} />
                                   </div>
@@ -649,26 +578,17 @@ function Income() {
                           </div>
                         ) : (
                           <div className="monthly-charts">
-                            {yearSummaries
-                              .sort((a, b) => a.month - b.month)
-                              .map((summary, index) => {
-                                const monthData = Object.entries(summary.categories).map(([category, value]) => ({
-                                  category,
-                                  value,
-                                }))
-                                return (
-                                  <div
-                                    key={index}
-                                    className="month-chart-card"
-                                    onClick={() => handleMonthSelect(summary)}
-                                  >
-                                    <div className="month-chart">
-                                      <MonthlyChartComponent month={summary.month} data={monthData} isIncome={true} />
-                                    </div>
-                                    <div className="month-total">${summary.total.toFixed(2)}</div>
+                            {yearSummaries.sort((a, b) => a.month - b.month).map((summary, i) => {
+                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({ category, value }))
+                              return (
+                                <div key={i} className="month-chart-card" onClick={() => handleMonthSelect(summary)}>
+                                  <div className="month-chart">
+                                    <MonthlyChartComponent month={summary.month} data={monthData} isIncome={true} />
                                   </div>
-                                )
-                              })}
+                                  <div className="month-total">${summary.total.toFixed(2)}</div>
+                                </div>
+                              )
+                            })}
                           </div>
                         )}
                       </div>
@@ -679,35 +599,28 @@ function Income() {
                     {selectedMonthDetails ? (
                       <>
                         <h2 className="section-title">
-                          {selectedMonthDetails.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}{" "}
-                          Details
+                          {selectedMonthDetails.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })} Details
                         </h2>
-
                         <div className="monthly-details-content">
                           <div className="monthly-details-summary">
                             <div className="details-total">
                               <span className="details-label">Total Income:</span>
                               <span className="details-value">${selectedMonthDetails.total.toFixed(2)}</span>
                             </div>
-
                             <div className="details-categories">
                               {Object.entries(selectedMonthDetails.categories).map(([category, amount], index) => (
                                 <div key={index} className="details-category-item">
                                   <div className="category-info">
-                                    <span className="category-icon">{getCategoryIcon(category)}</span>
+                                    <span className="category-icon">{CATEGORY_ICONS[category] || CATEGORY_ICONS.default}</span>
                                     <span className="category-name">{category}</span>
                                   </div>
                                   <div className="category-amount">${amount.toFixed(2)}</div>
                                 </div>
                               ))}
                             </div>
-
                             <div className="monthly-details-chart">
                               <ChartComponent
-                                data={Object.entries(selectedMonthDetails.categories).map(([category, value]) => ({
-                                  category,
-                                  value,
-                                }))}
+                                data={Object.entries(selectedMonthDetails.categories).map(([category, value]) => ({ category, value }))}
                                 chartType="doughnut"
                                 isIncome={true}
                               />
