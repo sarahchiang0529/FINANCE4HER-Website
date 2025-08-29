@@ -17,7 +17,7 @@ import {
 } from "reactstrap"
 import { useAuth0 } from "@auth0/auth0-react"
 import LoginButton from "../Common/LoginButton"
-import logo from "../../assets/logos/logo1.png"
+import logo from "../../assets/logos/Finance4HER_2024.png"
 import "./NavBar.css"
 
 const NavBar = () => {

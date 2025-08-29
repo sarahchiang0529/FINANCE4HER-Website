@@ -1,6 +1,3 @@
-/* FAQ Page Styles */
-@import "../education-colors.css";
-
 .faq-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -12,21 +9,21 @@
   font-size: 36px;
   font-weight: 700;
   margin: 0;
-  color: #000;
+  color: var(--color-text-dark);
 }
 
 .faq-container .page-subtitle {
   font-size: 18px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 8px 0 0 0;
 }
 
-/* Card styles */
+/* Card */
 .faq-card {
-  background: white;
+  background: var(--color-bg);
   border-radius: 12px;
   padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
 }
 
 /* Search */
@@ -36,14 +33,14 @@
 
 .search-input {
   width: 100%;
-  max-width: fill;
+  max-width: none;
 }
 
 .search-input .input-icon {
-  color: #666;
+  color: var(--color-text-light);
 }
 
-/* FAQ List */
+/* List */
 .faq-list {
   display: flex;
   flex-direction: column;
@@ -51,44 +48,75 @@
 }
 
 .faq-item {
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--color-border-light);
   border-radius: 8px;
   overflow: hidden;
+  transition: border-color var(--transition-base),
+              box-shadow var(--transition-base);
 }
 
+/* Button row */
 .faq-question {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background-color: #fff;
+  background-color: var(--color-bg);
   border: none;
   text-align: left;
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-dark);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base),
+              color var(--transition-base);
 }
 
+/* Hover lime */
 .faq-question:hover {
-  background-color: #f9f0ff;
+  background-color: var(--brand-limegreen);
+  color: #000;
 }
 
+/* Active (expanded) — keep lime */
+.faq-item.active,
+.faq-question.active {
+  border-color: var(--brand-limegreen);
+}
+
+.faq-item.active .faq-question {
+  background-color: var(--brand-limegreen);
+  color: #000;
+}
+
+/* Focus ring (keyboard) */
+.faq-question:focus {
+  outline: none;
+  border: 1px solid var(--brand-limegreen);
+  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+  border-radius: 8px;
+}
+
+/* Icon */
 .faq-icon {
   width: 20px;
   height: 20px;
-  color: #65328f;
+  color: var(--brand-indigo);
   flex-shrink: 0;
 }
 
+.faq-item.active .faq-icon {
+  color: var(--brand-indigo);
+}
+
+/* Answer */
 .faq-answer {
   padding: 0 20px;
-  color: #666;
+  color: var(--color-text-light);
   line-height: 1.6;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .faq-answer p {
@@ -100,20 +128,20 @@
 .no-results {
   padding: 24px;
   text-align: center;
-  color: #666;
+  color: var(--color-text-light);
 }
 
-/* Message Form Section */
+/* Message form section */
 .message-form-section {
   margin-top: 32px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 32px;
+  border-top: 1px solid var(--color-border-light);
 }
 
-/* Message Form Prompt */
 .message-form-prompt {
-  background: #f9f0ff;
+  background: var(--brand-offwhite);
   border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow);
   padding: 24px;
   text-align: center;
 }
@@ -126,47 +154,57 @@
 }
 
 .prompt-icon {
-  color: #65328f;
-  background: white;
+  color: var(--brand-limegreen);
+  background: var(--color-bg);
   padding: 12px;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(101, 50, 143, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
 }
 
 .prompt-text h3 {
   margin: 0;
-  font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-dark);
 }
 
 .prompt-text p {
   margin: 4px 0 0 0;
-  color: #666;
+  color: var(--color-text-light);
   font-size: 16px;
 }
 
 .ask-question-btn {
-  background: var(--brand-purple);;
-  color: white;
+  background: var(--brand-limegreen);
+  color: #000;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .ask-question-btn:hover {
-  background: #563075;
+  background: var(--brand-indigo);
+  color: #fff;
   transform: translateY(-1px);
 }
 
-/* Message Form Container */
+/* Match submit-btn focus styles */
+.ask-question-btn:focus,
+.ask-question-btn:focus-visible {
+  outline: none;
+  border-color: var(--brand-limegreen);
+  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+}
+
+/* Message form container */
 .message-form-container {
-  background: #f9f9f9;
+  background: var(--brand-offwhite);
   border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow);
   padding: 24px;
 }
 
@@ -177,51 +215,56 @@
 
 .form-header h3 {
   margin: 0;
-  font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-dark);
 }
 
 .form-header p {
   margin: 8px 0 0 0;
-  color: #666;
+  color: var(--color-text-light);
   font-size: 16px;
 }
 
-/* Form Styles */
+/* Form */
 .message-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  padding-bottom: 0;
 }
 
 .form-group label {
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-dark);
   font-size: 14px;
+}
+
+.form-group label[for="name"]::after,
+.form-group label[for="message"]::after {
+  content: " *";
+  color: red;
 }
 
 .form-group input,
 .form-group textarea {
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border-light);
   border-radius: 6px;
   font-size: 14px;
-  background: white;
-  transition: border-color 0.2s ease;
+  background: var(--color-bg);
+  transition: border-color var(--transition-base);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #65328f;
-  box-shadow: 0 0 0 3px rgba(101, 50, 143, 0.1);
+  border-color: var(--brand-limegreen);
+  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.2);
 }
 
 .form-group textarea {
@@ -230,7 +273,7 @@
   font-family: inherit;
 }
 
-/* Status Messages */
+/* Status */
 .status-message {
   padding: 12px;
   border-radius: 6px;
@@ -250,7 +293,7 @@
   border: 1px solid #f5c6cb;
 }
 
-/* Form Actions */
+/* Actions */
 .form-actions {
   display: flex;
   gap: 12px;
@@ -265,41 +308,74 @@
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   border: none;
 }
 
+/* Cancel */
 .cancel-btn {
   background: #f8f9fa;
-  color: #666;
-  border: 1px solid #ddd;
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border-light);
 }
 
 .cancel-btn:hover {
-  background: #e9ecef;
-  color: #495057;
+  background: var(--brand-indigo);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
+/* Match submit-btn focus styles */
+.cancel-btn:focus,
+.cancel-btn:focus-visible {
+  outline: none;
+  border-color: var(--brand-limegreen);
+  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+}
+
+/* Submit */
 .submit-btn {
-  background: #65328f;
-  color: white;
+  background: var(--brand-limegreen);
+  color: #000;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #563075;
+  background: var(--brand-indigo);
+  color: #fff;
   transform: translateY(-1px);
 }
 
 .submit-btn:disabled {
-  opacity: 0.6;
+  opacity: .6;
   cursor: not-allowed;
   transform: none;
 }
 
-/* Responsive Design */
+.submit-btn:focus,
+.submit-btn:focus-visible {
+  outline: none;
+  border-color: var(--brand-limegreen);
+  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+}
+
+.message-form .form-group {
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.message-form .form-group label {
+  margin-bottom: 0;
+}
+
+.message-form .form-group input,
+.message-form .form-group textarea {
+  margin-top: 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .faq-container {
     padding: 0 12px;

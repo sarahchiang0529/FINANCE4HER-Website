@@ -1,5 +1,3 @@
-@import "../education-colors.css";
-
 /* Points Added Notification */
 .points-added-notification {
   position: fixed;
@@ -10,36 +8,30 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(26, 22, 44, 0.15); /* brand indigo tint */
   z-index: 1000;
   animation: slideIn 0.3s ease-out forwards;
-  color: white;
+  color: var(--color-text-white);
 }
 
 /* Green for assets */
 .points-added-notification.asset {
-  background-color: #10b981;
+  background-color: var(--color-income);
 }
 
 /* Red for liabilities */
 .points-added-notification.liability {
-  background-color: #ef4444;
+  background-color: var(--color-expense);
 }
 
-/* Purple for redeeming */
+/* Lilac for redeeming */
 .points-added-notification.redeem {
-  background-color: var(--edu-purple);
+  background-color: var(--color-primary);
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 
 .points-added-icon {
@@ -49,12 +41,13 @@
 
 /* Points Overview Card */
 .points-overview-card {
-  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
+  /* use brand gradient */
+  background: var(--color-primary-gradient);
   border-radius: 12px;
   padding: 32px;
   margin-bottom: 24px;
-  color: white;
-  box-shadow: 0 4px 12px rgba(138, 75, 175, 0.2);
+  color: var(--color-text-white);
+  box-shadow: 0 4px 12px rgba(26, 22, 44, 0.2); /* indigo shadow */
 }
 
 .points-overview-content {
@@ -72,10 +65,7 @@
   margin-bottom: 16px;
 }
 
-.points-icon {
-  width: 32px;
-  height: 32px;
-}
+.points-icon { width: 32px; height: 32px; }
 
 .points-title {
   font-size: 32px;
@@ -90,19 +80,9 @@
   margin-bottom: 24px;
 }
 
-.points-number {
-  font-size: 64px;
-  font-weight: 700;
-}
-
-.points-label {
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.points-emoji {
-  font-size: 36px;
-}
+.points-number { font-size: 64px; font-weight: 700; }
+.points-label  { font-size: 36px; font-weight: 700; }
+.points-emoji  { font-size: 36px; }
 
 .progress-container {
   width: 100%;
@@ -112,14 +92,14 @@
 
 .progress-bar {
   height: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.25);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background-color: white;
+  background-color: var(--color-text-white);
   border-radius: 4px;
   transition: width 0.5s ease-out;
 }
@@ -131,11 +111,11 @@
 
 /* Health Score Card */
 .health-score-card {
-  background: white;
+  background: var(--color-bg);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
 }
 
 .health-score-content {
@@ -146,10 +126,7 @@
 }
 
 @media (min-width: 768px) {
-  .health-score-content {
-    flex-direction: row;
-    justify-content: center;
-  }
+  .health-score-content { flex-direction: row; justify-content: center; }
 }
 
 .score-item {
@@ -165,17 +142,9 @@
   margin: 0 0 8px 0;
 }
 
-.score-label.assets {
-  color: #10b981;
-}
-
-.score-label.liabilities {
-  color: #ef4444;
-}
-
-.score-label.total {
-  color: var(--edu-purple);
-}
+.score-label.assets      { color: var(--color-income); }
+.score-label.liabilities { color: var(--color-expense); }
+.score-label.total       { color: var(--color-primary); }
 
 .score-value {
   font-size: 32px;
@@ -183,37 +152,17 @@
   margin-bottom: 4px;
 }
 
-.score-value.assets {
-  color: #10b981;
-}
+.score-value.assets      { color: var(--color-income); }
+.score-value.liabilities { color: var(--color-expense); }
+.score-value.total       { color: var(--color-primary); font-size: 36px; }
 
-.score-value.liabilities {
-  color: #ef4444;
-}
+.score-description { font-size: 14px; color: var(--color-text-light); margin: 0; }
+.score-operator    { font-size: 24px; font-weight: 700; color: var(--color-text-light); display: flex; align-items: center; }
 
-.score-value.total {
-  color: var(--edu-purple);
-  font-size: 36px;
-}
-
-.score-description {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-.score-operator {
-  font-size: 24px;
-  font-weight: 700;
-  color: #666;
-  display: flex;
-  align-items: center;
-}
-
-/* Tabs */
+/* Tabs (INDIGO) */
 .tabs {
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: 24px;
 }
 
@@ -221,25 +170,25 @@
   padding: 12px 24px;
   font-size: 16px;
   font-weight: 500;
-  color: #666;
+  color: var(--color-text-light);
   background: none;
   border: none;
   cursor: pointer;
   position: relative;
 }
 
+.tab:hover { color: var(--brand-indigo); }
+
 .tab.active {
-  color: var(--edu-purple);
+  color: var(--brand-indigo);
 }
 
 .tab.active::after {
   content: "";
   position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
+  bottom: -1px; left: 0; right: 0;
   height: 2px;
-  background: var(--edu-purple);
+  background: var(--brand-indigo);
 }
 
 /* Rewards Grid */
@@ -249,35 +198,24 @@
   gap: 24px;
 }
 
-@media (min-width: 640px) {
-  .rewards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .rewards-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+@media (min-width: 640px)  { .rewards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .rewards-grid { grid-template-columns: repeat(3, 1fr); } }
 
 /* Reward Card */
 .reward-card {
-  background: white;
+  background: var(--color-bg);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   transition: all 0.2s ease;
 }
 
 .reward-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(26, 22, 44, 0.10);
   transform: translateY(-2px);
 }
 
-.reward-card.locked {
-  opacity: 0.75;
-}
+.reward-card.locked { opacity: 0.75; }
 
 .reward-card-header {
   display: flex;
@@ -291,345 +229,224 @@
   border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
+  color: var(--color-text-white);
 }
 
-.reward-badge.available {
-  background-color: #10b981;
-  color: white;
-}
+.reward-badge.available { background-color: var(--color-income); }
+.reward-badge.locked    { background-color: var(--color-border); }
+.reward-badge.redeemed  { background-color: var(--color-border); }
 
-/* Add this new style for locked badge */
-.reward-badge.locked {
-  background-color: #9ca3af;
-  color: white;
-}
-
-/* Added redeemed badge style */
-.reward-badge.redeemed {
-  background-color: #9ca3af;
-  color: white;
-}
-
-.reward-points {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.reward-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: #333;
-}
-
-.reward-description {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 16px 0;
-}
+.reward-points      { font-size: 18px; font-weight: 600; }
+.reward-title       { font-size: 18px; font-weight: 600; margin: 0 0 8px 0; color: var(--color-text); }
+.reward-description { font-size: 14px; color: var(--color-text-light); margin: 0 0 16px 0; }
 
 .reward-icon-container {
   height: 160px;
-  background: linear-gradient(to right, var(--edu-beige), var(--edu-beige));
+  background: linear-gradient(to right, var(--color-bg-secondary), var(--color-bg-secondary));
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   margin-bottom: 16px;
 }
 
-.reward-icon-container.locked {
-  background: linear-gradient(to right, #f1f1f1, #e5e5e5);
-}
-
+.reward-icon-container.locked,
 .reward-icon-container.redeemed {
-  background: linear-gradient(to right, #f1f1f1, #e5e5e5);
+  background: linear-gradient(to right, var(--color-bg-tertiary), var(--color-bg-secondary));
 }
 
 .reward-icon {
   width: 64px;
   height: 64px;
-  color: var(--edu-purple);
+  color: var(--brand-indigo) !important;
 }
-
-/* Added redeemed icon style */
+.reward-icon.locked,
 .reward-icon.redeemed {
-  color: #9ca3af;
+  color: var(--color-text-lighter) !important; 
 }
 
-.reward-icon.locked {
-  color: #9ca3af;
-}
-
-.reward-button {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--edu-purple);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.reward-button:hover {
-  background-color: #7a3b9f;
-}
-
-.reward-button.locked {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Button styles */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.btn-rainbow {
   width: 100%;
   height: 48px;
+  background: var(--color-primary-gradient);
+  color: var(--color-text-white) !important;
+  border: none;
+  box-shadow: 0 2px 6px rgba(26, 22, 44, 0.08);
 }
 
-.btn-primary:hover {
+.btn-rainbow:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(26, 22, 44, 0.12);
 }
 
-.btn-primary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
+/* Points label color by state (uses :has to read the badge) */
+.reward-card-header:has(.reward-badge.available) .reward-points {
+  color: var(--brand-indigo); /* unlocked */
 }
 
-/* Added redeemed button style */
-.btn-primary.redeemed {
-  background: #9ca3af;
-  cursor: default;
+.reward-card-header:has(.reward-badge.locked) .reward-points,
+.reward-card-header:has(.reward-badge.redeemed) .reward-points {
+  color: var(--color-text-lighter); /* locked/redeemed */
 }
 
-.btn-primary.redeemed:hover {
-  transform: none;
+/* If disabled but still available (not enough points), keep rainbow but inert */
+.btn-rainbow:disabled:not(.locked):not(.redeemed) {
+  background: var(--color-primary-gradient);
+  color: var(--color-text-white) !important;
+  opacity: 0.9;
+  cursor: default !important;
+  pointer-events: none !important;
   box-shadow: none;
+  transform: none;
 }
 
-.btn-primary.locked {
-  background: #ccc;
-  cursor: not-allowed;
+/* Locked – grey */
+.btn-rainbow.locked {
+  background: var(--color-border) !important;
+  color: var(--color-text) !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+  pointer-events: none !important;
 }
 
-/* Bonus Card */
+/* Redeemed – neutral grey */
+.btn-rainbow.redeemed {
+  background: var(--color-text-lighter) !important;
+  color: var(--color-text-white) !important;
+  cursor: default !important;
+  box-shadow: none !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+/* Cards (assets/liabilities/bonus) */
 .bonus-card,
 .assets-card,
 .liabilities-card,
-.upload-card {
+  .upload-card {
+  background: var(--color-bg);
   background: white;
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
 }
 
-.bonus-list,
-.assets-list,
-.liabilities-list {
+.bonus-list, .assets-list, .liabilities-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.bonus-item,
-.asset-item,
-.liability-item {
+.bonus-item, .asset-item, .liability-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .bonus-item:last-child,
 .asset-item:last-child,
-.liability-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
+.liability-item:last-child { border-bottom: none; padding-bottom: 0; }
 
-.bonus-info,
-.asset-info,
-.liability-info {
+.bonus-info, .asset-info, .liability-info {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
 .bonus-icon-container {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background-color: var(--color-bg-tertiary);
+  display: flex; align-items: center; justify-content: center;
 }
 
 .asset-icon-container {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ecfdf5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background-color: var(--color-success-light);
+  display: flex; align-items: center; justify-content: center;
 }
 
 .liability-icon-container {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #fef2f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background-color: var(--color-error-light);
+  display: flex; align-items: center; justify-content: center;
 }
 
-.bonus-icon,
-.asset-icon,
-.liability-icon {
-  width: 20px;
-  height: 20px;
+.bonus-icon, .asset-icon, .liability-icon { width: 20px; height: 20px; }
+
+.bonus-icon.trophy   { color: var(--color-warning); }
+.bonus-icon.piggy    { color: var(--color-income); }
+.bonus-icon.trending { color: var(--color-info); }
+.bonus-icon.zap      { color: var(--color-primary); }
+.bonus-icon.users    { color: var(--color-info); }
+.bonus-icon.message  { color: var(--color-accent); }
+.bonus-icon.award    { color: var(--color-warning); }
+
+.asset-icon     { color: var(--color-income); }
+.liability-icon { color: var(--color-expense); }
+
+.bonus-title, .asset-title, .liability-title {
+  font-size: 16px; font-weight: 500; color: var(--color-text);
 }
 
-.bonus-icon.trophy {
-  color: #eab308;
+.bonus-description, .asset-description, .liability-description {
+  font-size: 14px; color: var(--color-text-light);
 }
 
-.bonus-icon.piggy {
-  color: #10b981;
-}
-
-.bonus-icon.trending {
-  color: #3b82f6;
-}
-
-.bonus-icon.zap {
-  color: var(--edu-purple);
-}
-
-.bonus-icon.users {
-  color: #6366f1;
-}
-
-.bonus-icon.message {
-  color: #ec4899;
-}
-
-.bonus-icon.award {
-  color: #f59e0b;
-}
-
-.asset-icon {
-  color: #10b981;
-}
-
-.liability-icon {
-  color: #ef4444;
-}
-
-.bonus-title,
-.asset-title,
-.liability-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-}
-
-.bonus-description,
-.asset-description,
-.liability-description {
-  font-size: 14px;
-  color: #666;
-}
-
-/* Points Buttons */
+/* Points Buttons (mini chips on rows) */
 .bonus-points-button,
 .asset-points-button,
 .liability-points-button {
-  font-size: 14px;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
+  font-size: 14px; font-weight: 500; padding: 6px 12px;
+  border-radius: 16px; cursor: pointer; transition: all 0.2s ease; border: none;
 }
 
 .bonus-points-button {
-  color: var(--edu-purple);
-  background-color: var(--edu-beige);
-  border: 1px solid var(--edu-purple);
+  color: var(--color-primary);
+  background-color: var(--color-info-light);
+  border: 1px solid var(--color-primary);
 }
 
 .bonus-points-button:hover {
-  background-color: var(--edu-purple);
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
 }
 
 .asset-points-button {
-  color: #10b981;
-  background-color: #ecfdf5;
-  border: 1px solid #10b981;
+  color: var(--color-income);
+  background-color: var(--color-success-light);
+  border: 1px solid var(--color-income);
 }
 
 .asset-points-button:hover {
-  background-color: #10b981;
-  color: white;
+  background-color: var(--color-income);
+  color: var(--color-text-white);
 }
 
 .liability-points-button {
-  color: #ef4444;
-  background-color: #fef2f2;
-  border: 1px solid #ef4444;
+  color: var(--color-expense);
+  background-color: var(--color-error-light);
+  border: 1px solid var(--color-expense);
 }
 
 .liability-points-button:hover {
-  background-color: #ef4444;
-  color: white;
+  background-color: var(--color-expense);
+  color: var(--color-text-white);
 }
 
-.card-footer {
-  margin-top: 24px;
-  text-align: center;
-}
+.card-footer { margin-top: 24px; text-align: center; }
 
 .liability-note {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-light);
   text-align: center;
   margin: 0;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-  .points-title {
-    font-size: 24px;
-  }
-
-  .points-number {
-    font-size: 48px;
-  }
-
-  .points-label {
-    font-size: 28px;
-  }
+  .points-title  { font-size: 24px; }
+  .points-number { font-size: 48px; }
+  .points-label  { font-size: 28px; }
 }
