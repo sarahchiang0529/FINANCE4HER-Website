@@ -321,8 +321,10 @@
 /* Cards (assets/liabilities/bonus) */
 .bonus-card,
 .assets-card,
-.liabilities-card {
+.liabilities-card,
+  .upload-card {
   background: var(--color-bg);
+  background: white;
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;

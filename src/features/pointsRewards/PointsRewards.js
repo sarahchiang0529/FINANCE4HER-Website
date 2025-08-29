@@ -504,10 +504,13 @@ function PointsRewards() {
           </div>
         )}
 
-        {activeTab === "upload" && (
-          <div className="tab-content learning-tab">
-            <h3>Upload</h3>
-            <p>Attach your PDF to earn points.</p>
+      {activeTab === "upload" && (
+        <div className="tab-content">
+          <div className="upload-card">
+            <div className="card-header">
+              <h3 className="card-title">Upload</h3>
+              <p className="card-description">Attach your PDF to earn points.</p>
+            </div>
             <div className="upload-container">
               <label htmlFor="pdf-upload" className="upload-label">
                 <Upload className="upload-icon" /> Select PDF to Upload
@@ -527,7 +530,8 @@ function PointsRewards() {
               )}
             </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </div>
   )

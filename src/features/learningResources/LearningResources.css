@@ -41,3 +41,93 @@
   font-size: 14px;
   color: #666;
 }
+
+/* Add these styles to your existing LearningResources.css file */
+
+.accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Center the page header */
+.page-header {
+  text-align: center;
+}
+
+.accordion-item {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 1.5rem;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #334155;
+  text-align: left;
+}
+
+.accordion-header:hover {
+  background-color: #f8fafc;
+}
+
+.accordion-title {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.accordion-content {
+  padding: 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #fafafa;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.journal-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+  background-color: white;
+  transition: border-color 0.2s ease;
+}
+
+.journal-input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.journal-input::placeholder {
+  color: #94a3b8;
+}
