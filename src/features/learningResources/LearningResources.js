@@ -1,36 +1,219 @@
-import { useState } from "react";
-import "./LearningResources.css"
-import { ChevronDown, ChevronRight } from "lucide-react"
-
-const data = {
-  Questions: [
-    { title: "What are your main financial goals for this year?", answer: "" },
-    { title: "How do you currently track your expenses?", answer: "" },
-    { title: "What financial habits would you like to improve?", answer: "" },
-    { title: "Describe your ideal financial situation in 5 years", answer: "" },
-    { title: "What are your biggest financial challenges right now?", answer: "" },
-    { title: "How do you make important financial decisions?", answer: "" },
-    { title: "What does financial freedom mean to you?", answer: "" },
-    { title: "How has your relationship with money changed over time?", answer: "" },
-  ]
-}
+import { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import "./LearningResources.css";
+import { ChevronDown, ChevronRight, Save, Edit, Trash2, AlertCircle } from "lucide-react";
+import {
+  fetchJournalQuestions,
+  fetchJournalAnswers,
+  saveJournalAnswer,
+  updateJournalAnswer,
+  deleteJournalAnswer
+} from "../../utils/LearningJournalAPI";
 
 const PersonalJournal = () => {
-  const [expandedItems, setExpandedItems] = useState({})
-  const [answers, setAnswers] = useState({})
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  
+  // State management
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
+  const [expandedItems, setExpandedItems] = useState({});
+  const [editingAnswers, setEditingAnswers] = useState({});
+  const [savingStates, setSavingStates] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
-  const toggleExpanded = (index) => {
+  // Load questions on component mount
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        const questionsData = await fetchJournalQuestions();
+        setQuestions(questionsData);
+      } catch (error) {
+        console.error('Failed to load questions:', error);
+        setErrors(prev => ({ ...prev, questions: 'Failed to load questions' }));
+      }
+    };
+    
+    loadQuestions();
+  }, []);
+
+  // Load user's answers when authenticated
+  useEffect(() => {
+    if (!isAuthenticated || !user?.sub || questions.length === 0) {
+      setIsLoadingData(false);
+      return;
+    }
+
+    const loadAnswers = async () => {
+      try {
+        setIsLoadingData(true);
+        const answersData = await fetchJournalAnswers(user.sub);
+        
+        // Convert answers array to object keyed by questionId for easy lookup
+        const answersMap = {};
+        answersData.forEach(answer => {
+          answersMap[answer.questionId] = answer;
+        });
+        
+        setAnswers(answersMap);
+      } catch (error) {
+        console.error('Failed to load answers:', error);
+        setErrors(prev => ({ ...prev, answers: 'Failed to load your answers' }));
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    loadAnswers();
+  }, [isAuthenticated, user?.sub, questions]);
+
+  const toggleExpanded = (questionId) => {
     setExpandedItems(prev => ({
       ...prev,
-      [index]: !prev[index]
-    }))
+      [questionId]: !prev[questionId]
+    }));
+  };
+
+  const handleAnswerChange = (questionId, value) => {
+    setEditingAnswers(prev => ({
+      ...prev,
+      [questionId]: value
+    }));
+  };
+
+  const handleSaveAnswer = async (questionId) => {
+    if (!isAuthenticated || !user?.sub) {
+      alert('Please log in to save your answers');
+      return;
+    }
+
+    const answerText = editingAnswers[questionId]?.trim();
+    if (!answerText) {
+      setErrors(prev => ({ ...prev, [questionId]: 'Answer cannot be empty' }));
+      return;
+    }
+
+    setSavingStates(prev => ({ ...prev, [questionId]: true }));
+    setErrors(prev => ({ ...prev, [questionId]: null }));
+
+    try {
+      const existingAnswer = answers[questionId];
+      
+      if (existingAnswer) {
+        // Update existing answer
+        const updatedAnswer = await updateJournalAnswer(
+          existingAnswer.id, 
+          answerText, 
+          user.sub
+        );
+        
+        setAnswers(prev => ({
+          ...prev,
+          [questionId]: updatedAnswer
+        }));
+      } else {
+        // Create new answer
+        const newAnswer = await saveJournalAnswer({
+          userId: user.sub,
+          questionId: questionId,
+          answer: answerText
+        });
+        
+        setAnswers(prev => ({
+          ...prev,
+          [questionId]: newAnswer
+        }));
+      }
+
+      // Clear editing state
+      setEditingAnswers(prev => {
+        const updated = { ...prev };
+        delete updated[questionId];
+        return updated;
+      });
+
+    } catch (error) {
+      console.error('Failed to save answer:', error);
+      setErrors(prev => ({ 
+        ...prev, 
+        [questionId]: error.message || 'Failed to save answer' 
+      }));
+    } finally {
+      setSavingStates(prev => ({ ...prev, [questionId]: false }));
+    }
+  };
+
+  const handleEditAnswer = (questionId) => {
+    const existingAnswer = answers[questionId];
+    setEditingAnswers(prev => ({
+      ...prev,
+      [questionId]: existingAnswer?.answer || ''
+    }));
+  };
+
+  const handleDeleteAnswer = async (questionId) => {
+    const existingAnswer = answers[questionId];
+    if (!existingAnswer || !window.confirm('Are you sure you want to delete this answer?')) {
+      return;
+    }
+
+    setSavingStates(prev => ({ ...prev, [questionId]: true }));
+
+    try {
+      await deleteJournalAnswer(existingAnswer.id, user.sub);
+      
+      setAnswers(prev => {
+        const updated = { ...prev };
+        delete updated[questionId];
+        return updated;
+      });
+
+      setEditingAnswers(prev => {
+        const updated = { ...prev };
+        delete updated[questionId];
+        return updated;
+      });
+      
+    } catch (error) {
+      console.error('Failed to delete answer:', error);
+      setErrors(prev => ({ 
+        ...prev, 
+        [questionId]: 'Failed to delete answer' 
+      }));
+    } finally {
+      setSavingStates(prev => ({ ...prev, [questionId]: false }));
+    }
+  };
+
+  const cancelEdit = (questionId) => {
+    setEditingAnswers(prev => {
+      const updated = { ...prev };
+      delete updated[questionId];
+      return updated;
+    });
+    setErrors(prev => ({ ...prev, [questionId]: null }));
+  };
+
+  if (isLoading || isLoadingData) {
+    return (
+      <div className="container">
+        <div className="page-header">
+          <h1 className="page-title">Personal Journal</h1>
+          <p className="page-subtitle">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
-  const handleAnswerChange = (index, value) => {
-    setAnswers(prev => ({
-      ...prev,
-      [index]: value
-    }))
+  if (!isAuthenticated) {
+    return (
+      <div className="container">
+        <div className="page-header">
+          <h1 className="page-title">Personal Journal</h1>
+          <p className="page-subtitle">Please log in to access your personal journal</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -40,41 +223,126 @@ const PersonalJournal = () => {
         <p className="page-subtitle">Reflect on your financial journey and goals</p>
       </div>
 
+      {errors.questions && (
+        <div className="error-banner">
+          <AlertCircle size={16} />
+          {errors.questions}
+        </div>
+      )}
+
+      {errors.answers && (
+        <div className="error-banner">
+          <AlertCircle size={16} />
+          {errors.answers}
+        </div>
+      )}
+
       <div className="tabs-container">
         <div className="tab-content">
           <div className="accordion-container">
-            {data.Questions.map((item, index) => (
-              <div className="accordion-item" key={index}>
-                <button
-                  className="accordion-header"
-                  onClick={() => toggleExpanded(index)}
-                >
-                  <span className="accordion-title">{item.title}</span>
-                  {expandedItems[index] ? (
-                    <ChevronDown size={20} />
-                  ) : (
-                    <ChevronRight size={20} />
+            {questions.map((question) => {
+              const questionId = question.id;
+              const isExpanded = expandedItems[questionId];
+              const existingAnswer = answers[questionId];
+              const isEditing = editingAnswers.hasOwnProperty(questionId);
+              const isSaving = savingStates[questionId];
+              const error = errors[questionId];
+
+              return (
+                <div className="accordion-item" key={questionId}>
+                  <button
+                    className="accordion-header"
+                    onClick={() => toggleExpanded(questionId)}
+                  >
+                    <span className="accordion-title">{question.question}</span>
+                    <div className="accordion-header-actions">
+                      {existingAnswer && (
+                        <span className="answer-indicator">✓</span>
+                      )}
+                      {isExpanded ? (
+                        <ChevronDown size={20} />
+                      ) : (
+                        <ChevronRight size={20} />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {isExpanded && (
+                    <div className="accordion-content">
+                      {error && (
+                        <div className="error-message">
+                          <AlertCircle size={16} />
+                          {error}
+                        </div>
+                      )}
+
+                      {/* Display existing answer when not editing */}
+                      {existingAnswer && !isEditing && (
+                        <div className="saved-answer">
+                          <p className="answer-text">{existingAnswer.answer}</p>
+                          <div className="answer-actions">
+                            <button
+                              className="action-btn edit-btn"
+                              onClick={() => handleEditAnswer(questionId)}
+                              disabled={isSaving}
+                            >
+                              <Edit size={16} />
+                              Edit
+                            </button>
+                            <button
+                              className="action-btn delete-btn"
+                              onClick={() => handleDeleteAnswer(questionId)}
+                              disabled={isSaving}
+                            >
+                              <Trash2 size={16} />
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Show textarea when editing or no answer exists */}
+                      {(isEditing || !existingAnswer) && (
+                        <div className="answer-editor">
+                          <textarea
+                            className="journal-input"
+                            placeholder="Write your thoughts here..."
+                            value={editingAnswers[questionId] || ''}
+                            onChange={(e) => handleAnswerChange(questionId, e.target.value)}
+                            rows={4}
+                            disabled={isSaving}
+                          />
+                          <div className="editor-actions">
+                            <button
+                              className="action-btn save-btn"
+                              onClick={() => handleSaveAnswer(questionId)}
+                              disabled={isSaving || !editingAnswers[questionId]?.trim()}
+                            >
+                              <Save size={16} />
+                              {isSaving ? 'Saving...' : 'Save Answer'}
+                            </button>
+                            {existingAnswer && (
+                              <button
+                                className="action-btn cancel-btn"
+                                onClick={() => cancelEdit(questionId)}
+                                disabled={isSaving}
+                              >
+                                Cancel
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   )}
-                </button>
-                
-                {expandedItems[index] && (
-                  <div className="accordion-content">
-                    <textarea
-                      className="journal-input"
-                      placeholder="Write your thoughts here..."
-                      value={answers[index] || ""}
-                      onChange={(e) => handleAnswerChange(index, e.target.value)}
-                      rows={4}
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PersonalJournal
+export default PersonalJournal;

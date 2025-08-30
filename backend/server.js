@@ -5,6 +5,7 @@ require("dotenv").config({ debug: true });
 const { createClient } = require("@supabase/supabase-js");
 const express = require("express");
 const cors = require("cors");
+const learningJournalRoutes = require("./routes/learningJournal");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 
 app.use("/api/admin", require("./routes/admin")); // e.g. GET /api/admin/my-table
 app.use("/api/users", require("./routes/users")); // e.g. POST /api/users/:userId/incomes
+app.use("/api/learning-journal", learningJournalRoutes);
 
 // 6. Start server
 const port = process.env.PORT || 4000;
