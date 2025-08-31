@@ -244,8 +244,8 @@
   font-size: 14px;
 }
 
-.form-group label[for="name"]::after,
-.form-group label[for="message"]::after {
+.faq-container .form-group label[for="name"]::after,
+.faq-container .form-group label[for="message"]::after {
   content: " *";
   color: red;
 }
