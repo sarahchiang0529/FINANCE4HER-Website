@@ -1,6 +1,6 @@
 /* ================================
   FINANCE4HER OFFICIAL BRAND COLORS
-  ================================ */
+================================ */
 
 :root {
 
@@ -88,7 +88,7 @@
 
 /* ================================
     BASE STYLES
-    ================================ */
+================================ */
 html,
 body {
   height: 100%;
@@ -110,7 +110,7 @@ body {
 
 /* ================================
     LAYOUT COMPONENTS
-    ================================ */
+================================ */
 .app-wrapper {
   flex: 1 0 auto;
   padding-top: 80px;
@@ -146,7 +146,7 @@ body {
 
 /* ================================
     TYPOGRAPHY
-    ================================ */
+================================ */
 .page-header {
   margin-bottom: var(--space-lg);
 }
@@ -186,7 +186,7 @@ body {
 
 /* ================================
     CARD COMPONENTS
-    ================================ */
+================================ */
 .card {
   background: var(--color-bg);
   border-radius: var(--border-radius);
@@ -241,7 +241,7 @@ body {
 
 /* ================================
     FORM COMPONENTS
-    ================================ */
+================================ */
 .form-title {
   font-size: 24px;
   font-weight: 600;
@@ -353,7 +353,7 @@ body {
   flex: 1;
   height: 48px;
   padding: 12px;
-  border: none;
+  border: var(--brand-limegreen);
   outline: none;
   font-size: 16px;
   color: var(--color-text);
@@ -427,6 +427,60 @@ body {
   transform: none;
 }
 
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  height: 40px;
+  min-width: 160px;
+
+  background: var(--brand-limegreen);
+  color: var(--brand-indigo);
+  border: 1px solid transparent;
+  border-radius: 6px;
+
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 12px rgba(204, 242, 129, 0.35);
+}
+
+.btn-primary:hover {
+  background: #b4d86a; /* slightly deeper lime */
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(204, 242, 129, 0.45);
+}
+
+.btn-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary.btn-sm {
+  height: 32px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.btn-primary .btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-sm);
+}
+
 .btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -488,7 +542,7 @@ body {
 
 /* ================================
     TAB COMPONENTS
-    ================================ */
+================================ */
 .tabs-container {
   margin-bottom: 0;
 }
@@ -532,7 +586,7 @@ body {
 
 /* ================================
     GRID LAYOUTS
-    ================================ */
+================================ */
 .income-grid,
 .expenses-grid {
   display: grid;
@@ -558,7 +612,7 @@ body {
 
 /* ================================
     COMPONENT CARDS
-    ================================ */
+================================ */
 .income-card,
 .expense-card,
 .goal-card {
@@ -583,7 +637,7 @@ body {
 
 /* ================================
     EMPTY STATES
-    ================================ */
+================================ */
 .empty-state-card {
   background: var(--color-bg);
   border-radius: var(--border-radius);
@@ -661,7 +715,7 @@ body {
 
 /* ================================
     FONT UTILITIES
-    ================================ */
+================================ */
 .font-primary {
   font-family: var(--font-primary);
 }
@@ -681,7 +735,7 @@ body {
 
 /* ================================
     RESPONSIVE DESIGN
-    ================================ */
+================================ */
 @media (min-width: 768px) {
   .income-grid,
   .expenses-grid,
@@ -740,7 +794,7 @@ body {
 
 /* ================================
     EDIT FORM FIXES
-    ================================ */
+================================ */
 .edit-transaction-form .edit-field .input-with-icon {
   width: 100%;
 }
