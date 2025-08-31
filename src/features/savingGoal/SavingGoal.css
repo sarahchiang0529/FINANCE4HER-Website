@@ -1,7 +1,6 @@
-/* Base styles */
+/* Container */
 .goals-container {
-  max-width: 1200px;
-  padding: 0 16px;
+  padding: 0;
 }
 
 /* Header */
@@ -9,30 +8,20 @@
   font-size: 36px;
   font-weight: 700;
   margin: 0;
-  color: #000;
+  color: var(--color-text);
 }
+
 .goals-container .page-subtitle {
   font-size: 18px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 8px 0 0 0;
 }
 
-/* Card styles */
-.goal-card {
-  background: white;
-  border-radius: 12px;
-  padding: 0 32px 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+/* Form */
+.goal-form { 
+  width: 100%; 
 }
 
-/* Form */
-.goal-form {
-  width: 100%;
-}
 .form-group {
   display: flex;
   flex-direction: column;
@@ -40,67 +29,67 @@
   margin-bottom: 0;
   padding-bottom: 0;
 }
-.input-row {
-  display: flex;
-  gap: 24px;
-  width: 100%;
+
+.input-row { 
+  display: flex; 
+  gap: 24px; 
+  width: 100%; 
 }
-.input-field {
-  flex: 1;
-  min-width: 0;
+
+.input-field { 
+  flex: 1; 
+  min-width: 0; 
 }
-.input-field.full-width {
-  width: 100%;
+.input-field.full-width { 
+  width: 100%; 
 }
+
 .input-field label {
   display: block;
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
-  color: #000;
+  color: var(--color-text);
 }
+
 .input-field input,
 .input-field select {
   width: 100%;
   height: 48px;
   padding: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   font-size: 16px;
-  color: #333;
-  background-color: white;
+  color: var(--color-text);
+  background-color: var(--color-bg);
   box-sizing: border-box;
 }
+
 .input-field input:focus,
 .input-field select:focus {
   outline: none;
-  border-color: #a94caf;
-  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+  border-color: var(--brand-indigo);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand-indigo) 20%, transparent);
 }
 
-/* Remove spinner buttons from number inputs */
+/* Number input cleanup */
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
 
-/* Input with icon styles */
+/* Input with icon */
 .input-with-icon {
   position: relative;
   display: flex;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   overflow: hidden;
   transition: all 0.2s ease;
 }
 
 .input-with-icon:focus-within {
-  border-color: #a94caf;
-  box-shadow: 0 0 0 2px rgba(169, 76, 175, 0.1);
+  border-color: var(--brand-indigo);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand-indigo) 20%, transparent);
 }
 
 .input-icon {
@@ -109,24 +98,23 @@ input[type="number"] {
   justify-content: center;
   width: 30px;
   font-size: 16px;
-  color: #666;
-  background-color: #f0f0f0;
-  border-right: 1px solid #e0e0e0;
+  color: var(--color-text-light);
+  background-color: var(--color-bg-tertiary);
+  border-right: 1px solid var(--color-border);
 }
 
 .input-with-icon input {
   flex: 1;
   height: 48px;
-  padding: 12px;
-  padding-left: 12px;
+  padding: 12px 12px 12px;
   border: none;
   outline: none;
   font-size: 16px;
-  color: #333;
-  background-color: white;
+  color: var(--color-text);
+  background-color: var(--color-bg);
 }
 
-/* Goals grid and cards */
+/* Grid */
 .goals-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -134,26 +122,21 @@ input[type="number"] {
   margin-top: 24px;
 }
 
-/* Responsive grid layouts */
-@media (max-width: 1024px) {
-  .goals-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+@media (max-width: 1024px) { 
+  .goals-grid { grid-template-columns: repeat(2, 1fr); } 
+}
+@media (max-width: 640px)  {
+   .goals-grid { grid-template-columns: 1fr; } 
 }
 
-@media (max-width: 640px) {
-  .goals-grid {
-    grid-template-columns: 1fr;
-  }
+.goals-grid .goal-card { 
+  display: flex; 
+  flex-direction: column; 
+  height: 100%; 
+  margin-bottom: 0; 
 }
 
-.goals-grid .goal-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin-bottom: 0;
-}
-
+/* Card header */
 .goal-card-header {
   display: flex;
   justify-content: space-between;
@@ -167,7 +150,7 @@ input[type="number"] {
   align-items: center;
   gap: 8px;
   font-weight: 500;
-  color: #666;
+  color: var(--color-text-light);
 }
 
 .category-icon {
@@ -182,36 +165,36 @@ input[type="number"] {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--edu-purple);
+  color: var(--brand-indigo);
   padding: 4px;
   transition: all 0.2s ease;
 }
 
 .goal-actions .icon-button:hover {
-  color: var(--edu-orange);
+  color: var(--brand-orange);
   transform: translateY(-1px);
 }
 
+/* Titles */
 .goal-title {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 4px;
-  color: #000;
+  color: var(--color-text);
 }
 
 .goal-description {
   font-size: 14px;
-  color: #555;
+  color: var(--color-text);
+  opacity: .75;
   margin-bottom: 12px;
 }
 
-/* Progress bar */
-.goal-progress-container {
-  margin: 12px 0 24px 0;
-}
+/* Progress */
+.goal-progress-container { margin: 12px 0 24px 0; }
 
 .goal-progress-bar {
-  background: #eaeaea;
+  background: var(--color-bg-tertiary);
   height: 10px;
   border-radius: 6px;
   overflow: hidden;
@@ -220,21 +203,22 @@ input[type="number"] {
 .goal-progress-fill {
   height: 10px;
   border-radius: 6px;
-  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
+  background: var(--color-primary-gradient);
   transition: width 0.3s ease-in-out;
 }
 
-.goal-progress-fill.completed {
-  background-color: #28a745;
+.goal-progress-fill.completed { 
+  background-color: #28a745; 
 }
 
 .goal-progress-text {
   font-size: 13px;
-  color: #444;
+  color: var(--color-text);
+  opacity: .75;
   margin-top: 6px;
 }
 
-/* Goal details */
+/* Details */
 .goal-details {
   display: flex;
   justify-content: space-between;
@@ -244,48 +228,29 @@ input[type="number"] {
   flex-wrap: wrap;
 }
 
-.goal-detail {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
+.goal-detail { 
+  display: flex; 
+  gap: 8px; 
+  align-items: flex-start; 
 }
-
-.goal-detail-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--edu-purple);
+.goal-detail-icon { 
+  width: 20px; 
+  height: 20px; 
+  color: var(--brand-indigo); 
 }
-
-.goal-detail-label {
-  font-size: 12px;
-  color: #666;
+.goal-detail-label { 
+  font-size: 12px; 
+  color: var(--color-text-light); 
 }
-
-.goal-detail-value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #000;
-  word-break: break-word;
+.goal-detail-value { 
+  font-size: 14px; 
+  font-weight: 600; 
+  color: var(--color-text); 
+  word-break: break-word; 
 }
-
-.goal-detail-subtext {
-  font-size: 12px;
-  color: #999;
-}
-
-/* Update form */
-.goal-update-form {
-  margin-top: 12px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.goal-update-input {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  flex: 1;
+.goal-detail-subtext { 
+  font-size: 12px; 
+  color: var(--color-text-lighter); 
 }
 
 /* Completed badge */
@@ -296,21 +261,20 @@ input[type="number"] {
   color: #28a745;
   font-weight: 500;
 }
-
-.completed-icon {
-  width: 18px;
-  height: 18px;
+.completed-icon { 
+  width: 18px; 
+  height: 18px; 
 }
 
-/* No goals message */
+/* Empty state */
 .no-goals-message {
   text-align: center;
-  color: #444;
+  color: var(--color-text);
   font-size: 14px;
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   margin-top: 24px;
 }
 
@@ -318,13 +282,13 @@ input[type="number"] {
   width: 40px;
   height: 40px;
   margin-bottom: 12px;
-  color: var(--edu-purple);
+  color: var(--brand-indigo);
 }
 
-/* Tabs Container */
-.tabs-container {
-  margin-bottom: 0;
-  margin-top: 24px;
+/* Tabs */
+.tabs-container { 
+  margin-bottom: 0; 
+  margin-top: 24px; 
 }
 
 .tabs {
@@ -340,42 +304,41 @@ input[type="number"] {
   gap: 8px;
   padding: 10px 16px;
   border: none;
-  background-color: #fff;
+  background-color: var(--color-bg);
   border-radius: 8px;
   font-weight: 500;
-  color: var(--edu-purple);
+  color: var(--brand-indigo);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
 }
 
-.tab:hover {
-  background-color: #f3e6fb;
+.tab:hover  { 
+  background-color: 
+  var(--color-bg-tertiary); 
+}
+.tab.active { 
+  background-color: var(--color-bg-secondary); 
+}
+.tab-label  { 
+  font-size: 14px; 
 }
 
-.tab.active {
-  background-color: #e2c6ff;
+/* Tab content */
+.tab-content { 
+  padding: 0; 
+  background: transparent; 
+  box-shadow: none; 
 }
 
-.tab-label {
-  font-size: 14px;
-}
-
-/* Tab Content */
-.tab-content {
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-/* Button styles */
+/* Buttons */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: linear-gradient(to right, var(--edu-orange), var(--edu-purple));
-  color: white;
+  background: var(--color-primary-gradient);
+  color: var(--color-text-white);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
@@ -387,23 +350,22 @@ input[type="number"] {
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
 
-.btn-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+.btn-icon { 
+  width: 16px; 
+  height: 16px; 
+  margin-right: 8px; 
 }
 
-/* Secondary button */
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
   background: #9ca3af;
-  color: white;
+  color: var(--color-text-white);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
@@ -416,17 +378,16 @@ input[type="number"] {
 .btn-secondary:hover {
   background: #6b7280;
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
 
-/* Danger button */
 .btn-danger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
   background: #f44336;
-  color: white;
+  color: var(--color-text-white);
   font-weight: 600;
   font-size: 14px;
   border-radius: 6px;
@@ -441,14 +402,11 @@ input[type="number"] {
   transform: translateY(-1px);
 }
 
-/* Delete confirmation overlay */
+/* Delete confirmation */
 .delete-confirm-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.95);
+  inset: 0;
+  background: rgba(255,255,255,.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -460,9 +418,9 @@ input[type="number"] {
   width: 90%;
   max-width: 300px;
   padding: 20px;
-  background: white;
+  background: var(--color-bg);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
   text-align: center;
 }
 
@@ -473,74 +431,65 @@ input[type="number"] {
   gap: 10px;
 }
 
-/* Edit goal form */
-.edit-goal-form {
-  width: 100%;
-  padding-top: 24px;
+/* Edit form */
+.edit-goal-form { 
+  width: 100%; 
+  padding-top: 24px; 
+}
+.edit-goal-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 16px; 
+}
+.edit-goal-header h3 { 
+  font-size: 24px; 
+  font-weight: 600; 
+  margin: 0; 
+  color: var(--color-text); 
 }
 
-.edit-goal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+.close-button { 
+  background: transparent; 
+  border: none; 
+  cursor: pointer; 
+  color: var(--color-text-light); 
+  padding: 4px; 
+}
+.close-button:hover { 
+  color: var(--color-text); 
 }
 
-.edit-goal-header h3 {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0;
-  color: #333;
+.edit-actions { 
+  display: flex; 
+  justify-content: space-between; 
+  gap: 12px; padding: 0; 
+  margin-bottom: 0; 
 }
-
-.close-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #666;
-  padding: 4px;
-}
-
-.close-button:hover {
-  color: #333;
-}
-
-/* Edit actions */
-.edit-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0;
-  margin-bottom: 0;
-}
-
 .edit-actions .btn-secondary,
-.edit-actions .btn-primary {
-  flex: 1;
-  height: 48px;
+.edit-actions .btn-primary { 
+  flex: 1; 
+  height: 48px; 
 }
 
-/* Checkbox field */
-.checkbox-field {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  position: relative;
+/* Checkbox */
+.checkbox-field { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  position: relative; 
+}
+.checkbox-field input[type="checkbox"] { 
+  position: absolute; 
+  opacity: 0; 
+  width: 0; 
+  height: 0; 
+  margin: 0; 
 }
 
-/* Hide the default checkbox */
-.checkbox-field input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  margin: 0;
-}
-
-/* Create custom checkbox */
 .checkbox-label {
   font-size: 16px;
-  color: #333;
+  color: var(--color-text);
   white-space: nowrap;
   line-height: 16px;
   padding-left: 28px;
@@ -548,67 +497,55 @@ input[type="number"] {
   cursor: pointer;
 }
 
-/* Custom checkbox design */
 .checkbox-label::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--edu-purple);
+  left: 0; top: 0;
+  width: 18px; height: 18px;
+  border: 2px solid var(--brand-indigo);
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--color-bg);
   transition: all 0.2s ease;
 }
 
-/* Checkbox checked state */
 .checkbox-field input[type="checkbox"]:checked + .checkbox-label::before {
-  background-color: var(--edu-purple);
+  background-color: var(--brand-indigo);
 }
 
-/* Checkmark */
 .checkbox-field input[type="checkbox"]:checked + .checkbox-label::after {
   content: "";
   position: absolute;
-  left: 6px;
-  top: 3px;
-  width: 6px;
-  height: 10px;
-  border: solid white;
+  left: 6px; top: 3px;
+  width: 6px; height: 10px;
+  border: solid var(--color-text-white);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
-/* Focus state */
 .checkbox-field input[type="checkbox"]:focus + .checkbox-label::before {
-  box-shadow: 0 0 0 2px rgba(138, 75, 175, 0.3);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand-indigo) 30%, transparent);
 }
 
-/* Hover state */
-.checkbox-label:hover::before {
-  border-color: var(--edu-orange);
+.checkbox-label:hover::before { 
+  border-color: var(--brand-indigo); 
 }
 
-/* Goal content and button container */
-.goal-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+/* Goal content & toggle */
+.goal-content { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
 }
-
-/* Goal completion toggle button */
-.goal-completion-toggle {
-  margin-top: auto;
-  padding-top: 16px;
-  padding-bottom: 0;
-  text-align: center;
+.goal-completion-toggle { 
+  margin-top: auto; 
+  padding-top: 16px; 
+  text-align: center; 
 }
 
 .btn-toggle-completion {
   background: transparent;
-  border: 1px solid var(--edu-purple);
-  color: var(--edu-purple);
+  border: 1px solid var(--brand-indigo);
+  color: var(--brand-indigo);
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
@@ -619,32 +556,29 @@ input[type="number"] {
   height: 48px;
 }
 
-.btn-toggle-completion:hover {
-  background: #f3e6fb;
+.btn-toggle-completion:hover { 
+  background: var(--color-bg-tertiary); 
 }
 
-/* Make both buttons look the same with purple outline */
 .btn-toggle-completion.completed {
   background: transparent;
-  color: var(--edu-purple);
-  border-color: var(--edu-purple);
+  color: var(--brand-indigo);
+  border-color: var(--brand-indigo);
 }
 
 .btn-toggle-completion.completed:hover {
-  background: #f3e6fb;
+  background: var(--color-bg-tertiary);
 }
 
-/* Goal details container to ensure consistent height */
-.goal-info-container {
-  flex: 1;
-  display: flex;
+/* Misc */
+.goal-info-container { 
+  flex: 1; 
+  display: flex; 
   flex-direction: column;
 }
-
-/* Amount value container to handle overflow */
-.amount-container {
-  word-break: break-word;
-  overflow-wrap: break-word;
+.amount-container { 
+  word-break: break-word; 
+  overflow-wrap: break-word; 
 }
 
 /* Form titles */
@@ -652,24 +586,24 @@ input[type="number"] {
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: #333;
+  color: var(--color-text);
   padding-top: 32px;
 }
 
 .form-subtitle {
   font-size: 16px;
-  color: #666;
+  color: var(--color-text-light);
   margin: 0 0 24px 0;
 }
 
+/* Responsive tweaks */
 @media (max-width: 768px) {
-  .input-row {
-    flex-direction: column;
-    gap: 16px;
+  .input-row { 
+    flex-direction: column; 
+    gap: 16px; 
   }
-
-  .goal-details {
-    flex-direction: column;
-    gap: 16px;
+  .goal-details { 
+    flex-direction: column; 
+    gap: 16px; 
   }
 }

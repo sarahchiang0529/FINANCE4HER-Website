@@ -181,12 +181,14 @@ function SavingGoal() {
   const hasGoals = filteredGoals.length > 0
 
   return (
-    <div className="container">
+    <div className="goals-container">
+      {/* Header Section */}
       <div className="page-header">
         <h1 className="page-title">Saving Goals</h1>
         <p className="page-subtitle">Set and track your financial targets</p>
       </div>
 
+      {/* Add Expense Form Section */}
       <div className="goal-card">
         <h2 className="form-title">Add New Goal</h2>
         <p className="form-subtitle">Create a new saving target to work towards</p>
@@ -316,7 +318,7 @@ function SavingGoal() {
           ) : (
             <div className="goals-grid">
               {filteredGoals.map((goal) => (
-                <div key={goal.id} className="goal-card">
+                <div key={goal.id} className="card goal-card">
                   {/* Show delete confirmation if this goal is being deleted */}
                   {showDeleteConfirm === goal.id && (
                     <div className="delete-confirm-overlay">
