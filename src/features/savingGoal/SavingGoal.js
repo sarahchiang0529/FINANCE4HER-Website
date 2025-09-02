@@ -442,8 +442,8 @@ function SavingGoal() {
                         <div className="goal-card-header">
                           <div className="goal-category">
                             <span className="category-icon">{getCategoryIcon(goal.category)}</span>
-                            <span>{goal.category}</span>
-                          </div>
+                            <span className="goal-title">{goal.name}</span> 
+                         </div>
                           <div className="goal-actions">
                             <button className="icon-button" onClick={() => startEditGoal(goal)}>
                               <Edit size={16} />
@@ -453,9 +453,6 @@ function SavingGoal() {
                             </button>
                           </div>
                         </div>
-
-                        <h3 className="goal-title">{goal.name}</h3>
-                        <p className="goal-description">{goal.description}</p>
 
                         <div className="goal-progress-container">
                           <div className="goal-progress-bar">

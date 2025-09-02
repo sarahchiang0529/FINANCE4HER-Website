@@ -142,7 +142,6 @@ input[type="number"] { -moz-appearance: textfield; }
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  padding-top: 24px;
 }
 
 .goal-category {
@@ -191,7 +190,9 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 
 /* Progress */
-.goal-progress-container { margin: 12px 0 24px 0; }
+.goal-progress-container { 
+  margin: 12px 0 24px 0; 
+}
 
 .goal-progress-bar {
   background: var(--color-bg-tertiary);
@@ -538,7 +539,6 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 .goal-completion-toggle { 
   margin-top: auto; 
-  padding-top: 16px; 
   text-align: center; 
 }
 
