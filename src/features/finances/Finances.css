@@ -544,14 +544,17 @@
   box-sizing: border-box;
 }
 
-.btn-secondary {
-  background-color: #f1f1f1;
-  color: #333;
-  height: 36px; /* Ensure consistent height */
+/* Cancel */
+.cancel-btn {
+  background: #f8f9fa;
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border-light);
 }
 
-.btn-secondary:hover {
-  background-color: #e5e5e5;
+.cancel-btn:hover {
+  background: var(--brand-indigo);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 .btn-danger {
@@ -566,13 +569,11 @@
 
 /* Edit transaction form */
 .edit-transaction-form {
-  width: 100%;
-  padding: 16px;
-  background-color: #f9f0ff;
-  border-radius: 8px;
-  border: 1px solid #e6d0ff;
-  margin: 8px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: var(--brand-offwhite);
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow);
+  padding: 24px;
 }
 
 .edit-form-row {

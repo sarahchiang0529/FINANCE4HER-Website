@@ -518,7 +518,7 @@ function Income() {
                             </div>
                           </div>
                           <div className="edit-actions">
-                            <button className="btn-secondary" onClick={cancelEditIncome}>Cancel</button>
+                            <button className="cancel-btn" onClick={cancelEditIncome}>Cancel</button>
                             <button className="btn-primary" onClick={saveEditIncome}>Save</button>
                           </div>
                         </div>

@@ -525,7 +525,7 @@ function Expenses() {
                         <div className="delete-confirm">
                           <p>Delete this transaction?</p>
                           <div className="delete-actions">
-                            <button className="btn-secondary" onClick={cancelDeleteExpense}>
+                            <button className="cancel-btn" onClick={cancelDeleteExpense}>
                               Cancel
                             </button>
                             <button className="btn-danger" onClick={() => deleteExpense(entry.id)}>
@@ -581,7 +581,7 @@ function Expenses() {
                             </div>
                           </div>
                           <div className="edit-actions">
-                            <button className="btn-secondary" onClick={cancelEditExpense}>
+                            <button className="cancel-btn" onClick={cancelEditExpense}>
                               Cancel
                             </button>
                             <button className="btn-primary" onClick={saveEditExpense}>
