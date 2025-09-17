@@ -1,8 +1,8 @@
+/* Home container - using consolidated page-container pattern */
 .home-container {
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding: 60px 0;
   background: var(--brand-offwhite);
 }
 

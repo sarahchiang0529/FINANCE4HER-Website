@@ -67,7 +67,7 @@ const Home = () => {
             <PiggyBank />
           </div>
           <h3 className="feature-title">Saving Goals</h3>
-          <p className="feature-description">Set financial goals and track your progress toward achieving them.</p>
+          <p className="feature-description">Set financial goals and track your progress.</p>
           <div className="feature-link">
             Set Goals
             <ArrowRight className="link-icon" />
