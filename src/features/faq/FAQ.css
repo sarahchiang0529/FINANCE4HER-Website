@@ -1,23 +1,8 @@
+/* FAQ container */
 .faq-container {
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 16px;
 }
-
-/* Header */
-.faq-container .page-title {
-  font-size: 36px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--color-text-dark);
-}
-
-.faq-container .page-subtitle {
-  font-size: 18px;
-  color: var(--color-text-light);
-  margin: 8px 0 0 0;
-}
-
 /* Card */
 .faq-card {
   background: var(--color-bg);
