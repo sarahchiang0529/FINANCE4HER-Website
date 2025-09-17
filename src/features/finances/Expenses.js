@@ -428,17 +428,17 @@ function Expenses() {
       ) : (
         <>
           {/* View Selector - Toggle between transactions and monthly summary views */}
-          <div className="view-selector">
-            <div className="view-tabs">
+          <div className="tabs-container">
+            <div className="tabs">
               <button
-                className={`view-tab ${activeView === "transactions" ? "active" : ""}`}
+                className={`tab ${activeView === "transactions" ? "active" : ""}`}
                 onClick={() => setActiveView("transactions")}
               >
                 <Calendar size={16} />
                 Transactions
               </button>
               <button
-                className={`view-tab ${activeView === "monthly" ? "active" : ""}`}
+                className={`tab ${activeView === "monthly" ? "active" : ""}`}
                 onClick={() => setActiveView("monthly")}
               >
                 <BarChart3 size={16} />
@@ -461,6 +461,12 @@ function Expenses() {
           )}
 
           {/* Summary Cards - Show totals for each category */}
+          {activeView === "monthly" && (
+            <div className="summary-header">
+              <h2 className="summary-title-header">All-time Summary</h2>
+            </div>
+          )}
+          
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
             {/* Total Expense Card */}
             <div className="summary-card" style={{ flex: "1 1 0" }}>
@@ -470,9 +476,6 @@ function Expenses() {
                 </div>
                 <h3 className="summary-title">Total Expenses</h3>
                 <p className="summary-value">${currentViewTotal.toFixed(2)}</p>
-                <p className="summary-period">
-                  {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
-                </p>
               </div>
             </div>
 
@@ -485,9 +488,6 @@ function Expenses() {
                   </div>
                   <h3 className="summary-title">{category}</h3>
                   <p className="summary-value">${(categoryTotals[category] || 0).toFixed(2)}</p>
-                  <p className="summary-period">
-                    {activeView === "monthly" ? "All-time Total" : formatMonthYear(selectedMonth)}
-                  </p>
                 </div>
               </div>
             ))}
@@ -601,11 +601,11 @@ function Expenses() {
                           <div className="expense-details">
                             <div className="expense-amount">-${entry.value.toFixed(2)}</div>
                             <div className="expense-date">{formatDate(entry.date)}</div>
-                            <div className="transaction-actions">
-                              <button className="action-btn edit-btn" onClick={() => startEditExpense(entry)}>
+                            <div className="goal-actions">
+                              <button className="icon-button" onClick={() => startEditExpense(entry)}>
                                 <Edit size={16} />
                               </button>
-                              <button className="action-btn delete-btn" onClick={() => confirmDeleteExpense(entry.id)}>
+                              <button className="icon-button" onClick={() => confirmDeleteExpense(entry.id)}>
                                 <Trash2 size={16} />
                               </button>
                             </div>
@@ -629,7 +629,9 @@ function Expenses() {
 
                     return (
                       <div key={year} className="year-section">
-                        <h2 className="section-title">{year} Monthly Expenses</h2>
+                        <div className="section-header">
+                          <h2 className="section-title">{year} Monthly Expenses</h2>
+                        </div>
 
                         {isSingleMonth ? (
                           <div className="monthly-single-chart-container">
@@ -696,15 +698,18 @@ function Expenses() {
                             </div>
 
                             <div className="details-categories">
-                              {Object.entries(selectedMonthDetails.categories).map(([category, amount], index) => (
-                                <div key={index} className="details-category-item">
-                                  <div className="category-info">
-                                    <span className="category-icon">{getCategoryIcon(category)}</span>
-                                    <span className="category-name">{category}</span>
+                              {Object.entries(selectedMonthDetails.categories).map(([category, amount], index) => {
+                                const categoryClass = `category-${category.toLowerCase().replace(/\s+/g, '-')}`;
+                                return (
+                                  <div key={index} className={`details-category-item ${categoryClass}`}>
+                                    <div className="category-info">
+                                      <span className="category-icon">{getCategoryIcon(category)}</span>
+                                      <span className="category-name">{category}</span>
+                                    </div>
+                                    <div className="category-amount">${amount.toFixed(2)}</div>
                                   </div>
-                                  <div className="category-amount">${amount.toFixed(2)}</div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
 
                             <div className="monthly-details-chart">

@@ -1,13 +1,53 @@
-/* Chart containers - restored to original larger size */
+/* Chart containers - page specific sizing */
+.chart-with-legend {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .chart-wrapper {
   height: var(--chart-height) !important;
   min-height: var(--chart-height) !important;
   max-height: var(--chart-height) !important;
-  width: 100%;
+  flex: 1;
   margin: var(--space-md) 0 0 0;
   padding: 0;
   overflow: hidden;
   position: relative;
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 200px;
+  margin-top: var(--space-md);
+}
+
+.legend-category-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.legend-category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.legend-category-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.legend-category-amount {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
 }
 
 .chart-wrapper canvas {
@@ -22,35 +62,52 @@
   position: relative;
 }
 
-/* Update the chart container wrapper to have proper spacing */
 .chart-container-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: var(--chart-height);
   width: 100%;
-  margin-top: 8px; /* Add a small margin to match the design */
+  margin-top: 8px;
 }
 
-/* Form styles specific to finance forms */
+/* Finance forms specific */
 .income-form,
 .expense-form {
   width: 100%;
 }
 
-/* Month selector */
+/* Month selector specific layout */
 .month-selector {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-md);
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--brand-limegreen);
+  box-shadow: 0 0px 5px var(--brand-limegreen);  
+  margin: 0 auto;
+  min-width: 280px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.month-selector::before {
+  font-size: 20px;
+  margin-right: 8px;
+  opacity: 0.8;
 }
 
 .selected-month {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 700;
+  color: #2C2C2C;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.5px;
 }
 
 .month-nav-button {
@@ -60,7 +117,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--brand-limegreen);
   background: white;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -68,21 +125,59 @@
 
 .month-nav-button:hover {
   background: var(--color-tab-hover);
-  border-color: var(--color-tab);
+  border-color: var(--brand-limegreen);
+  box-shadow: 0 4px 20px var(--brand-limegreen);  
 }
 
-/* Summary cards - completely revised for 1xN layout */
+/* Summary header for all-time title */
+.summary-header {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.summary-title-header {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+/* Summary cards layout - horizontal scroll */
 .summary-cards {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   gap: 16px !important;
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
   width: 100%;
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  overflow-x: auto;
 }
 
-/* Update the summary-icon-wrapper to ensure perfect centering */
+.summary-card {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.summary-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .summary-icon-wrapper {
   width: 40px !important;
   height: 40px !important;
@@ -98,7 +193,6 @@
   position: relative !important;
 }
 
-/* Force the summary icon to be perfectly centered */
 .summary-icon {
   position: absolute !important;
   top: 50% !important;
@@ -114,7 +208,27 @@
   height: auto !important;
 }
 
-/* Remove all background colors */
+.summary-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--color-text) !important;
+  margin: 0 0 4px 0 !important;
+}
+
+.summary-value {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--color-text-dark) !important;
+  margin: 0 !important;
+}
+
+.summary-period {
+  font-size: 11px !important;
+  color: var(--color-text-light) !important;
+  margin: 2px 0 0 0 !important;
+}
+
+/* Remove all category icon backgrounds */
 .total-icon,
 .salary-icon,
 .food-icon,
@@ -124,51 +238,7 @@
 .entertainment-icon,
 .shopping-icon,
 .utilities-icon,
-.other-icon {
-  background-color: transparent !important;
-}
-
-/* Ensure the income list has proper spacing */
-.income-list,
-.expenses-list {
-  max-height: 400px !important;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 8px 0 0 0; /* Add top margin to match the chart spacing */
-}
-
-/* Improve the income/expense item layout */
-.income-item,
-.expense-item {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  border-bottom: 1px solid #f0f0f0;
-  margin: 0;
-  min-height: auto;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-/* When not editing or deleting, use row layout */
-.income-item:not(:has(.edit-transaction-form, .delete-confirm)),
-.expense-item:not(:has(.edit-transaction-form, .delete-confirm)) {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.income-info,
-.expense-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Keep the summary icon styling consistent */
-/* Keep transaction icons clean without backgrounds */
+.other-icon,
 .income-icon,
 .expense-icon,
 .category-icon {
@@ -185,6 +255,48 @@
   border: none !important;
 }
 
+/* Transaction lists specific layout */
+.income-list,
+.expenses-list {
+  max-height: 400px !important;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 8px 0 0 0;
+}
+
+.income-item,
+.expense-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 0;
+  min-height: auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.income-item:last-child,
+.expense-item:last-child {
+  border-bottom: none !important;
+}
+
+.income-item:not(:has(.edit-transaction-form, .delete-confirm)),
+.expense-item:not(:has(.edit-transaction-form, .delete-confirm)) {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.income-info,
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .income-category,
 .expense-category {
   font-size: 14px;
@@ -198,14 +310,13 @@
   color: var(--color-text-light);
 }
 
-/* Update the transaction details layout */
 .income-details,
 .expense-details {
   text-align: right;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  min-width: 120px; /* Add minimum width to prevent squishing */
+  min-width: 120px;
 }
 
 .income-amount {
@@ -226,7 +337,7 @@
   color: var(--color-text-light);
 }
 
-/* Monthly view */
+/* Monthly view specific layouts */
 .monthly-view {
   margin-top: var(--space-lg);
 }
@@ -234,22 +345,40 @@
 .year-section {
   background: white;
   border-radius: var(--border-radius);
-  padding: var(--space-md);
   box-shadow: var(--shadow);
   width: 100%;
   overflow: hidden;
   text-align: center;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg);
 }
 
-/* Monthly charts */
+.section-header {
+  background-color: #f5f5f5;
+  padding: 16px var(--space-lg);
+  border-bottom: none;
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-lg);
+  box-shadow: none;
+}
+
+.section-header .section-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
 .monthly-charts {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-lg);
   width: 100%;
   justify-content: flex-start;
-  padding: var(--space-lg);
-  padding: var(--space-md);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .monthly-single-chart-container {
@@ -259,7 +388,11 @@
   width: 100%;
   max-width: 100%;
   margin: 0;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .single-month {
@@ -267,10 +400,11 @@
 }
 
 .month-chart-card {
-  background: white;
+  background: #fafafa;
   border-radius: var(--border-radius);
   padding: var(--space-md);
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -279,6 +413,12 @@
   width: 160px;
   max-width: 160px;
   flex: 0 0 auto;
+}
+
+.month-chart-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #d0d0d0;
 }
 
 .month-chart {
@@ -310,7 +450,7 @@
   width: 100%;
 }
 
-/* Monthly details */
+/* Monthly details section */
 .monthly-details-section {
   background: white;
   border-radius: var(--border-radius);
@@ -322,7 +462,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .monthly-details-content {
@@ -341,7 +481,7 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-md);
-  background-color: #f9f0ff;
+  background-color: #f5f5f5;
   border-radius: var(--space-sm);
 }
 
@@ -366,6 +506,44 @@
   background-color: #f8f8f8;
   border-radius: var(--space-sm);
   transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+}
+
+/* Category color coding to match chart colors */
+.details-category-item.category-food {
+  border-left-color: rgba(52, 144, 220, 1);
+}
+
+.details-category-item.category-transport {
+  border-left-color: rgba(46, 204, 113, 1);
+}
+
+.details-category-item.category-entertainment {
+  border-left-color: rgba(106, 90, 205, 1);
+}
+
+.details-category-item.category-shopping {
+  border-left-color: rgba(255, 159, 64, 1);
+}
+
+.details-category-item.category-utilities {
+  border-left-color: rgba(156, 39, 176, 1);
+}
+
+.details-category-item.category-salary {
+  border-left-color: rgba(52, 144, 220, 1);
+}
+
+.details-category-item.category-government-benefit {
+  border-left-color: rgba(106, 90, 205, 1);
+}
+
+.details-category-item.category-investments {
+  border-left-color: rgba(46, 204, 113, 1);
+}
+
+.details-category-item.category-other {
+  border-left-color: rgba(156, 39, 176, 1);
 }
 
 .category-info {
@@ -403,54 +581,43 @@
   max-height: var(--chart-height) !important;
 }
 
-/* Summary card styles */
-.summary-content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.summary-card {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  background: white;
-  border-radius: var(--border-radius);
+/* Card headers with background */
+.income-data-card > .finance-card-header,
+.expense-data-card > .finance-card-header {
+  background-color: #f5f5f5;
   padding: 16px;
-  box-shadow: var(--shadow);
+  border-bottom: 1px solid var(--color-border);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+/* Transaction actions layout */
+.transaction-actions {
   display: flex;
-  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-end;
 }
 
-.summary-title {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: var(--color-text) !important;
-  margin: 0 0 4px 0 !important;
+/* Grid layouts for data cards */
+.data-income-grid,
+.data-expenses-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+  margin-top: 24px;
 }
 
-.summary-value {
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  color: var(--color-text-dark) !important;
-  margin: 0 !important;
+@media (min-width: 768px) {
+  .data-income-grid,
+  .data-expenses-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.summary-period {
-  font-size: 11px !important;
-  color: var(--color-text-light) !important;
-  margin: 2px 0 0 0 !important;
-}
-
-/* Mobile-specific styles */
+/* Mobile responsive adjustments */
 @media (max-width: 768px) {
-  /* On mobile, allow horizontal scrolling for summary cards */
   .summary-cards {
     display: flex !important;
     overflow-x: auto;
@@ -460,46 +627,6 @@
   .summary-card {
     flex: 0 0 140px;
   }
-}
-
-/* Add padding around distribution & transaction headers */
-.income-data-card > .finance-card-header,
-.expense-data-card > .finance-card-header {
-  background-color: #f5f5f5; /* light grey */
-  padding: 16px 24px; /* top/bottom 16px, left/right 24px */
-  border-bottom: 1px solid var(--color-border); /* divider line */
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
-}
-
-/* Edit and Delete functionality styles */
-.transaction-actions {
-  display: flex;
-  gap: 8px; /* Increase gap for better spacing */
-  margin-top: 4px;
-  align-items: center;
-  justify-content: flex-end; /* Align buttons to the right */
-}
-
-/* Make the action buttons more compact */
-.action-btn,
-.delete-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--edu-purple); /* Make all buttons purple by default */
-}
-
-.action-btn:hover,
-.delete-btn:hover {
-  color: var(--edu-orange); /* Turn orange on hover */
-  transform: translateY(-1px); /* Add subtle lift effect on hover */
 }
 
 /* Delete confirmation */
