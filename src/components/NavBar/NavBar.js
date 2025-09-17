@@ -30,14 +30,14 @@ const NavBar = () => {
   const logoutWithRedirect = () =>
     logout({ logoutParams: { returnTo: window.location.origin } })
 
-  const renderNavLink = (to, label) => (
+  const renderNavLink = (to, label, extraClass = "") => (
     <NavItem>
       <NavLink
         tag={RouterNavLink}
         to={to}
         exact
         activeClassName="active-link"
-        className="nav-link"
+        className={`nav-link ${extraClass}`}
       >
         {label}
       </NavLink>
@@ -58,7 +58,7 @@ const NavBar = () => {
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav navbar className="nav-links">
-              {renderNavLink("/", "Home")}
+              {renderNavLink("/", "Home", !isAuthenticated ? "home-logged-out" : "")}
 
               {isAuthenticated && (
                 <>
