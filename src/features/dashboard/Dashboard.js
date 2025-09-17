@@ -43,7 +43,7 @@ const Dashboard = () => {
   // Maximum number of goals to display
   const MAX_GOALS = 5
   // Maximum number of transactions to display
-  const MAX_TRANSACTIONS = 7
+  const MAX_TRANSACTIONS = 5
   // State for active chart tab
   const [activeChartTab, setActiveChartTab] = useState("daily")
 
@@ -95,7 +95,7 @@ const Dashboard = () => {
   // Update the useEffect hook to fetch transactions from localStorage
   useEffect(() => {
     // Get the first 3 FAQ items
-    setFaqs(faqItems.slice(0, 4))
+    setFaqs(faqItems.slice(0, 3))
 
     // Fetch transactions from localStorage
     const fetchTransactions = () => {
@@ -361,13 +361,13 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard-actions">
-          <button className="btn-outline" onClick={() => history.push("/income")}>
+          <button className="btn-primary" onClick={() => history.push("/income")}>
             <DollarSign className="btn-icon" />
             Add Income
           </button>
           <button className="btn-primary" onClick={() => history.push("/expenses")}>
             <CreditCard className="btn-icon" />
-            Add Expense
+            {" "}Add Expense
           </button>
         </div>
       </div>
@@ -494,29 +494,33 @@ const Dashboard = () => {
               <div className="goals-container">
                 {savingGoals && savingGoals.length > 0 ? (
                   <>
-                    {savingGoals.map((goal) => (
-                      <div key={goal.id} className="goal">
-                        <div className="goal-header">
-                          <div className="goal-name">{goal.name}</div>
-                          <div className="goal-percent">
-                            {Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100)}%
+                    <div className="goals-content">
+                      {savingGoals.map((goal) => (
+                        <div key={goal.id} className="goal">
+                          <div className="goal-header">
+                            <div className="goal-name">{goal.name}</div>
+                            <div className="goal-percent">
+                              {Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100)}%
+                            </div>
+                          </div>
+                          <div className="progress-bar">
+                            <div
+                              className="progress-fill"
+                              style={{
+                                width: `${Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100)}%`,
+                              }}
+                            ></div>
                           </div>
                         </div>
-                        <div className="progress-bar">
-                          <div
-                            className="progress-fill"
-                            style={{
-                              width: `${Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100)}%`,
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
 
-                    <button className="btn-outline btn-sm full-width" onClick={() => history.push("/saving-goals")}>
-                      View All Goals
-                      <ArrowRight className="btn-icon-sm" />
-                    </button>
+                    <div className="button-row">
+                      <button className="btn-outline btn-sm" onClick={() => history.push("/saving-goals")}>
+                        View All Goals
+                        <ArrowRight className="btn-icon-sm" />
+                      </button>
+                    </div>
                   </>
                 ) : (
                   <div className="empty-state-wrapper">
@@ -542,37 +546,39 @@ const Dashboard = () => {
           <div className="goals-container">
             {transactions && transactions.length > 0 ? (
               <>
-                <div className="transactions-list">
-                  {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
-                    <div
-                      key={`${transaction.type}-${transaction.id}`}
-                      className={transaction.type === "income" ? "income-item" : "expense-item"}
-                    >
-                      <div className={transaction.type === "income" ? "income-info" : "expense-info"}>
-                        <div className={transaction.type === "income" ? "income-icon" : "expense-icon"}>
-                          {getCategoryIcon(transaction.category, transaction.type)}
-                        </div>
-                        <div>
-                          <div className={transaction.type === "income" ? "income-category" : "expense-category"}>
-                            {transaction.category}
+                <div className="goals-content">
+                  <div className="transactions-list">
+                    {transactions.slice(0, MAX_TRANSACTIONS).map((transaction) => (
+                      <div
+                        key={`${transaction.type}-${transaction.id}`}
+                        className={transaction.type === "income" ? "income-item" : "expense-item"}
+                      >
+                        <div className={transaction.type === "income" ? "income-info" : "expense-info"}>
+                          <div className={transaction.type === "income" ? "income-icon" : "expense-icon"}>
+                            {getCategoryIcon(transaction.category, transaction.type)}
                           </div>
-                          <div className={transaction.type === "income" ? "income-description" : "expense-description"}>
-                            {transaction.description}
+                          <div>
+                            <div className={transaction.type === "income" ? "income-category" : "expense-category"}>
+                              {transaction.category}
+                            </div>
+                            <div className={transaction.type === "income" ? "income-description" : "expense-description"}>
+                              {transaction.description}
+                            </div>
+                          </div>
+                        </div>
+                        <div className={transaction.type === "income" ? "income-details" : "expense-details"}>
+                          <div className={transaction.type === "income" ? "income-amount" : "expense-amount"}>
+                            {transaction.type === "income"
+                              ? `$${transaction.value.toFixed(2)}`
+                              : `-$${transaction.value.toFixed(2)}`}
+                          </div>
+                          <div className={transaction.type === "income" ? "income-date" : "expense-date"}>
+                            {formatDate(transaction.date)}
                           </div>
                         </div>
                       </div>
-                      <div className={transaction.type === "income" ? "income-details" : "expense-details"}>
-                        <div className={transaction.type === "income" ? "income-amount" : "expense-amount"}>
-                          {transaction.type === "income"
-                            ? `$${transaction.value.toFixed(2)}`
-                            : `-$${transaction.value.toFixed(2)}`}
-                        </div>
-                        <div className={transaction.type === "income" ? "income-date" : "expense-date"}>
-                          {formatDate(transaction.date)}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
                 <div className="button-row">
@@ -601,20 +607,24 @@ const Dashboard = () => {
         <div className="chart-card">
           <div className="card-header">
             <h3 className="card-title">FAQ</h3>
-            <p className="card-description">A set of frequently asked questions and answers</p>
+            <p className="card-description">Frequently asked questions and answers</p>
           </div>
           <div className="goals-container">
-            {faqs.map((faq, index) => (
-              <div key={index} className="faq">
-                <h4 className="faq-title">{faq.question}</h4>
-                <p className="faq-description">{faq.answer}</p>
-              </div>
-            ))}
+            <div className="goals-content">
+              {faqs.map((faq, index) => (
+                <div key={index} className="faq">
+                  <h4 className="faq-title">{faq.question}</h4>
+                  <p className="faq-description">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
 
-            <button className="btn-outline btn-sm full-width" onClick={() => history.push("/faq")}>
-              View All FAQs
-              <ArrowRight className="btn-icon-sm" />
-            </button>
+            <div className="button-row">
+              <button className="btn-outline btn-sm" onClick={() => history.push("/faq")}>
+                View All FAQs
+                <ArrowRight className="btn-icon-sm" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
