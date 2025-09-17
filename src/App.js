@@ -23,8 +23,6 @@ import FinancialOverview from "./features/financialOverview/FinancialOverview"
 import Profile from "./features/profile/Profile"
 
 import "./App.css"
-import "./features/finances/Finances.css"
-import "./features/savingGoal/SavingGoal.css"
 
 // Note: The application uses Afacad Flux as the primary font for body text
 // and Barlow Condensed as the secondary font for headings and titles
