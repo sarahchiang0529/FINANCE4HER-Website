@@ -91,6 +91,14 @@ const DailyCashflowChart = ({ transactions }) => {
         padding: 8,
         boxPadding: 4,
         usePointStyle: true,
+        titleFont: {
+          family: primaryFont,
+          size: 12,
+        },
+        bodyFont: {
+          family: primaryFont,
+          size: 11,
+        },
         callbacks: {
           label: (context) => {
             let label = context.dataset.label || ""
@@ -115,6 +123,7 @@ const DailyCashflowChart = ({ transactions }) => {
           text: "Day of Month",
           color: "#666",
           font: {
+            family: primaryFont,
             size: 11,
             weight: "normal",
           },
@@ -130,6 +139,7 @@ const DailyCashflowChart = ({ transactions }) => {
         ticks: {
           color: "#666",
           font: {
+            family: primaryFont,
             size: 10,
           },
           maxRotation: 0,
@@ -148,6 +158,7 @@ const DailyCashflowChart = ({ transactions }) => {
           text: "Amount ($)",
           color: "#666",
           font: {
+            family: primaryFont,
             size: 11,
             weight: "normal",
           },
@@ -160,6 +171,7 @@ const DailyCashflowChart = ({ transactions }) => {
         ticks: {
           color: "#666",
           font: {
+            family: primaryFont,
             size: 10,
           },
           callback: (value) => {

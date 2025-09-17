@@ -1,6 +1,12 @@
 import { useMemo } from "react"
 import { Bar } from "react-chartjs-2"
 import "./MonthlyComparisonChart.css"
+import { Chart as ChartJS } from "chart.js"
+
+// Pull in the primary font from your CSS variables
+const rootStyles = getComputedStyle(document.documentElement)
+const primaryFont = rootStyles.getPropertyValue("--font-primary").trim()
+ChartJS.defaults.font.family = primaryFont
 
 const MonthlyComparisonChart = ({ transactions }) => {
   // Get monthly data for the current year
@@ -70,6 +76,14 @@ const MonthlyComparisonChart = ({ transactions }) => {
         padding: 8,
         boxPadding: 4,
         usePointStyle: true,
+        titleFont: {
+          family: primaryFont,
+          size: 12,
+        },
+        bodyFont: {
+          family: primaryFont,
+          size: 11,
+        },
         callbacks: {
           label: (context) => {
             let label = context.dataset.label || ""
@@ -94,6 +108,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
           text: "Month",
           color: "#666",
           font: {
+            family: primaryFont,
             size: 11,
             weight: "normal",
           },
@@ -109,6 +124,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
         ticks: {
           color: "#666",
           font: {
+            family: primaryFont,
             size: 10,
           },
           maxRotation: 0,
@@ -122,6 +138,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
           text: "Amount ($)",
           color: "#666",
           font: {
+            family: primaryFont,
             size: 11,
             weight: "normal",
           },
@@ -134,6 +151,7 @@ const MonthlyComparisonChart = ({ transactions }) => {
         ticks: {
           color: "#666",
           font: {
+            family: primaryFont,
             size: 10,
           },
           callback: (value) => {
