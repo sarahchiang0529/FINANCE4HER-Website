@@ -7,6 +7,9 @@ const MonthlyChartComponent = ({ month, data }) => {
   const chartRef = useRef(null)
   const chartInstance = useRef(null)
 
+  // Use Funnel Display font to match the rest of the page
+  const primaryFont = "Funnel Display"
+
   // Function to generate a unique plugin ID
   const generatePluginId = (prefix) => {
     return `${prefix}_${Math.random().toString(36).substring(2, 15)}`
@@ -84,8 +87,8 @@ const MonthlyChartComponent = ({ month, data }) => {
           const ctx = chart.ctx
 
           ctx.restore()
-          const fontSize = (height / 114).toFixed(2)
-          ctx.font = `${fontSize}em sans-serif`
+          const fontSize = (height / 80).toFixed(2)
+          ctx.font = `bold ${fontSize}em ${primaryFont}, sans-serif`
           ctx.textBaseline = "middle"
           ctx.textAlign = "center"
           ctx.fillStyle = "#36454F" // Charcoal color

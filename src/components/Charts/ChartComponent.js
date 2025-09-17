@@ -6,6 +6,9 @@ const ChartComponent = ({ data, chartType = "pie", options = {}, plugins = [], i
   const chartInstance = useRef(null)
   const [chartHeight, setChartHeight] = useState("400px")
 
+  // Use Funnel Display font to match the rest of the page
+  const primaryFont = "Funnel Display"
+
   useEffect(() => {
     // Function to render the chart
     const renderChart = () => {
@@ -77,17 +80,17 @@ const ChartComponent = ({ data, chartType = "pie", options = {}, plugins = [], i
           ctx.restore()
 
           // Draw "Total Income/Expense" text
-          ctx.font = "bold 14px Arial"
+          ctx.font = `bold 18px ${primaryFont}, sans-serif`
           ctx.textBaseline = "middle"
           ctx.textAlign = "center"
-          ctx.fillStyle = "#333"
+          ctx.fillStyle = "#333" // Changed to dark grey
 
           const text = isIncome ? "Total Income" : "Total Expense"
           ctx.fillText(text, width / 2, height / 2 - 10)
 
           // Draw total amount
-          ctx.font = "bold 24px Arial" // Increased from 16px to 24px
-          ctx.fillStyle = "#000"
+          ctx.font = `bold 28px ${primaryFont}, sans-serif`
+          ctx.fillStyle = "#333" // Changed to dark grey
           ctx.fillText(`$${total.toFixed(2)}`, width / 2, height / 2 + 20)
 
           ctx.save()
@@ -101,12 +104,7 @@ const ChartComponent = ({ data, chartType = "pie", options = {}, plugins = [], i
         cutout: "60%", // Add cutout percentage for doughnut chart
         plugins: {
           legend: {
-            display: true,
-            position: "top",
-            labels: {
-              usePointStyle: true, // Use circles instead of rectangles
-              pointStyle: "circle",
-            },
+            display: false, // Hide the legend
           },
           title: {
             display: false,
