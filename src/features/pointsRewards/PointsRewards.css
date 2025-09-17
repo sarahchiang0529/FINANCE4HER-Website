@@ -159,37 +159,7 @@
 .score-description { font-size: 14px; color: var(--color-text-light); margin: 0; }
 .score-operator    { font-size: 24px; font-weight: 700; color: var(--color-text-light); display: flex; align-items: center; }
 
-/* Tabs (INDIGO) */
-.tabs {
-  display: flex;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 24px;
-}
-
-.tab {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--color-text-light);
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: relative;
-}
-
-.tab:hover { color: var(--brand-indigo); }
-
-.tab.active {
-  color: var(--brand-indigo);
-}
-
-.tab.active::after {
-  content: "";
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 2px;
-  background: var(--brand-indigo);
-}
+/* Tabs container - inherits from global App.css */
 
 /* Rewards Grid */
 .rewards-grid {

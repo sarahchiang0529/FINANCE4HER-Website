@@ -113,7 +113,7 @@ function PointsRewards() {
       )}
 
       <div className="page-header">
-        <h1 className="page-title">Rewards & Points</h1>
+        <h1 className="page-title">Points & Rewards</h1>
         <p className="page-subtitle">Track your financial health score and earn rewards for good financial habits</p>
       </div>
 
