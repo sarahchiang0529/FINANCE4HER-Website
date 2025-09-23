@@ -141,7 +141,10 @@
 .dashboard-container .wide { grid-column: 1 / -1; }
 @media (min-width: 768px) { .dashboard-container .wide { grid-column: auto; } }
 
-.dashboard-container .card-header { margin-bottom: 16px; }
+.dashboard-container .card-header { margin-bottom: 24px; }
+
+/* Adjust chart card header specifically for better balance */
+.dashboard-container .chart-card .card-header { margin-bottom: 20px; }
 
 .dashboard-container .card-title {
   font-size: 24px;
@@ -309,15 +312,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 16px;
+  padding: 18px;
   border-bottom: 1px solid var(--color-border-light);
 }
 
 /* First-child padding */
 .dashboard-container .transactions-list .expense-item:first-child,
-.dashboard-container .income-list .income-item:first-child,
+.dashboard-container .transactions-list .income-item:first-child,
 .dashboard-container .transactions-list .transaction:first-child {
-  padding-top: 0;
+  padding-top: 8px;
 }
 
 /* Remove last border & keep bottom space */

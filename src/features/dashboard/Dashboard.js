@@ -26,8 +26,7 @@ import {
 } from "chart.js"
 
 // Add these imports after the other imports
-import DailyCashflowChart from "../dashboard/charts/DailyCashflowChart/DailyCashflowChart"
-import MonthlyComparisonChart from "../dashboard/charts/MonthlyComparisonChart/MonthlyComparisonChart"
+import UnifiedChart from "../../components/Charts/UnifiedChart"
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
@@ -452,7 +451,7 @@ const Dashboard = () => {
 
               {/* Month/Year selector inside the card */}
               {activeChartTab === "daily" ? (
-                <div className="month-selector">
+                <div className="month-selector-simple">
                   <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
                     <ChevronDown size={20} />
                   </button>
@@ -462,7 +461,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="month-selector">
+                <div className="month-selector-simple">
                   <button className="month-nav-button" onClick={() => handleYearChange("prev")}>
                     <ChevronDown size={20} />
                   </button>
@@ -477,9 +476,19 @@ const Dashboard = () => {
               <div className="chart-container" style={{ height: "350px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                 <div style={{ width: "100%", maxWidth: "100%", display: "flex", justifyContent: "center", marginTop: "16px"}}>
                   {activeChartTab === "daily" ? (
-                    <DailyCashflowChart transactions={filteredTransactions} />
+                    <UnifiedChart 
+                      chartType="line"
+                      transactions={filteredTransactions}
+                      timeframe="daily"
+                      selectedMonth={selectedMonth}
+                    />
                   ) : (
-                    <MonthlyComparisonChart transactions={filteredTransactionsByYear} />
+                    <UnifiedChart 
+                      chartType="bar"
+                      transactions={filteredTransactionsByYear}
+                      timeframe="monthly"
+                      selectedYear={selectedYear}
+                    />
                   )}
                 </div>
               </div>

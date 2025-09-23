@@ -1,61 +1,63 @@
-.monthly-comparison-container {
+.unified-chart-container {
   width: 100%;
   height: 300px;
   position: relative;
   margin: 0;
   padding: 0;
   background-color: transparent;
+  font-family: inherit;
 }
 
-.monthly-comparison-wrapper {
+.unified-chart-wrapper {
   height: 100%;
   width: 100%;
   padding: 0;
   box-sizing: border-box;
   position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
-.monthly-comparison-legend {
+.unified-chart-legend {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
-  position: absolute;
-  top: 10px;
-  left: 0;
-  right: 0;
-  font-size: 10px;
-  margin: 0;
+  margin-bottom: 16px;
+  font-size: 12px;
   background-color: transparent;
+  font-family: "Funnel Display", sans-serif;
+  font-weight: 500;
+  position: relative;
+  color: #666;
 }
 
-.monthly-legend-item {
+.unified-legend-item {
   display: flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   color: #666;
-  font-family: var(--font-primary);
+  font-family: "Funnel Display", sans-serif;
+  font-weight: 500;
 }
 
-.monthly-legend-color {
+.unified-legend-color {
   display: inline-block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-right: 4px;
+  margin-right: 6px;
 }
 
-.monthly-income-color {
+.income-color {
   background-color: rgba(46, 204, 113, 1);
 }
 
-.monthly-expense-color {
+.expense-color {
   background-color: rgba(231, 76, 60, 1);
 }
 
-.monthly-comparison-no-data {
+.unified-chart-no-data {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -66,14 +68,12 @@
 }
 
 /* Remove the default Chart.js legend */
-.daily-chart-container canvas + div {
+.unified-chart-container canvas + div {
   display: none !important;
 }
 
 @media (max-width: 768px) {
-  .monthly-comparison-legend {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+  .unified-chart-legend {
+    gap: 15px;
   }
 }
