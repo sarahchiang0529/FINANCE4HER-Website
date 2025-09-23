@@ -64,7 +64,7 @@ function FinancialOverview() {
       </div>
       
       <div className="summary-cards">
-        <div className="summary-card">
+        <div className="card">
           <div className="summary-content">
             <div className="summary-icon-wrapper income-icon">
               <div className="summary-icon">💰</div>
@@ -75,7 +75,7 @@ function FinancialOverview() {
           </div>
         </div>
         
-        <div className="summary-card">
+        <div className="card">
           <div className="summary-content">
             <div className="summary-icon-wrapper expense-icon">
               <div className="summary-icon">💸</div>
@@ -86,7 +86,7 @@ function FinancialOverview() {
           </div>
         </div>
         
-        <div className="summary-card">
+        <div className="card">
           <div className="summary-content">
             <div className={`summary-icon-wrapper ${balance >= 0 ? 'positive-icon' : 'negative-icon'}`}>
               <div className="summary-icon">{balance >= 0 ? '✅' : '⚠️'}</div>

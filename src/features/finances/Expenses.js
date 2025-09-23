@@ -469,7 +469,7 @@ function Expenses() {
           
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
             {/* Total Expense Card */}
-            <div className="summary-card" style={{ flex: "1 1 0" }}>
+            <div className="card" style={{ flex: "1 1 0" }}>
               <div className="summary-content">
                 <div className="summary-icon-wrapper total-icon">
                   <div className="summary-icon">💸</div>
@@ -481,7 +481,7 @@ function Expenses() {
 
             {/* Category Summary Cards - One card for each predefined category */}
             {["Food", "Transport", "Entertainment", "Shopping", "Utilities"].map((category) => (
-              <div className="summary-card" key={category} style={{ flex: "1 1 0" }}>
+              <div className="card" key={category} style={{ flex: "1 1 0" }}>
                 <div className="summary-content">
                   <div className={`summary-icon-wrapper ${category.toLowerCase().replace(" ", "-")}-icon`}>
                     <div className="summary-icon">{getCategoryIcon(category)}</div>
@@ -643,7 +643,7 @@ function Expenses() {
                               return (
                                 <div
                                   key={index}
-                                  className="month-chart-card single-month"
+                                  className="expense-data-card single-month"
                                   onClick={() => handleMonthSelect(summary)}
                                 >
                                   <div className="month-chart">
@@ -666,7 +666,7 @@ function Expenses() {
                                 return (
                                   <div
                                     key={index}
-                                    className="month-chart-card"
+                                    className="expense-data-card"
                                     onClick={() => handleMonthSelect(summary)}
                                   >
                                     <div className="month-chart">

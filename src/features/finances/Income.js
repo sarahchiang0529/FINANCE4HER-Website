@@ -418,7 +418,7 @@ function Income() {
           )}
           
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
-            <div className="summary-card" style={{ flex: "1 1 0" }}>
+            <div className="card" style={{ flex: "1 1 0" }}>
               <div className="summary-content">
                 <div className="summary-icon-wrapper total-icon">
                   <div className="summary-icon">💰</div>
@@ -429,7 +429,7 @@ function Income() {
             </div>
 
             {["Salary", "Investments", "Government Benefit", "Other"].map((category) => (
-              <div className="summary-card" key={category} style={{ flex: "1 1 0" }}>
+              <div className="card" key={category} style={{ flex: "1 1 0" }}>
                 <div className="summary-content">
                   <div className={`summary-icon-wrapper ${category.toLowerCase().replace(" ", "-")}-icon`}>
                     <div className="summary-icon">{getCategoryIcon(category)}</div>
@@ -573,7 +573,7 @@ function Income() {
                             {yearSummaries.map((summary, i) => {
                               const monthData = Object.entries(summary.categories).map(([category, value]) => ({ category, value }))
                               return (
-                                <div key={i} className="month-chart-card single-month" onClick={() => handleMonthSelect(summary)}>
+                                <div key={i} className="income-data-card single-month" onClick={() => handleMonthSelect(summary)}>
                                   <div className="month-chart">
                                     <MonthlyChartComponent month={summary.month} data={monthData} isIncome={true} />
                                   </div>
@@ -587,7 +587,7 @@ function Income() {
                             {yearSummaries.sort((a, b) => a.month - b.month).map((summary, i) => {
                               const monthData = Object.entries(summary.categories).map(([category, value]) => ({ category, value }))
                               return (
-                                <div key={i} className="month-chart-card" onClick={() => handleMonthSelect(summary)}>
+                                <div key={i} className="income-data-card" onClick={() => handleMonthSelect(summary)}>
                                   <div className="month-chart">
                                     <MonthlyChartComponent month={summary.month} data={monthData} isIncome={true} />
                                   </div>
