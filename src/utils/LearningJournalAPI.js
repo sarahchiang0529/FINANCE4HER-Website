@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3001/api/learning-journal';
+const API_BASE_URL = 'http://localhost:4000/api/learning-journal';
 
 // Fetch all journal questions
 export async function fetchJournalQuestions() {

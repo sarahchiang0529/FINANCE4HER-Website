@@ -22,7 +22,7 @@ const CATEGORY_ICONS = {
 // --- tiny fetch helper ---
 //const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""
 const BASE_URL = "http://localhost:4000"
-console.log("hello: ",BASE_URL)
+
 async function api(path, { method = "GET", body, token } = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
