@@ -159,29 +159,27 @@ router.delete('/:userId/savings-goals/:id', async (req, res) => {
  * Your UI uses { amount (string), category (string), date, description } and stores numeric under "value" later,
  * so we accept amount/value and category or category_id and adapt for DB. 
  */
-router.get("/:userId/incomes", async (req, res) => {
-  const { userId } = req.params;
+router.post("/:userId/incomes", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { amount, category_id, date, description } = req.body;
 
-  const { data, error } = await req.supabase
-    .from("income")
-    .select("id, user_id, amount, date, description, category_id, categories(name)")
-    .eq("user_id", userId)
-    .order("date", { ascending: false });
+    const amt = Number.parseFloat(amount);
+    if (!amt || !date || !description || !category_id) {
+      return res.status(400).json({ error: "amount, category_id, date, description are required" });
+    }
 
-  if (error) return res.status(500).json({ error: error.message });
+    const { data, error } = await req.supabase
+      .from("income")
+      .insert([{ user_id: userId, amount: amt, category_id, date, description }])
+      .select("*")
+      .single();
 
-  // Optional: flatten shape so FE can read .category directly
-  const rows = (data || []).map((r) => ({
-    id: r.id,
-    user_id: r.user_id,
-    amount: r.amount,
-    date: r.date,
-    description: r.description,
-    category_id: r.category_id,
-    category: r.categories?.name ?? "(Unknown)",
-  }));
-
-  res.json(rows);
+    if (error) return res.status(500).json({ error: error.message });
+    res.status(201).json(data);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 router.post("/:userId/incomes", async (req, res) => {

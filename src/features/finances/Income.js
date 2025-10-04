@@ -61,7 +61,7 @@ function Income() {
   const [newIncome, setNewIncome] = useState({
     amount: "",
     description: "",
-    category: "",
+    category_id: "", // Changed from category
     date: "",
   })
 
@@ -167,19 +167,14 @@ function Income() {
   }, [])
 
   const handleAddIncome = useCallback(async () => {
-    const { amount, description, category, date } = newIncome
+    const { amount, description, category_id, date } = newIncome
     const numericAmount = Number.parseFloat(amount)
-    if (!amount || Number.isNaN(numericAmount) || !category || !date || !description) {
+    if (!amount || Number.isNaN(numericAmount) || !category_id || !date || !description) {
       alert("Please fill in all required fields.")
       return
     }
     try {
       const token = await getAccessTokenSilently()
-      const category_id = labelToCategoryId[category]
-      if (!category_id) {
-        alert("Unknown category. Pick one from the list.")
-        return
-      }
       const created = await api(`/api/users/${user.sub}/incomes`, {
         method: "POST",
         token,
@@ -188,28 +183,32 @@ function Income() {
       const uiRow = {
         id: created.id,
         categoryId: created.category_id,
-        category,
+        category: categoryIdToLabel[String(created.category_id)],
         value: Number(created.amount),
         description: created.description,
         date: created.date,
       }
       setIncome(prev => [uiRow, ...prev])
-      setNewIncome({ amount: "", description: "", category: "", date: "" })
+      setNewIncome({ amount: "", description: "", category_id: "", date: "" })
     } catch (e) {
       console.error(e)
       alert(e.message || "Failed to add income")
     }
-  }, [newIncome, user, getAccessTokenSilently, labelToCategoryId])
+  }, [newIncome, user, getAccessTokenSilently, categoryIdToLabel])
 
   const startEditIncome = (entry) => {
-    setEditingIncome({ ...entry, amount: entry.value.toString() })
+    setEditingIncome({ 
+      ...entry, 
+      amount: entry.value.toString(),
+      categoryId: entry.categoryId // Make sure this is included
+    })
     setShowDeleteConfirm(null)
   }
   const cancelEditIncome = () => setEditingIncome(null)
 
   const saveEditIncome = useCallback(async () => {
     if (!editingIncome) return
-    if (!editingIncome.category || !editingIncome.amount || !editingIncome.date || !editingIncome.description) {
+    if (!editingIncome.categoryId || !editingIncome.amount || !editingIncome.date || !editingIncome.description) {
       alert("Please fill in all required fields.")
       return
     }
@@ -220,13 +219,12 @@ function Income() {
     }
     try {
       const token = await getAccessTokenSilently()
-      const category_id = labelToCategoryId[editingIncome.category]
       const updated = await api(`/api/users/${user.sub}/incomes/${editingIncome.id}`, {
         method: "PUT",
         token,
         body: {
           amount: numericAmount,
-          category_id,
+          category_id: editingIncome.categoryId,
           date: editingIncome.date,
           description: editingIncome.description,
         },
@@ -237,7 +235,7 @@ function Income() {
             ? {
                 id: updated.id,
                 categoryId: updated.category_id,
-                category: categoryIdToLabel[String(updated.category_id)] || editingIncome.category,
+                category: categoryIdToLabel[String(updated.category_id)],
                 value: Number(updated.amount),
                 description: updated.description,
                 date: updated.date,
@@ -250,7 +248,7 @@ function Income() {
       console.error(e)
       alert(e.message || "Failed to update")
     }
-  }, [editingIncome, user, getAccessTokenSilently, labelToCategoryId, categoryIdToLabel])
+  }, [editingIncome, user, getAccessTokenSilently, categoryIdToLabel])
 
   const confirmDeleteIncome = (id) => setShowDeleteConfirm(id)
   const cancelDeleteIncome = () => setShowDeleteConfirm(null)
@@ -329,13 +327,21 @@ function Income() {
               </div>
 
               <div className="input-field">
-                <label htmlFor="category">Category</label>
-                <select id="category" name="category" value={newIncome.category} onChange={handleInputChange} required>
+                <label htmlFor="category_id">Category</label>
+                <select 
+                  id="category_id" 
+                  name="category_id" 
+                  value={newIncome.category_id} 
+                  onChange={handleInputChange} 
+                  required
+                >
                   <option value="" disabled>Select</option>
-                  {/* Render from categories so it matches DB */}
-                  {["Salary","Government Benefit","Investments","Other"].map((label) => (
-                    <option key={label} value={label}>{label}</option>
-                  ))}
+                  {categories
+                    .filter(cat => ["Salary", "Government Benefit", "Investments", "Other"].includes(cat.name))
+                    .map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))
+                  }
                 </select>
               </div>
 
@@ -478,54 +484,56 @@ function Income() {
                         </div>
                       ) : editingIncome && editingIncome.id === entry.id ? (
                         <div className="edit-transaction-form">
-                          <div className="edit-form-row">
-                            <div className="edit-field">
-                              <label>Category</label>
-                              <select
-                                value={editingIncome.category}
-                                onChange={(e) => setEditingIncome({ ...editingIncome, category: e.target.value })}
-                              >
-                                <option value="Salary">Salary</option>
-                                <option value="Government Benefit">Government Benefit</option>
-                                <option value="Investments">Investments</option>
-                                <option value="Other">Other</option>
-                              </select>
-                            </div>
-                            <div className="edit-field">
-                              <label>Amount</label>
-                              <div className="input-with-icon">
-                                <div className="input-icon">$</div>
-                                <input
-                                  type="text"
-                                  value={editingIncome.amount}
-                                  onChange={(e) => setEditingIncome({ ...editingIncome, amount: e.target.value })}
-                                />
-                              </div>
-                            </div>
+                        <div className="edit-form-row">
+                          <div className="edit-field">
+                            <label>Category</label>
+                            <select
+                              value={editingIncome.categoryId}
+                              onChange={(e) => setEditingIncome({ ...editingIncome, categoryId: e.target.value })}
+                            >
+                              {categories
+                                .filter(cat => ["Salary", "Government Benefit", "Investments", "Other"].includes(cat.name))
+                                .map((cat) => (
+                                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                ))
+                              }
+                            </select>
                           </div>
-                          <div className="edit-form-row">
-                            <div className="edit-field">
-                              <label>Description</label>
+                          <div className="edit-field">
+                            <label>Amount</label>
+                            <div className="input-with-icon">
+                              <div className="input-icon">$</div>
                               <input
                                 type="text"
-                                value={editingIncome.description}
-                                onChange={(e) => setEditingIncome({ ...editingIncome, description: e.target.value })}
+                                value={editingIncome.amount}
+                                onChange={(e) => setEditingIncome({ ...editingIncome, amount: e.target.value })}
                               />
                             </div>
-                            <div className="edit-field">
-                              <label>Date</label>
-                              <input
-                                type="date"
-                                value={editingIncome.date}
-                                onChange={(e) => setEditingIncome({ ...editingIncome, date: e.target.value })}
-                              />
-                            </div>
-                          </div>
-                          <div className="edit-actions">
-                            <button className="cancel-btn" onClick={cancelEditIncome}>Cancel</button>
-                            <button className="btn-primary" onClick={saveEditIncome}>Save</button>
                           </div>
                         </div>
+                        <div className="edit-form-row">
+                          <div className="edit-field">
+                            <label>Description</label>
+                            <input
+                              type="text"
+                              value={editingIncome.description}
+                              onChange={(e) => setEditingIncome({ ...editingIncome, description: e.target.value })}
+                            />
+                          </div>
+                          <div className="edit-field">
+                            <label>Date</label>
+                            <input
+                              type="date"
+                              value={editingIncome.date}
+                              onChange={(e) => setEditingIncome({ ...editingIncome, date: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                        <div className="edit-actions">
+                          <button className="cancel-btn" onClick={cancelEditIncome}>Cancel</button>
+                          <button className="btn-primary" onClick={saveEditIncome}>Save</button>
+                        </div>
+                      </div>
                       ) : (
                         <>
                           <div className="income-info">
