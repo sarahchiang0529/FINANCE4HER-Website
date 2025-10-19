@@ -460,7 +460,8 @@ function Income() {
                   </div>
                 ) : (
                   <div className="no-data-message">
-                    <p>No income data for this period. Add transactions to see your income distribution.</p>
+                    <div>No income data for this period.</div>
+                    <div>Add transactions to see your income distribution.</div>
                   </div>
                 )}
               </div>
@@ -472,7 +473,13 @@ function Income() {
                 </div>
 
                 <div className="income-list">
-                  {filteredIncome.map((entry) => (
+                  {filteredIncome.length === 0 ? (
+                    <div className="no-data-message">
+                      <div>No income data for this period.</div>
+                      <div>Add transactions to see your income.</div>
+                    </div>
+                  ) : (
+                    filteredIncome.map((entry) => (
                     <div key={entry.id} className="income-item">
                       {showDeleteConfirm === entry.id ? (
                         <div className="delete-confirm">
@@ -557,8 +564,8 @@ function Income() {
                           </div>
                         </>
                       )}
-                    </div>
-                  ))}
+                     </div>
+                  )))}
                 </div>
               </div>
             </div>

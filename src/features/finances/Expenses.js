@@ -453,7 +453,8 @@ function Expenses() {
                   </div>
                 ) : (
                   <div className="no-data-message">
-                    <p>No expense data for this period. Add transactions to see your expense distribution.</p>
+                    <div>No expense data for this period.</div>
+                    <div>Add transactions to see your expense distribution.</div>
                   </div>
                 )}
               </div>
@@ -465,7 +466,13 @@ function Expenses() {
                 </div>
 
                 <div className="expenses-list">
-                  {filteredExpenses.map((entry) => (
+                  {filteredExpenses.length === 0 ? (
+                    <div className="no-data-message">
+                      <div>No expense data for this period.</div>
+                      <div>Add transactions to see your expenses.</div>
+                    </div>
+                  ) : (
+                    filteredExpenses.map((entry) => (
                     <div key={entry.id} className="expense-item">
                       {showDeleteConfirm === entry.id ? (
                         <div className="delete-confirm">
@@ -551,7 +558,7 @@ function Expenses() {
                         </>
                       )}
                     </div>
-                  ))}
+                  )))}
                 </div>
               </div>
             </div>
