@@ -3,7 +3,7 @@
   height: 80px !important;
   padding: 0 !important;
   background-color: var(--brand-purple);
-  color: var(--brand-beige);
+  color: white;
   display: flex;
   align-items: center;      /* vertical centering */
   justify-content: center;  /* horizontal centering */
