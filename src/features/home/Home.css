@@ -3,7 +3,6 @@
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 60px 0;
-  background: var(--brand-offwhite);
 }
 
 .hero-section {
@@ -141,7 +140,7 @@
 }
 
 .feature-card {
-  color: white;
+    background: var(--color-bg);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -155,22 +154,22 @@
 
 .feature-card:nth-child(1) .feature-icon {
   background: var(--brand-pink);
-  color: var(--brand-offwhite);
+  color: var(--color-bg);
 }
 
 .feature-card:nth-child(2) .feature-icon {
   background: #d59b93;
-  color: var(--brand-offwhite);
+  color: var(--color-bg);
 }
 
 .feature-card:nth-child(3) .feature-icon {
   background: var(--brand-limegreen);
-  color: var(--brand-offwhite);
+  color: var(--color-bg);
 }
 
 .feature-card:nth-child(4) .feature-icon {
   background: var(--brand-lilac);
-  color: var(--brand-offwhite);
+  color: var(--color-bg);
 }
 
 .feature-icon {
