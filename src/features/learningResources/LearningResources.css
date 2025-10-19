@@ -1,145 +1,225 @@
-/* Additional CSS to add to your LearningResources.css file */
+/* === Container & Page Header (match FAQ) === */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
 
-/* Error handling styles */
+.page-header {
+  text-align: center;
+}
+
+/* Card */
+.faq-card {
+  background: var(--color-bg);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+/* Card (like .faq-card) */
+.tab-content {
+  background: var(--color-bg);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--color-border-light);
+}
+
+/* ===== Error banners (kept, tuned to palette) ===== */
 .error-banner {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background-color: #fee2e2;
-  color: #dc2626;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
+  gap: .5rem;
+  background-color: #fde7ee;           /* softer pink to match brand */
+  color: #7a0e4f;
+  padding: .75rem 1rem;
+  border-radius: .5rem;
   margin-bottom: 1rem;
-  border: 1px solid #fecaca;
+  border: 1px solid #f9c8de;
 }
 
 .error-message {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background-color: #fef2f2;
-  color: #dc2626;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
+  gap: .5rem;
+  background-color: #fff1f7;
+  color: #7a0e4f;
+  padding: .5rem;
+  border-radius: .375rem;
   margin-bottom: 1rem;
-  font-size: 0.875rem;
+  font-size: .875rem;
+  border: 1px solid #f9c8de;
 }
 
-/* Accordion header enhancements */
+/* ===== Accordion list (match FAQ list feel) ===== */
+.accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;                            /* same gap as FAQ items */
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Single unified outline per item */
+.accordion-item {
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-bg);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* Header row behavior mirrors .faq-question */
 .accordion-header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 1rem;
-  background-color: transparent;
+  padding: 16px 20px;
+  background: var(--color-bg);
   border: none;
   text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-dark);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
+/* Hover turns light pink (like FAQ) */
 .accordion-header:hover {
-  background-color: #f9fafb;
+  color: #000;
 }
 
-.accordion-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.accordion-item:hover,
+.accordion-item:has(.accordion-header:hover) {
+  border-color: var(--brand-pink);
 }
 
-.answer-indicator {
-  color: #10b981;
-  font-weight: bold;
-  font-size: 1.2rem;
+/* Active/expanded: keep pink and single border */
+.accordion-item.active {
+  border-color: var(--brand-pink);
+}
+.accordion-item.active .accordion-header {
+  background-color: #ffeffb;
+  color: #000;
 }
 
-/* Saved answer display */
+/* Keyboard focus ring on the whole item (not the button) */
+.accordion-header:focus,
+.accordion-header:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+.accordion-item:has(.accordion-header:focus-visible) {
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
+}
+
+/* Title & icon colors to match FAQ */
+.accordion-title {
+  flex: 1;
+  margin-right: 1rem;
+}
+.accordion-header .lucide {
+  color: var(--brand-indigo);
+}
+
+/* Answer area inside same card, subtle divider like FAQ */
+.accordion-content {
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--color-border-light);
+  background-color: var(--color-bg);
+  animation: slideDown .3s ease-out;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Saved answer box – align to FAQ neutrals */
 .saved-answer {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  background-color: var(--brand-offwhite);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
 }
-
 .answer-text {
-  color: #374151;
+  color: var(--color-text-light);
   line-height: 1.6;
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
   white-space: pre-wrap;
 }
 
-.answer-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+/* Checkmark indicator uses brand-pink for consistency */
+.answer-indicator {
+  color: var(--brand-pink);
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-/* Answer editor */
-.answer-editor {
-  margin-top: 0.5rem;
-}
+/* Editor */
+.answer-editor { margin-top: 4px; }
 
 .journal-input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
+  padding: 12px;
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
   font-family: inherit;
-  font-size: 0.875rem;
+  font-size: 14px;
   line-height: 1.5;
   resize: vertical;
   min-height: 100px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--color-bg);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
-
 .journal-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
 }
-
 .journal-input:disabled {
   background-color: #f3f4f6;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: .6;
 }
 
+/* Actions (buttons match FAQ palette) */
+.answer-actions,
 .editor-actions {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: 8px;
   flex-wrap: wrap;
+  margin-top: 8px;
 }
 
-/* Action buttons */
 .action-btn {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 6px;
   border: 1px solid transparent;
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   white-space: nowrap;
 }
-
 .action-btn:disabled {
-  opacity: 0.6;
+  opacity: .6;
   cursor: not-allowed;
 }
 
+/* Brand-aligned button colors */
 .save-btn {
   background-color: var(--brand-lilac);
-  color: white;
+  color: #fff;
   border-color: var(--brand-lilac);
 }
-
 .save-btn:hover:not(:disabled) {
   background-color: #9a73d7;
   border-color: #9a73d7;
@@ -148,22 +228,21 @@
 
 .edit-btn {
   background-color: var(--brand-pink);
-  color: white;
+  color: #000;
   border-color: var(--brand-pink);
 }
-
 .edit-btn:hover:not(:disabled) {
-  background-color: #c93a95;
-  border-color: #c93a95;
+  background-color: var(--brand-indigo);
+  color: #fff;
+  border-color: var(--brand-indigo);
   transform: translateY(-1px);
 }
 
 .delete-btn {
   background-color: #f87171;
-  color: white;
+  color: #fff;
   border-color: #f87171;
 }
-
 .delete-btn:hover:not(:disabled) {
   background-color: #f56565;
   border-color: #f56565;
@@ -171,163 +250,55 @@
 }
 
 .cancel-btn {
-  background-color: var(--brand-indigo);
-  color: var(--brand-offwhite);
-  border-color: var(--brand-indigo);
+  background: #f8f9fa;
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border-light);
 }
-
 .cancel-btn:hover:not(:disabled) {
-  background-color: #0f0b1a;
-  border-color: #0f0b1a;
+  background: var(--brand-indigo);
+  color: #fff;
   transform: translateY(-1px);
 }
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .answer-actions,
-  .editor-actions {
-    flex-direction: column;
-  }
-  
-  .action-btn {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .accordion-header-actions {
-    flex-shrink: 0;
-  }
+/* Focus ring parity for buttons */
+.action-btn:focus,
+.action-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #ffeffb;
 }
-/* Card Grid (2x4 Layout) */
+
+/* Card grid (unchanged, just consistent spacing) */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
-
 @media (max-width: 1024px) {
-  .card-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 640px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
+  .card-grid { grid-template-columns: 1fr; }
 }
 
-/* Individual Card Style */
 .resource-card {
-  background: white;
+  background: #fff;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  transition: transform .2s ease;
+  border: 1px solid var(--color-border-light);
 }
-
-.resource-card:hover {
-  transform: translateY(-4px);
-}
-
+.resource-card:hover { transform: translateY(-4px); }
 .resource-card-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 8px;
+  font-size: 16px; font-weight: 600; color: #000; margin-bottom: 8px;
 }
-
 .resource-card-description {
-  font-size: 14px;
-  color: #666;
+  font-size: 14px; color: #666;
 }
 
-/* Add these styles to your existing LearningResources.css file */
-
-.accordion-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Center the page header */
-.page-header {
-  text-align: center;
-}
-
-.accordion-item {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
-}
-
-.accordion-header {
-  width: 100%;
-  padding: 1.5rem;
-  background: none;
-  border: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #334155;
-  text-align: left;
-}
-
-.accordion-header:hover {
-  background-color: #f8fafc;
-}
-
-.accordion-title {
-  flex: 1;
-  margin-right: 1rem;
-}
-
-.accordion-content {
-  padding: 1.5rem 1.5rem 1.5rem;
-  border-top: 1px solid #e2e8f0;
-  background-color: #fafafa;
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.journal-input {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  resize: vertical;
-  min-height: 100px;
-  background-color: white;
-  transition: border-color 0.2s ease;
-}
-
-.journal-input:focus {
-  outline: none;
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-}
-
-.journal-input::placeholder {
-  color: #94a3b8;
+/* Responsive */
+@media (max-width: 768px) {
+  .tab-content { padding: 20px; }
+  .accordion-container { gap: 12px; }
+  .answer-actions, .editor-actions { flex-direction: column; }
+  .action-btn { width: 100%; justify-content: center; }
 }
