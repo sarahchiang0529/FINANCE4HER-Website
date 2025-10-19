@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   z-index: 1050;
-  background-color: var(--brand-indigo) !important;
+  background-color: var(--brand-pink) !important;
   color: var(--brand-offwhite, #efefef);
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@
 }
 
 .navbar-logo {
-  height: 50px;
+  height: 30px;
   width: auto;
   border-radius: 0 !important; 
   object-fit: contain;
@@ -51,7 +51,7 @@
 }
 
 .nav-link {
-  color: var(--brand-offwhite) !important; 
+  color: white !important; 
   font-family: var(--font-secondary) !important;
   font-size: 0.95rem !important;
   text-decoration: none;
@@ -71,7 +71,7 @@
 
 .nav-link.home-logged-out:hover {
   background: var(--brand-indigo) !important;
-  color: #f8f9fa;
+  color: #ffeffb;
   border: 1px solid #f8f9fa;
 }
 
