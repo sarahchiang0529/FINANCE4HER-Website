@@ -1,4 +1,4 @@
-/* === Container & Page Header (match FAQ) === */
+/* === Container & Page Header === */
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -8,15 +8,16 @@
   text-align: center;
 }
 
-/* Card */
-.faq-card {
+/* === Card wrappers === */
+.faq-card,
+.journal-card {
   background: var(--color-bg);
   border-radius: 12px;
   padding: 32px;
   box-shadow: var(--shadow);
 }
 
-/* Card (like .faq-card) */
+/* Inner content card */
 .tab-content {
   background: var(--color-bg);
   border-radius: 12px;
@@ -25,12 +26,12 @@
   border: 1px solid var(--color-border-light);
 }
 
-/* ===== Error banners (kept, tuned to palette) ===== */
+/* ===== Error banners  ===== */
 .error-banner {
   display: flex;
   align-items: center;
   gap: .5rem;
-  background-color: #fde7ee;           /* softer pink to match brand */
+  background-color: #fde7ee;          
   color: #7a0e4f;
   padding: .75rem 1rem;
   border-radius: .5rem;
@@ -51,13 +52,14 @@
   border: 1px solid #f9c8de;
 }
 
-/* ===== Accordion list (match FAQ list feel) ===== */
+/* ===== Accordion list ===== */
 .accordion-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;                            /* same gap as FAQ items */
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 12px;
+  width: 100%;        
+  max-width: none;    
+  margin: 0;         
 }
 
 /* Single unified outline per item */
@@ -88,6 +90,7 @@
 
 /* Hover turns light pink (like FAQ) */
 .accordion-header:hover {
+  background-color: #ffeffb; /* same hover pink as FAQ */
   color: #000;
 }
 
@@ -103,6 +106,12 @@
 .accordion-item.active .accordion-header {
   background-color: #ffeffb;
   color: #000;
+}
+
+/* Optional: rotate any chevron icon on expand */
+.accordion-item.active .accordion-icon {
+  transform: rotate(180deg);
+  transition: transform var(--transition-base);
 }
 
 /* Keyboard focus ring on the whole item (not the button) */
@@ -122,7 +131,8 @@
   flex: 1;
   margin-right: 1rem;
 }
-.accordion-header .lucide {
+.accordion-header .lucide,
+.accordion-icon {
   color: var(--brand-indigo);
 }
 
@@ -133,6 +143,10 @@
   background-color: var(--color-bg);
   animation: slideDown .3s ease-out;
 }
+.accordion-item.active .accordion-content {
+  border-top: 1px solid var(--brand-pink);
+}
+
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -259,6 +273,7 @@
   color: #fff;
   transform: translateY(-1px);
 }
+
 /* Focus ring parity for buttons */
 .action-btn:focus,
 .action-btn:focus-visible {
@@ -266,7 +281,7 @@
   box-shadow: 0 0 0 3px #ffeffb;
 }
 
-/* Card grid (unchanged, just consistent spacing) */
+/* Card grid (kept, consistent spacing) */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -280,7 +295,7 @@
 }
 
 .resource-card {
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,.05);

@@ -268,19 +268,20 @@ const PersonalJournal = () => {
                         <p className="answer-text">{existingAnswer.answer}</p>
                         <div className="answer-actions">
                           <button
-                            className="action-btn edit-btn"
+                            className="btn-outline btn-sm"
                             onClick={() => handleEditAnswer(questionId)}
                             disabled={isSaving}
                           >
-                            <Edit size={16} />
+                            <Edit size={16} className="btn-icon" />
                             Edit
                           </button>
+
                           <button
-                            className="action-btn delete-btn"
+                            className="btn-danger btn-sm"
                             onClick={() => handleDeleteAnswer(questionId)}
                             disabled={isSaving}
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={16} className="btn-icon" />
                             Delete
                           </button>
                         </div>
@@ -300,16 +301,17 @@ const PersonalJournal = () => {
                         />
                         <div className="editor-actions">
                           <button
-                            className="action-btn save-btn"
+                            className="btn-secondary btn-sm"
                             onClick={() => handleSaveAnswer(questionId)}
                             disabled={isSaving || !editingAnswers[questionId]?.trim()}
                           >
-                            <Save size={16} />
+                            <Save size={16} className="btn-icon" />
                             {isSaving ? "Saving..." : "Save Answer"}
                           </button>
+
                           {existingAnswer && (
                             <button
-                              className="action-btn cancel-btn"
+                              className="btn-cancel btn-sm"
                               onClick={() => cancelEdit(questionId)}
                               disabled={isSaving}
                             >
