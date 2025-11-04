@@ -52,7 +52,7 @@
   border: 1px solid #f9c8de;
 }
 
-/* ===== Accordion list ===== */
+/* ===== Accordion list (match FAQ list feel) ===== */
 .accordion-container {
   display: flex;
   flex-direction: column;
@@ -192,7 +192,7 @@
 }
 .journal-input:focus {
   outline: none;
-  border-color: var(--brand-pink);
+  border-color: var(--brand-lightpink);
   box-shadow: 0 0 0 3px #ffeffb;
 }
 .journal-input:disabled {
