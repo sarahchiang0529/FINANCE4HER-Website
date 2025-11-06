@@ -130,7 +130,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--brand-limegreen);
+  border: 1px solid var(--brand-lightpink);
   background: white;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -138,8 +138,8 @@
 
 .month-nav-button:hover {
   background: var(--color-tab-hover);
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 4px 20px var(--brand-limegreen);  
+  border-color: var(--brand-lightpink);
+  box-shadow: 0 4px 20px var(--brand-lightpink);  
 }
 
 /* Summary header for all-time title */
@@ -669,9 +669,9 @@
 
 /* Edit transaction form */
 .edit-transaction-form {
-  background: var(--brand-offwhite);
+  background: var(--brand-backgroundpink);
   border-radius: 12px;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--brand-lightpink);
   box-shadow: var(--shadow);
   padding: 24px;
 }
@@ -707,8 +707,6 @@
   height: 38px; /* Set a consistent height for all inputs */
   box-sizing: border-box;
 }
-
-/* Replace the existing input-with-icon styles with the ones from App.css */
 
 /* Edit transaction form input with icon */
 .edit-field .input-with-icon {
@@ -842,8 +840,6 @@
 .edit-field .input-with-icon input {
   width: 100%;
 }
-
-/* Also fix the main form input with icon */
 
 /* Make sure all form inputs have consistent height */
 .input-field input,

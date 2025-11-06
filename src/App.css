@@ -10,11 +10,16 @@
 
   /* Official Finance4Her Brand Colors */
   --brand-pink: #df44a6;
+  --brand-brightpink: #e86ab7;
+  --brand-softpink: #f08fcc;
   --brand-lightpink: #fbd8ee;
   --brand-backgroundpink: #ffeffb;
   --brand-limegreen: #ccf281;
   --brand-orange: #e89f56;
   --brand-lilac: #ba92e8;
+  --brand-softlilac: #c6a6ed;
+  --brand-lightlilac: #d5bdf2;
+  --brand-backgroundlilac: #e5d6f7;
   --brand-indigo: #1a162c;
   --brand-offwhite: #efefef;
 
@@ -426,11 +431,11 @@ button:focus-visible {
 }
 
 .edit-btn:hover, .icon-button:first-child:hover {
-  color: var(--brand-limegreen);
+  color: var(--brand-pink);
 }
 
 .delete-btn:hover, .icon-button:last-child:hover {
-  color: var(--brand-pink);
+  color: var(--brand-orange);
 }
 
 .transaction-actions, .goal-actions {
@@ -479,15 +484,23 @@ button:focus-visible {
   padding: var(--space-sm) var(--space-md);
   height: 40px;
   min-width: 160px;
-  background: var(--brand-limegreen);
+  background: var(--brand-backgroundlilac);
+  border: 1px solid var(--brand-softlilac);
+  box-shadow: var(--shadow);
   color: var(--brand-indigo);
-  border: 1px solid transparent;
   border-radius: 6px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
   transition: all var(--transition-base);
-  box-shadow: 0 4px 12px rgba(204, 242, 129, 0.35);
+}
+
+.btn-primary:hover {
+  background: var(--brand-lightlilac);
+  border: 1px solid var(--brand-lilac);
+  box-shadow: var(--shadow);
+  color: var(--brand-indigo);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -506,6 +519,14 @@ button:focus-visible {
   min-width: 160px;
 }
 
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: var(--brand-indigo);
+  border-color: var(--brand-lightpink);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -520,15 +541,6 @@ button:focus-visible {
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 160px;
-}
-
-.btn-primary:hover,
-.btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.75);
-  color: var(--brand-indigo);
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 2px 6px rgba(204, 242, 129, 0.2);
-  transform: translateY(-1px);
 }
 
 .btn-outline:hover {
