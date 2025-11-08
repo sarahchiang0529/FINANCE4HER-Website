@@ -70,27 +70,27 @@
 }
 
 .nav-link.home-logged-out:hover {
-  background: var(--brand-indigo) !important;
+  background: var(--brand-lightlilac) !important;
   color: #ffeffb;
   border: 1px solid #f8f9fa;
 }
 
-/* Hover = slightly darker */
+/* Hover */
 .nav-link:hover {
-  color: #dcdcdc !important;
+  color: var(--brand-lightlilac) !important;
   text-decoration: none;
 }
 
-/* Active click = slightly darker */
+/* Active click */
 .nav-link:active {
-  color: var(--brand-limegreen) !important;
+  color: var(--brand-lilac) !important;
 }
 
 /* Active route or focus */
 .nav-link.active-link,
 .nav-link.active-link:focus,
 .nav-link.active-link:hover {
-  color: var(--brand-limegreen) !important;
+  color: var(--brand-lilac) !important;
   text-decoration: none !important;
 }
 
@@ -122,7 +122,7 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid var(--brand-limegreen);
+  border-top: 5px solid var(--brand-lilac);
   margin-left: 0.4rem;
   align-self: center;
 }
