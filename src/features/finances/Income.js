@@ -7,10 +7,8 @@ import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent
 import EmptyState from "../../components/EmptyState"
 import "./Finances.css"
 
-// Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Category emoji used in UI
 const CATEGORY_ICONS = {
   Salary: "💼",
   "Government Benefit": "🏛️",
@@ -19,10 +17,8 @@ const CATEGORY_ICONS = {
   default: "💰",
 }
 
-// --- tiny fetch helper ---
-//const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""
 const BASE_URL = "http://localhost:4000"
-console.log("hello: ",BASE_URL)
+
 async function api(path, { method = "GET", body, token } = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
@@ -295,21 +291,29 @@ function Income() {
   const hasIncomeData = income.length > 0
 
   // ---------- Render ----------
-  return (
+   return (
     <div className="income-container">
-      {/* Header */}
       <div className="page-header">
         <h1 className="page-title">Income</h1>
         <p className="page-subtitle">Track and manage your income sources</p>
       </div>
 
-      {/* Add Income */}
-      <div className="income-card">
-        <h2 className="form-title">Add Income</h2>
-        <p className="form-subtitle">Record a new income transaction</p>
+    <div className="income-card">
+      <div className="income-card-header">
+        <div>
+          <h2 className="form-title">Add Income</h2>
+          <p className="form-subtitle">Record a new income transaction</p>
+        </div>
+        <button className="btn-primary" onClick={handleAddIncome}>
+          <Plus className="btn-icon" />
+          Add Expense
+        </button>
+      </div>
+      
         <div className="income-form">
           <div className="form-group">
             <div className="input-row">
+              
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
                 <div className="input-with-icon">
@@ -327,17 +331,30 @@ function Income() {
               </div>
 
               <div className="input-field">
+                <label htmlFor="description">Description</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  value={newIncome.description}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="input-field">
                 <label htmlFor="category_id">Category</label>
-                <select 
-                  id="category_id" 
-                  name="category_id" 
-                  value={newIncome.category_id} 
-                  onChange={handleInputChange} 
+                <select
+                  id="category_id"
+                  name="category_id"
+                  value={newIncome.category_id}
+                  onChange={handleInputChange}
                   required
                 >
                   <option value="" disabled>Select</option>
                   {categories
-                    .filter(cat => ["Salary", "Government Benefit", "Investments", "Other"].includes(cat.name))
+                    .filter(cat => ["Food", "Transport", "Entertainment", "Shopping", "Utilities", "Other"].includes(cat.name))
                     .map((cat) => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))
@@ -353,29 +370,6 @@ function Income() {
                   name="date"
                   placeholder="yyyy-mm-dd"
                   value={newIncome.date}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="input-field">
-                <label>&nbsp;</label>
-                <button className="btn-primary" onClick={handleAddIncome}>
-                  <Plus className="btn-icon" />
-                  Add Income
-                </button>
-              </div>
-            </div>
-
-            <div className="input-row">
-              <div className="input-field full-width">
-                <label htmlFor="description">Description</label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  placeholder="Description"
-                  value={newIncome.description}
                   onChange={handleInputChange}
                   required
                 />

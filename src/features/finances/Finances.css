@@ -72,9 +72,26 @@
 }
 
 /* Finance forms specific */
-.income-form,
-.expense-form {
+.expense-card-header, .income-card-header {
+  display: flex;
+  align-items: flex-start; ;
+  justify-content: space-between;
+}
+
+.expense-card-header .form-title {
+  margin-bottom: 0.25rem;
+}
+
+.income-form .input-row .input-field:has(.btn-primary),
+.expense-form .input-row .input-field:has(.btn-primary) {
+  align-items: flex-end;
+}
+
+.income-form .input-row .input-field:has(.btn-primary) .btn-primary,
+.expense-form .input-row .input-field:has(.btn-primary) .btn-primary {
   width: 100%;
+  min-width: 0;
+  height: 48px;
 }
 
 /* Month selector specific layout */

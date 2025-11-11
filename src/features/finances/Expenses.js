@@ -287,12 +287,22 @@ function Expenses() {
         <p className="page-subtitle">Track and manage your spending</p>
       </div>
 
-      <div className="expense-card">
-        <h2 className="form-title">Add Expense</h2>
-        <p className="form-subtitle">Record a new expense transaction</p>
+    <div className="expense-card">
+      <div className="expense-card-header">
+        <div>
+          <h2 className="form-title">Add Expense</h2>
+          <p className="form-subtitle">Record a new expense transaction</p>
+        </div>
+        <button className="btn-primary" onClick={handleAddExpense}>
+          <Plus className="btn-icon" />
+          Add Expense
+        </button>
+      </div>
+      
         <div className="expense-form">
           <div className="form-group">
             <div className="input-row">
+              
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
                 <div className="input-with-icon">
@@ -307,6 +317,19 @@ function Expenses() {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="description">Description</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  value={newExpense.description}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
 
               <div className="input-field">
@@ -336,29 +359,6 @@ function Expenses() {
                   name="date"
                   placeholder="yyyy-mm-dd"
                   value={newExpense.date}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="input-field">
-                <label>&nbsp;</label>
-                <button className="btn-primary" onClick={handleAddExpense}>
-                  <Plus className="btn-icon" />
-                  Add Expense
-                </button>
-              </div>
-            </div>
-
-            <div className="input-row">
-              <div className="input-field full-width">
-                <label htmlFor="description">Description</label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  placeholder="Description"
-                  value={newExpense.description}
                   onChange={handleInputChange}
                   required
                 />
