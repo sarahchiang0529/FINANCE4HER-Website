@@ -21,6 +21,7 @@ import FAQ from "./features/faq/FAQ"
 import Home from "./features/home/Home"
 import FinancialOverview from "./features/financialOverview/FinancialOverview"
 import Profile from "./features/profile/Profile"
+import AdminPage from "./features/admin/AdminPage"
 
 import "./App.css"
 
@@ -56,6 +57,7 @@ const App = () => {
                 <Route path="/points-rewards" component={PointsRewards} />
                 <Route path="/faq" component={FAQ} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/admin" element={<AdminPage />} />
               </Switch>
             </Container>
           </main>
