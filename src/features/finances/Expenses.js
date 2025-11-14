@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import { useAuth0 } from "@auth0/auth0-react"
 import { Plus, Calendar, BarChart3, ChevronDown, ChevronUp, CreditCard, Edit, Trash2 } from "lucide-react"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
 import ChartComponent from "../../components/Charts/ChartComponent"
@@ -6,10 +7,8 @@ import MonthlyChartComponent from "../../components/Charts/MonthlyChartComponent
 import EmptyState from "../../components/EmptyState"
 import "./Finances.css"
 
-// Register required Chart.js components for bar chart visualization
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-// Define emoji icons for each expense category to improve visual recognition
 const CATEGORY_ICONS = {
   Food: "🍽️",
   Transport: "🚌",
@@ -17,335 +16,293 @@ const CATEGORY_ICONS = {
   Shopping: "🛍️",
   Utilities: "💡",
   Other: "📋",
-  default: "💸", // Fallback icon for undefined categories and Total Expenses
+  default: "💸",
+}
+
+const BASE_URL = "http://localhost:4000"
+
+async function api(path, { method = "GET", body, token } = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || err.message || `Request failed: ${res.status}`)
+  }
+  return res.status === 204 ? null : res.json()
 }
 
 function Expenses() {
-  // View state - controls which view is active (transactions or monthly summary)
-  const [activeView, setActiveView] = useState("transactions")
+  const { user, getAccessTokenSilently, isAuthenticated } = useAuth0()
 
-  // Date and filtering state - manages the currently selected month and date range for filtering
+  const [activeView, setActiveView] = useState("transactions")
   const [selectedMonth, setSelectedMonth] = useState(new Date())
   const [dateRange, setDateRange] = useState({
-    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1), // First day of current month
-    end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Last day of current month
+    start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    end: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
   })
 
-  // Expense data state - stores all expense entries and derived data
-  const [expenses, setExpenses] = useState([]) // All expense transactions
-  const [monthlySummaries, setMonthlySummaries] = useState([]) // Aggregated monthly data
-  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null) // Selected month for detailed view
-
-  useEffect(() => {
-    // Load expenses data from localStorage when component mounts
-    const storedExpenses = localStorage.getItem("expensesData")
-    if (storedExpenses) {
-      try {
-        setExpenses(JSON.parse(storedExpenses))
-      } catch (error) {
-        console.error("Error parsing expenses data from localStorage:", error)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    // Save expenses data to localStorage whenever it changes
-    localStorage.setItem("expensesData", JSON.stringify(expenses))
-  }, [expenses])
-
+  const [expenses, setExpenses] = useState([])
+  const [monthlySummaries, setMonthlySummaries] = useState([])
+  const [selectedMonthDetails, setSelectedMonthDetails] = useState(null)
   const [editingExpense, setEditingExpense] = useState(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null)
 
-  // Form state - manages the new expense entry form
   const [newExpense, setNewExpense] = useState({
     amount: "",
     description: "",
-    category: "",
-    date: "", // Empty string instead of default date
+    category_id: "",
+    date: "",
   })
 
-  // Refs - used for scrolling to elements
-  const monthlyDetailsRef = useRef(null) // Reference to monthly details section for smooth scrolling
+  const [categories, setCategories] = useState([])
+  const [categoryIdToLabel, setCategoryIdToLabel] = useState({})
 
-  // Generate monthly summaries from expense data whenever expense data changes
+  const monthlyDetailsRef = useRef(null)
+
+  // Load categories + expenses from API
+  useEffect(() => {
+    (async () => {
+      if (!isAuthenticated || !user) return
+      const token = await getAccessTokenSilently()
+
+      // 1) categories
+      const cats = await api(`/api/admin/categories`, { token })
+      setCategories(cats)
+      const idToLabel = Object.fromEntries(cats.map(c => [String(c.id), c.name]))
+      setCategoryIdToLabel(idToLabel)
+
+      // 2) expenses list
+      const rows = await api(`/api/users/${user.sub}/expenses`, { token })
+      const uiRows = rows.map(r => ({
+        id: r.id,
+        categoryId: r.category_id,
+        category: idToLabel[String(r.category_id)] || "Other",
+        value: Number(r.amount),
+        description: r.description,
+        date: r.date,
+      }))
+      uiRows.sort((a, b) => new Date(b.date) - new Date(a.date))
+      setExpenses(uiRows)
+    })().catch(console.error)
+  }, [isAuthenticated, user, getAccessTokenSilently])
+
+  // Derived monthly summaries
   useEffect(() => {
     if (expenses.length === 0) {
       setMonthlySummaries([])
       return
     }
-
-    // Group expenses by month and calculate totals for each category
     const summaries = expenses.reduce((acc, item) => {
       const date = new Date(item.date)
-      // Create a unique key for each month-year combination
-      const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
-
-      // Initialize month data if it doesn't exist
-      if (!acc[monthYear]) {
-        acc[monthYear] = {
-          month: new Date(date.getFullYear(), date.getMonth(), 1),
-          total: 0,
-          categories: {},
-        }
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+      if (!acc[key]) {
+        acc[key] = { month: new Date(date.getFullYear(), date.getMonth(), 1), total: 0, categories: {} }
       }
-
-      // Add item value to month total
-      acc[monthYear].total += item.value
-
-      // Add item value to category total for the month
-      if (!acc[monthYear].categories[item.category]) {
-        acc[monthYear].categories[item.category] = 0
-      }
-      acc[monthYear].categories[item.category] += item.value
-
+      acc[key].total += item.value
+      acc[key].categories[item.category] = (acc[key].categories[item.category] || 0) + item.value
       return acc
     }, {})
-
-    // Convert to array and sort by date (newest first) for display
     const summariesArray = Object.values(summaries).sort((a, b) => b.month - a.month)
     setMonthlySummaries(summariesArray)
   }, [expenses])
 
-  // Filter expenses by selected date range and sort by date (newest first)
-  // Using useMemo to avoid recalculation on every render
   const filteredExpenses = useMemo(() => {
     return expenses
       .filter((item) => {
-        const itemDate = new Date(item.date)
-        return itemDate >= dateRange.start && itemDate <= dateRange.end
+        const d = new Date(item.date)
+        return d >= dateRange.start && d <= dateRange.end
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date))
   }, [expenses, dateRange])
 
-  // Prepare chart data from filtered expenses
-  // Using useMemo to avoid recalculation on every render
-  const chartData = useMemo(() => {
-    return filteredExpenses.map((item) => ({
-      category: item.category,
-      value: item.value,
-    }))
-  }, [filteredExpenses])
+  const chartData = useMemo(
+    () => filteredExpenses.map((i) => ({ category: i.category, value: i.value })),
+    [filteredExpenses]
+  )
 
-  // Calculate totals based on the active view (monthly or transactions)
-  // Using useMemo to avoid recalculation on every render
   const { currentViewTotal, categoryTotals } = useMemo(() => {
     if (activeView === "monthly") {
-      // For Monthly Summary view, calculate all-time totals from all expense entries
-      const allTimeTotals = expenses.reduce(
+      const all = expenses.reduce(
         (acc, item) => {
           acc.total += item.value
-
-          // Initialize category if it doesn't exist
-          if (!acc.categories[item.category]) {
-            acc.categories[item.category] = 0
-          }
-          acc.categories[item.category] += item.value
-
+          acc.categories[item.category] = (acc.categories[item.category] || 0) + item.value
           return acc
         },
-        { total: 0, categories: {} },
+        { total: 0, categories: {} }
       )
-
-      return {
-        currentViewTotal: allTimeTotals.total,
-        categoryTotals: allTimeTotals.categories,
-      }
+      return { currentViewTotal: all.total, categoryTotals: all.categories }
     } else {
-      // For Transactions view, use the filtered expenses (by selected month)
-      const monthlyTotal = filteredExpenses.reduce((sum, item) => sum + item.value, 0)
-
-      // Calculate totals for each category in the filtered expenses
-      const catTotals = filteredExpenses.reduce((acc, item) => {
-        if (!acc[item.category]) {
-          acc[item.category] = 0
-        }
-        acc[item.category] += item.value
+      const monthlyTotal = filteredExpenses.reduce((sum, i) => sum + i.value, 0)
+      const catTotals = filteredExpenses.reduce((acc, i) => {
+        acc[i.category] = (acc[i.category] || 0) + i.value
         return acc
       }, {})
-
-      return {
-        currentViewTotal: monthlyTotal,
-        categoryTotals: catTotals,
-      }
+      return { currentViewTotal: monthlyTotal, categoryTotals: catTotals }
     }
   }, [activeView, expenses, filteredExpenses])
 
-  // Handle form input changes with useCallback to prevent unnecessary re-renders
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target
-    setNewExpense((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setNewExpense((prev) => ({ ...prev, [name]: value }))
   }, [])
 
-  // Add new expense entry to the expenses state
-  // Validates form data and creates a new entry with unique ID
-  const handleAddExpense = useCallback(() => {
-    const { amount, description, category, date } = newExpense
+  const handleAddExpense = useCallback(async () => {
+    const { amount, description, category_id, date } = newExpense
     const numericAmount = Number.parseFloat(amount)
-
-    // Validate all required fields
-    if (!amount || isNaN(numericAmount) || !category || !date || !description) {
+    if (!amount || Number.isNaN(numericAmount) || !category_id || !date || !description) {
       alert("Please fill in all required fields.")
       return
     }
-
-    // Create new expense entry with unique ID
-    const newEntry = {
-      id: Date.now(), // Use timestamp as unique ID
-      category,
-      value: numericAmount,
-      description,
-      date,
-    }
-
-    // Add new entry to the beginning of the expenses array
-    setExpenses((prev) => [newEntry, ...prev])
-
-    // Reset form fields after successful submission
-    setNewExpense({
-      amount: "",
-      description: "",
-      category: "",
-      date: "",
-    })
-  }, [newExpense])
-
-  // Handle month navigation (previous/next) in transactions view
-  // Updates selected month and date range for filtering
-  const handleMonthChange = useCallback(
-    (direction) => {
-      const newMonth = new Date(selectedMonth)
-      if (direction === "prev") {
-        newMonth.setMonth(newMonth.getMonth() - 1)
-      } else {
-        newMonth.setMonth(newMonth.getMonth() + 1)
-      }
-      setSelectedMonth(newMonth)
-
-      // Update date range for filtering based on new selected month
-      setDateRange({
-        start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1), // First day of month
-        end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0), // Last day of month
+    try {
+      const token = await getAccessTokenSilently()
+      const created = await api(`/api/users/${user.sub}/expenses`, {
+        method: "POST",
+        token,
+        body: { amount: numericAmount, category_id, date, description },
       })
-    },
-    [selectedMonth],
-  )
+      const uiRow = {
+        id: created.id,
+        categoryId: created.category_id,
+        category: categoryIdToLabel[String(created.category_id)],
+        value: Number(created.amount),
+        description: created.description,
+        date: created.date,
+      }
+      setExpenses(prev => [uiRow, ...prev])
+      setNewExpense({ amount: "", description: "", category_id: "", date: "" })
+    } catch (e) {
+      console.error(e)
+      alert(e.message || "Failed to add expense")
+    }
+  }, [newExpense, user, getAccessTokenSilently, categoryIdToLabel])
 
-  // Handle month selection in monthly summary view
-  // Sets the selected month details and scrolls to the details section
+  const startEditExpense = (entry) => {
+    setEditingExpense({
+      ...entry,
+      amount: entry.value.toString(),
+      categoryId: entry.categoryId
+    })
+    setShowDeleteConfirm(null)
+  }
+
+  const cancelEditExpense = () => setEditingExpense(null)
+
+  const saveEditExpense = useCallback(async () => {
+    if (!editingExpense) return
+    if (!editingExpense.categoryId || !editingExpense.amount || !editingExpense.date || !editingExpense.description) {
+      alert("Please fill in all required fields.")
+      return
+    }
+    const numericAmount = Number.parseFloat(editingExpense.amount)
+    if (Number.isNaN(numericAmount)) {
+      alert("Please enter a valid amount.")
+      return
+    }
+    try {
+      const token = await getAccessTokenSilently()
+      const updated = await api(`/api/users/${user.sub}/expenses/${editingExpense.id}`, {
+        method: "PUT",
+        token,
+        body: {
+          amount: numericAmount,
+          category_id: editingExpense.categoryId,
+          date: editingExpense.date,
+          description: editingExpense.description,
+        },
+      })
+      setExpenses(list =>
+        list.map(e =>
+          e.id === updated.id
+            ? {
+                id: updated.id,
+                categoryId: updated.category_id,
+                category: categoryIdToLabel[String(updated.category_id)],
+                value: Number(updated.amount),
+                description: updated.description,
+                date: updated.date,
+              }
+            : e
+        )
+      )
+      setEditingExpense(null)
+    } catch (e) {
+      console.error(e)
+      alert(e.message || "Failed to update")
+    }
+  }, [editingExpense, user, getAccessTokenSilently, categoryIdToLabel])
+
+  const confirmDeleteExpense = (id) => setShowDeleteConfirm(id)
+  const cancelDeleteExpense = () => setShowDeleteConfirm(null)
+
+  const deleteExpense = useCallback(async (id) => {
+    try {
+      const token = await getAccessTokenSilently()
+      await api(`/api/users/${user.sub}/expenses/${id}`, { method: "DELETE", token })
+      setExpenses(list => list.filter(e => e.id !== id))
+      setShowDeleteConfirm(null)
+    } catch (e) {
+      console.error(e)
+      alert(e.message || "Failed to delete")
+    }
+  }, [getAccessTokenSilently, user])
+
+  const handleMonthChange = useCallback((direction) => {
+    const newMonth = new Date(selectedMonth)
+    newMonth.setMonth(newMonth.getMonth() + (direction === "prev" ? -1 : 1))
+    setSelectedMonth(newMonth)
+    setDateRange({
+      start: new Date(newMonth.getFullYear(), newMonth.getMonth(), 1),
+      end: new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 0),
+    })
+  }, [selectedMonth])
+
   const handleMonthSelect = useCallback((summary) => {
     setSelectedMonthDetails(summary)
-
-    // Scroll to details section after a short delay to ensure render is complete
     setTimeout(() => {
       if (monthlyDetailsRef.current) {
-        monthlyDetailsRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        })
+        monthlyDetailsRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
       }
     }, 100)
   }, [])
 
-  // Utility function to get category icon based on category name
-  const getCategoryIcon = useCallback((category) => {
-    // Return just the emoji without any wrapper or styling
-    return CATEGORY_ICONS[category] || CATEGORY_ICONS.default
-  }, [])
-
-  // Format date string to readable format (e.g., "Jan 1, 2023")
+  const getCategoryIcon = useCallback((category) => CATEGORY_ICONS[category] || CATEGORY_ICONS.default, [])
   const formatDate = useCallback((dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
+    const d = new Date(dateString)
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
   }, [])
+  const formatMonthYear = useCallback((date) => date.toLocaleDateString("en-US", { month: "long", year: "numeric" }), [])
 
-  // Format date to month and year format (e.g., "January 2023")
-  const formatMonthYear = useCallback((date) => {
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
-  }, [])
-
-  // Check if there's any expense data to determine whether to show empty state
   const hasExpenseData = expenses.length > 0
-
-  // Function to start editing an expense entry
-  const startEditExpense = (entry) => {
-    // Make a deep copy to avoid modifying the original entry
-    setEditingExpense({
-      ...entry,
-      amount: entry.value.toString(),
-    })
-
-    // Clear any delete confirmation that might be showing
-    setShowDeleteConfirm(null)
-  }
-
-  // Function to save edited expense
-  const saveEditExpense = () => {
-    if (!editingExpense.category || !editingExpense.amount || !editingExpense.date || !editingExpense.description) {
-      alert("Please fill in all required fields.")
-      return
-    }
-
-    // Validate amount is a valid number
-    const numericAmount = Number.parseFloat(editingExpense.amount)
-    if (isNaN(numericAmount)) {
-      alert("Please enter a valid amount.")
-      return
-    }
-
-    const updatedEntry = {
-      ...editingExpense,
-      value: numericAmount,
-    }
-    delete updatedEntry.amount
-
-    const updatedExpenses = expenses.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry))
-    setExpenses(updatedExpenses)
-    setEditingExpense(null)
-  }
-
-  // Function to confirm deletion
-  const confirmDeleteExpense = (expenseId) => {
-    setShowDeleteConfirm(expenseId)
-  }
-
-  // Function to cancel deletion
-  const cancelDeleteExpense = () => {
-    setShowDeleteConfirm(null)
-  }
-
-  // Function to delete expense entry
-  const deleteExpense = (expenseId) => {
-    const updatedExpenses = expenses.filter((entry) => entry.id !== expenseId)
-    setExpenses(updatedExpenses)
-    setShowDeleteConfirm(null)
-  }
-
-  const cancelEditExpense = () => {
-    setEditingExpense(null)
-  }
 
   return (
     <div className="expenses-container">
-      {/* Header Section */}
       <div className="page-header">
         <h1 className="page-title">Expenses</h1>
         <p className="page-subtitle">Track and manage your spending</p>
       </div>
 
-      {/* Add Expense Form Section */}
-      <div className="expense-card">
-        <h2 className="form-title">Add Expense</h2>
-        <p className="form-subtitle">Record a new expense transaction</p>
+    <div className="expense-card">
+      <div className="expense-card-header">
+        <div>
+          <h2 className="form-title">Add Expense</h2>
+          <p className="form-subtitle">Record a new expense transaction</p>
+        </div>
+        <button className="btn-primary" onClick={handleAddExpense}>
+          <Plus className="btn-icon" />
+          Add Expense
+        </button>
+      </div>
+      
         <div className="expense-form">
           <div className="form-group">
             <div className="input-row">
+              
               <div className="input-field">
                 <label htmlFor="amount">Amount</label>
                 <div className="input-with-icon">
@@ -363,17 +320,34 @@ function Expenses() {
               </div>
 
               <div className="input-field">
-                <label htmlFor="category">Category</label>
-                <select id="category" name="category" value={newExpense.category} onChange={handleInputChange} required>
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="Food">Food</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Utilities">Utilities</option>
-                  <option value="Other">Other</option>
+                <label htmlFor="description">Description</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  value={newExpense.description}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="input-field">
+                <label htmlFor="category_id">Category</label>
+                <select
+                  id="category_id"
+                  name="category_id"
+                  value={newExpense.category_id}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="" disabled>Select</option>
+                  {categories
+                    .filter(cat => ["Food", "Transport", "Entertainment", "Shopping", "Utilities", "Other"].includes(cat.name))
+                    .map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))
+                  }
                 </select>
               </div>
 
@@ -385,29 +359,6 @@ function Expenses() {
                   name="date"
                   placeholder="yyyy-mm-dd"
                   value={newExpense.date}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="input-field">
-                <label>&nbsp;</label>
-                <button className="btn-primary" onClick={handleAddExpense}>
-                  <Plus className="btn-icon" />
-                  Add Expense
-                </button>
-              </div>
-            </div>
-
-            <div className="input-row">
-              <div className="input-field full-width">
-                <label htmlFor="description">Description</label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  placeholder="Description"
-                  value={newExpense.description}
                   onChange={handleInputChange}
                   required
                 />
@@ -427,7 +378,6 @@ function Expenses() {
         </div>
       ) : (
         <>
-          {/* View Selector - Toggle between transactions and monthly summary views */}
           <div className="tabs-container">
             <div className="tabs">
               <button
@@ -447,7 +397,6 @@ function Expenses() {
             </div>
           </div>
 
-          {/* Month Selector - Only shown in transactions view */}
           {activeView === "transactions" && (
             <div className="month-selector">
               <button className="month-nav-button" onClick={() => handleMonthChange("prev")}>
@@ -460,15 +409,13 @@ function Expenses() {
             </div>
           )}
 
-          {/* Summary Cards - Show totals for each category */}
           {activeView === "monthly" && (
             <div className="summary-header">
               <h2 className="summary-title-header">All-time Summary</h2>
             </div>
           )}
-          
+
           <div className="summary-cards" style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
-            {/* Total Expense Card */}
             <div className="card" style={{ flex: "1 1 0" }}>
               <div className="summary-content">
                 <div className="summary-icon-wrapper total-icon">
@@ -479,7 +426,6 @@ function Expenses() {
               </div>
             </div>
 
-            {/* Category Summary Cards - One card for each predefined category */}
             {["Food", "Transport", "Entertainment", "Shopping", "Utilities"].map((category) => (
               <div className="card" key={category} style={{ flex: "1 1 0" }}>
                 <div className="summary-content">
@@ -507,7 +453,8 @@ function Expenses() {
                   </div>
                 ) : (
                   <div className="no-data-message">
-                    <p>No expense data for this period. Add transactions to see your expense distribution.</p>
+                    <div>No expense data for this period.</div>
+                    <div>Add transactions to see your expense distribution.</div>
                   </div>
                 )}
               </div>
@@ -519,18 +466,20 @@ function Expenses() {
                 </div>
 
                 <div className="expenses-list">
-                  {filteredExpenses.map((entry) => (
+                  {filteredExpenses.length === 0 ? (
+                    <div className="no-data-message">
+                      <div>No expense data for this period.</div>
+                      <div>Add transactions to see your expenses.</div>
+                    </div>
+                  ) : (
+                    filteredExpenses.map((entry) => (
                     <div key={entry.id} className="expense-item">
                       {showDeleteConfirm === entry.id ? (
                         <div className="delete-confirm">
                           <p>Delete this transaction?</p>
                           <div className="delete-actions">
-                            <button className="cancel-btn" onClick={cancelDeleteExpense}>
-                              Cancel
-                            </button>
-                            <button className="btn-danger" onClick={() => deleteExpense(entry.id)}>
-                              Delete
-                            </button>
+                            <button className="btn-secondary" onClick={cancelDeleteExpense}>Cancel</button>
+                            <button className="btn-danger" onClick={() => deleteExpense(entry.id)}>Delete</button>
                           </div>
                         </div>
                       ) : editingExpense && editingExpense.id === entry.id ? (
@@ -539,15 +488,15 @@ function Expenses() {
                             <div className="edit-field">
                               <label>Category</label>
                               <select
-                                value={editingExpense.category}
-                                onChange={(e) => setEditingExpense({ ...editingExpense, category: e.target.value })}
+                                value={editingExpense.categoryId}
+                                onChange={(e) => setEditingExpense({ ...editingExpense, categoryId: e.target.value })}
                               >
-                                <option value="Food">Food</option>
-                                <option value="Transport">Transport</option>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Shopping">Shopping</option>
-                                <option value="Utilities">Utilities</option>
-                                <option value="Other">Other</option>
+                                {categories
+                                  .filter(cat => ["Food", "Transport", "Entertainment", "Shopping", "Utilities", "Other"].includes(cat.name))
+                                  .map((cat) => (
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                  ))
+                                }
                               </select>
                             </div>
                             <div className="edit-field">
@@ -581,12 +530,8 @@ function Expenses() {
                             </div>
                           </div>
                           <div className="edit-actions">
-                            <button className="cancel-btn" onClick={cancelEditExpense}>
-                              Cancel
-                            </button>
-                            <button className="btn-primary" onClick={saveEditExpense}>
-                              Save
-                            </button>
+                            <button className="cancel-btn" onClick={cancelEditExpense}>Cancel</button>
+                            <button className="btn-primary" onClick={saveEditExpense}>Save</button>
                           </div>
                         </div>
                       ) : (
@@ -613,7 +558,7 @@ function Expenses() {
                         </>
                       )}
                     </div>
-                  ))}
+                  )))}
                 </div>
               </div>
             </div>
@@ -623,29 +568,20 @@ function Expenses() {
             <div className="monthly-view">
               {monthlySummaries.length > 0 ? (
                 <>
-                  {Array.from(new Set(monthlySummaries.map((summary) => summary.month.getFullYear()))).map((year) => {
-                    const yearSummaries = monthlySummaries.filter((summary) => summary.month.getFullYear() === year)
+                  {Array.from(new Set(monthlySummaries.map((s) => s.month.getFullYear()))).map((year) => {
+                    const yearSummaries = monthlySummaries.filter((s) => s.month.getFullYear() === year)
                     const isSingleMonth = yearSummaries.length === 1
-
                     return (
                       <div key={year} className="year-section">
                         <div className="section-header">
                           <h2 className="section-title">{year} Monthly Expenses</h2>
                         </div>
-
                         {isSingleMonth ? (
                           <div className="monthly-single-chart-container">
-                            {yearSummaries.map((summary, index) => {
-                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({
-                                category,
-                                value,
-                              }))
+                            {yearSummaries.map((summary, i) => {
+                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({ category, value }))
                               return (
-                                <div
-                                  key={index}
-                                  className="expense-data-card single-month"
-                                  onClick={() => handleMonthSelect(summary)}
-                                >
+                                <div key={i} className="expense-data-card single-month" onClick={() => handleMonthSelect(summary)}>
                                   <div className="month-chart">
                                     <MonthlyChartComponent month={summary.month} data={monthData} isIncome={false} />
                                   </div>
@@ -656,26 +592,17 @@ function Expenses() {
                           </div>
                         ) : (
                           <div className="monthly-charts">
-                            {yearSummaries
-                              .sort((a, b) => a.month - b.month)
-                              .map((summary, index) => {
-                                const monthData = Object.entries(summary.categories).map(([category, value]) => ({
-                                  category,
-                                  value,
-                                }))
-                                return (
-                                  <div
-                                    key={index}
-                                    className="expense-data-card"
-                                    onClick={() => handleMonthSelect(summary)}
-                                  >
-                                    <div className="month-chart">
-                                      <MonthlyChartComponent month={summary.month} data={monthData} isIncome={false} />
-                                    </div>
-                                    <div className="month-total">${summary.total.toFixed(2)}</div>
+                            {yearSummaries.sort((a, b) => a.month - b.month).map((summary, i) => {
+                              const monthData = Object.entries(summary.categories).map(([category, value]) => ({ category, value }))
+                              return (
+                                <div key={i} className="expense-data-card" onClick={() => handleMonthSelect(summary)}>
+                                  <div className="month-chart">
+                                    <MonthlyChartComponent month={summary.month} data={monthData} isIncome={false} />
                                   </div>
-                                )
-                              })}
+                                  <div className="month-total">${summary.total.toFixed(2)}</div>
+                                </div>
+                              )
+                            })}
                           </div>
                         )}
                       </div>
@@ -686,24 +613,21 @@ function Expenses() {
                     {selectedMonthDetails ? (
                       <>
                         <h2 className="section-title">
-                          {selectedMonthDetails.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}{" "}
-                          Details
+                          {selectedMonthDetails.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })} Details
                         </h2>
-
                         <div className="monthly-details-content">
                           <div className="monthly-details-summary">
                             <div className="details-total">
                               <span className="details-label">Total Expenses:</span>
                               <span className="details-value">${selectedMonthDetails.total.toFixed(2)}</span>
                             </div>
-
                             <div className="details-categories">
                               {Object.entries(selectedMonthDetails.categories).map(([category, amount], index) => {
                                 const categoryClass = `category-${category.toLowerCase().replace(/\s+/g, '-')}`;
                                 return (
                                   <div key={index} className={`details-category-item ${categoryClass}`}>
                                     <div className="category-info">
-                                      <span className="category-icon">{getCategoryIcon(category)}</span>
+                                      <span className="category-icon">{CATEGORY_ICONS[category] || CATEGORY_ICONS.default}</span>
                                       <span className="category-name">{category}</span>
                                     </div>
                                     <div className="category-amount">${amount.toFixed(2)}</div>
@@ -711,13 +635,9 @@ function Expenses() {
                                 );
                               })}
                             </div>
-
                             <div className="monthly-details-chart">
                               <ChartComponent
-                                data={Object.entries(selectedMonthDetails.categories).map(([category, value]) => ({
-                                  category,
-                                  value,
-                                }))}
+                                data={Object.entries(selectedMonthDetails.categories).map(([category, value]) => ({ category, value }))}
                                 chartType="doughnut"
                                 isIncome={false}
                               />

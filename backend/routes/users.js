@@ -170,7 +170,6 @@ router.get("/:userId/incomes", async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  // Optional: flatten shape so FE can read .category directly
   const rows = (data || []).map((r) => ({
     id: r.id,
     user_id: r.user_id,

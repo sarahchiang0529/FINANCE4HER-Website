@@ -261,14 +261,7 @@
 
 .dashboard-container .progress-fill {
   height: 100%;
-  /* 4-stop gradient: lime → light-lime → light-indigo → indigo */
-  background: linear-gradient(
-    135deg,
-    var(--brand-indigo) 0%,
-    color-mix(in srgb, var(--brand-indigo) 65%, var(--brand-offwhite) 35%) 33%,
-    color-mix(in srgb, var(--brand-limegreen) 35%, var(--brand-offwhite) 65%) 66%,
-    var(--brand-limegreen) 100%
-  );
+  background: var(--color-primary-gradient);
   border-radius: 4px;
 }
 

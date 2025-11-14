@@ -3,6 +3,7 @@
   max-width: var(--max-width);
   margin: 0 auto;
 }
+
 /* Card */
 .faq-card {
   background: var(--color-bg);
@@ -40,6 +41,22 @@
               box-shadow var(--transition-base);
 }
 
+/* Hover keeps a single, unified outline */
+.faq-item:hover {
+  border-color: var(--brand-pink);
+}
+
+/* Expanded (active) state: single outline on container */
+.faq-item.active {
+  border-color: var(--brand-pink);
+}
+
+/* Keyboard focus: apply ring to the container, not the button */
+.faq-item:has(.faq-question:focus-visible) {
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
+}
+
 /* Button row */
 .faq-question {
   width: 100%;
@@ -48,7 +65,7 @@
   align-items: center;
   padding: 16px 20px;
   background-color: var(--color-bg);
-  border: none;
+  border: none; /* ensure no inner border */
   text-align: left;
   font-size: 16px;
   font-weight: 500;
@@ -58,29 +75,24 @@
               color var(--transition-base);
 }
 
-/* Hover lime */
+/* Hover pink for the header row only */
 .faq-question:hover {
-  background-color: var(--brand-limegreen);
+  background-color: #ffeffb;
   color: #000;
 }
 
-/* Active (expanded) — keep lime */
-.faq-item.active,
-.faq-question.active {
-  border-color: var(--brand-limegreen);
-}
-
-.faq-item.active .faq-question {
-  background-color: var(--brand-limegreen);
-  color: #000;
-}
-
-/* Focus ring (keyboard) */
-.faq-question:focus {
+/* Remove inner outline/border from the button on focus */
+.faq-question:focus,
+.faq-question:focus-visible {
   outline: none;
-  border: 1px solid var(--brand-limegreen);
-  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
-  border-radius: 8px;
+  border: none;
+  box-shadow: none;
+}
+
+/* Active (expanded) header visuals without extra borders */
+.faq-item.active .faq-question {
+  background-color: #ffeffb;
+  color: #000;
 }
 
 /* Icon */
@@ -95,13 +107,14 @@
   color: var(--brand-indigo);
 }
 
-/* Answer */
+/* Answer — inside the same outlined card */
 .faq-answer {
   padding: 0 20px;
   color: var(--color-text-light);
   line-height: 1.6;
   display: flex;
   align-items: center;
+  border-top: 1px solid var(--color-border-light); /* subtle internal divider */
 }
 
 .faq-answer p {
@@ -123,9 +136,8 @@
 }
 
 .message-form-prompt {
-  background: var(--brand-offwhite);
+  background: #ffeffb;
   border-radius: 12px;
-  border: 1px solid var(--color-border-light);
   box-shadow: var(--shadow);
   padding: 24px;
   text-align: center;
@@ -139,7 +151,7 @@
 }
 
 .prompt-icon {
-  color: var(--brand-limegreen);
+  color: var(--brand-pink);
   background: var(--color-bg);
   padding: 12px;
   border-radius: 50%;
@@ -159,7 +171,7 @@
 }
 
 .ask-question-btn {
-  background: var(--brand-limegreen);
+  background: var(--brand-pink);
   color: #000;
   border: none;
   padding: 12px 24px;
@@ -180,8 +192,8 @@
 .ask-question-btn:focus,
 .ask-question-btn:focus-visible {
   outline: none;
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
 }
 
 /* Message form container */
@@ -248,8 +260,8 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.2);
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
 }
 
 .form-group textarea {
@@ -314,13 +326,13 @@
 .cancel-btn:focus,
 .cancel-btn:focus-visible {
   outline: none;
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
 }
 
 /* Submit */
 .submit-btn {
-  background: var(--brand-limegreen);
+  background: var(--brand-pink);
   color: #000;
   display: flex;
   align-items: center;
@@ -342,8 +354,8 @@
 .submit-btn:focus,
 .submit-btn:focus-visible {
   outline: none;
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.35);
+  border-color: var(--brand-pink);
+  box-shadow: 0 0 0 3px #ffeffb;
 }
 
 .message-form .form-group {
