@@ -70,8 +70,8 @@
 
   /* Tab Colors */
   --color-tab: var(--brand-indigo);
-  --color-tab-hover: rgba(204, 242, 129, 0.1);
-  --color-tab-active: rgba(204, 242, 129, 0.2);
+  --color-tab-hover: var(--brand-lightpink);
+  --color-tab-active:  var(--brand-lightpink);
 
   /* Spacing */
   --space-xs: 4px;
@@ -700,8 +700,7 @@ button:focus-visible {
 .tab:focus,
 .tab:focus-visible {
   outline: none;
-  border-color: var(--brand-limegreen);
-  box-shadow: 0 0 0 3px rgba(204, 242, 129, 0.3);
+  border-color: var(--brand-pink);
 }
 
 .tab.active::after {
@@ -711,7 +710,7 @@ button:focus-visible {
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--brand-limegreen);
+  background: var(--brand-pink);
 }
 
 .tab-content {
@@ -728,7 +727,7 @@ button:focus-visible {
   margin-top: var(--space-xl);
   flex-wrap: wrap;
   gap: var(--space-md);
-}
+} 
 
 .view-tabs {
   display: flex;
@@ -744,7 +743,7 @@ button:focus-visible {
   background-color: var(--color-bg);
   border-radius: var(--space-sm);
   font-weight: 500;
-  color: var(--color-tab);
+  color: var(--color-tab); 
   cursor: pointer;
   transition: var(--transition-base);
   font-size: 14px;
