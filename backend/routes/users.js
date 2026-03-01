@@ -160,33 +160,44 @@ router.delete('/:userId/savings-goals/:id', async (req, res) => {
  * so we accept amount/value and category or category_id and adapt for DB. 
  */
 router.get("/:userId/incomes", async (req, res) => {
-  const { userId } = req.params;
+  try {
+    const { userId } = req.params;
+    console.log(`[GET /incomes] Fetching income for userId: ${userId}`);
 
-  const { data, error } = await req.supabase
-    .from("income")
-    .select("id, user_id, amount, date, description, category_id, categories(name)")
-    .eq("user_id", userId)
-    .order("date", { ascending: false });
+    const { data, error } = await req.supabase
+      .from("income")
+      .select("id, user_id, amount, date, description, category_id, categories(name)")
+      .eq("user_id", userId)
+      .order("date", { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+    if (error) {
+      console.error(`[GET /incomes] Supabase error:`, error);
+      return res.status(500).json({ error: error.message, details: error });
+    }
 
-  const rows = (data || []).map((r) => ({
-    id: r.id,
-    user_id: r.user_id,
-    amount: r.amount,
-    date: r.date,
-    description: r.description,
-    category_id: r.category_id,
-    category: r.categories?.name ?? "(Unknown)",
-  }));
+    console.log(`[GET /incomes] Found ${data?.length || 0} income records`);
+    const rows = (data || []).map((r) => ({
+      id: r.id,
+      user_id: r.user_id,
+      amount: r.amount,
+      date: r.date,
+      description: r.description,
+      category_id: r.category_id,
+      category: r.categories?.name ?? "(Unknown)",
+    }));
 
-  res.json(rows);
+    res.json(rows);
+  } catch (err) {
+    console.error(`[GET /incomes] Unexpected error:`, err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.post("/:userId/incomes", async (req, res) => {
   try {
     const { userId } = req.params;
     const { amount, category_id, category, date, description } = req.body;
+    console.log(`[POST /incomes] Creating income for userId: ${userId}`, { amount, category_id, category, date, description });
 
     const amt = Number.parseFloat(amount);
     if (!amt || !date || !description) {
@@ -202,15 +213,24 @@ router.post("/:userId/incomes", async (req, res) => {
       }
     }
 
+    const insertData = { user_id: userId, amount: amt, category_id: finalCategoryId, date, description };
+    console.log(`[POST /incomes] Inserting:`, insertData);
+
     const { data, error } = await req.supabase
       .from("income")
-      .insert([{ user_id: userId, amount: amt, category_id: finalCategoryId, date, description }])
+      .insert([insertData])
       .select("*")
       .single();
 
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) {
+      console.error(`[POST /incomes] Supabase error:`, error);
+      return res.status(500).json({ error: error.message, details: error });
+    }
+    
+    console.log(`[POST /incomes] Successfully created income record:`, data?.id);
     res.status(201).json(data);
   } catch (e) {
+    console.error(`[POST /incomes] Unexpected error:`, e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -262,33 +282,44 @@ router.delete('/:userId/incomes/:id', async (req, res) => {
  * Same adaptation (amount/value + category string). Your UI posts these fields from the form. 
  */
 router.get("/:userId/expenses", async (req, res) => {
-  const { userId } = req.params;
+  try {
+    const { userId } = req.params;
+    console.log(`[GET /expenses] Fetching expenses for userId: ${userId}`);
 
-  const { data, error } = await req.supabase
-    .from("expenses")
-    .select("id, user_id, amount, date, description, category_id, categories(name)")
-    .eq("user_id", userId)
-    .order("date", { ascending: false });
+    const { data, error } = await req.supabase
+      .from("expenses")
+      .select("id, user_id, amount, date, description, category_id, categories(name)")
+      .eq("user_id", userId)
+      .order("date", { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+    if (error) {
+      console.error(`[GET /expenses] Supabase error:`, error);
+      return res.status(500).json({ error: error.message, details: error });
+    }
 
-  const rows = (data || []).map((r) => ({
-    id: r.id,
-    user_id: r.user_id,
-    amount: r.amount,
-    date: r.date,
-    description: r.description,
-    category_id: r.category_id,
-    category: r.categories?.name ?? "(Unknown)",
-  }));
+    console.log(`[GET /expenses] Found ${data?.length || 0} expense records`);
+    const rows = (data || []).map((r) => ({
+      id: r.id,
+      user_id: r.user_id,
+      amount: r.amount,
+      date: r.date,
+      description: r.description,
+      category_id: r.category_id,
+      category: r.categories?.name ?? "(Unknown)",
+    }));
 
-  res.json(rows);
+    res.json(rows);
+  } catch (err) {
+    console.error(`[GET /expenses] Unexpected error:`, err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.post("/:userId/expenses", async (req, res) => {
   try {
     const { userId } = req.params;
     const { amount, category_id, category, date, description } = req.body;
+    console.log(`[POST /expenses] Creating expense for userId: ${userId}`, { amount, category_id, category, date, description });
 
     const amt = Number.parseFloat(amount);
     if (!amt || !date || !description) {
@@ -303,15 +334,24 @@ router.post("/:userId/expenses", async (req, res) => {
       }
     }
 
+    const insertData = { user_id: userId, amount: amt, category_id: finalCategoryId, date, description };
+    console.log(`[POST /expenses] Inserting:`, insertData);
+
     const { data, error } = await req.supabase
       .from("expenses")
-      .insert([{ user_id: userId, amount: amt, category_id: finalCategoryId, date, description }])
+      .insert([insertData])
       .select("*")
       .single();
 
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) {
+      console.error(`[POST /expenses] Supabase error:`, error);
+      return res.status(500).json({ error: error.message, details: error });
+    }
+    
+    console.log(`[POST /expenses] Successfully created expense record:`, data?.id);
     res.status(201).json(data);
   } catch (e) {
+    console.error(`[POST /expenses] Unexpected error:`, e);
     res.status(500).json({ error: e.message });
   }
 });

@@ -13,21 +13,40 @@ const toCamelCase = (obj) =>
 // GET /api/journal-questions - Fetch all journal questions
 router.get("/journal-questions", async (req, res) => {
   try {
+    if (!req.supabase) {
+      console.error("Supabase client not available");
+      return res.status(500).json({ error: "Database connection not configured" });
+    }
+
     const { data, error } = await req.supabase
       .from("journal_questions")
       .select("*")
       .order("id", { ascending: true });
 
     if (error) {
-      console.error("Supabase fetch error:", error);
-      return res.status(500).json({ error: "Failed to fetch journal questions" });
+      console.error("Supabase fetch error:", {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
+      return res.status(500).json({ 
+        error: "Failed to fetch journal questions",
+        details: error.message 
+      });
     }
 
     const questions = data.map(toCamelCase);
     res.json({ questions });
   } catch (err) {
-    console.error("Server error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Server error:", {
+      message: err.message,
+      stack: err.stack
+    });
+    res.status(500).json({ 
+      error: "Internal server error",
+      details: err.message 
+    });
   }
 });
 
