@@ -306,7 +306,7 @@ function Income() {
         </div>
         <button className="btn-primary" onClick={handleAddIncome}>
           <Plus className="btn-icon" />
-          Add Expense
+          Add Income
         </button>
       </div>
       
@@ -354,7 +354,7 @@ function Income() {
                 >
                   <option value="" disabled>Select</option>
                   {categories
-                    .filter(cat => ["Food", "Transport", "Entertainment", "Shopping", "Utilities", "Other"].includes(cat.name))
+                    .filter(cat => ["Salary", "Government Benefit", "Investments", "Other"].includes(cat.name))
                     .map((cat) => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))
