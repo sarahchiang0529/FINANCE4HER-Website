@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm-run-all --parallel spa api-server",
+    "start": "npm-run-all --parallel spa api-server backend-server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -12,8 +12,10 @@
     "server:dev": "nodemon server.js",
     "api-server": "node api-server.js",
     "api-server:dev": "nodemon api-server.js",
-    "dev": "npm-run-all --parallel spa api-server:dev",
-    "prod": "npm-run-all --parallel server api-server"
+    "backend-server": "node backend/server.js",
+    "backend-server:dev": "nodemon backend/server.js",
+    "dev": "npm-run-all --parallel spa api-server:dev backend-server:dev",
+    "prod": "npm-run-all --parallel server api-server backend-server"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.0",
