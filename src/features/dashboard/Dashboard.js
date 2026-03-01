@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 import { useHistory } from "react-router-dom"
+import { useAuth0 } from "@auth0/auth0-react"
 import "./Dashboard.css"
 import {
   ArrowRight,
@@ -31,8 +32,27 @@ import UnifiedChart from "../../components/Charts/UnifiedChart"
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
+const BASE_URL = "http://localhost:4000"
+
+async function api(path, { method = "GET", body, token } = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || err.message || `Request failed: ${res.status}`)
+  }
+  return res.status === 204 ? null : res.json()
+}
+
 const Dashboard = () => {
   const history = useHistory()
+  const { user, getAccessTokenSilently, isAuthenticated } = useAuth0()
   // State for FAQ items
   const [faqs, setFaqs] = useState([])
   // State for transactions
@@ -91,33 +111,48 @@ const Dashboard = () => {
     })
   }, [transactions, selectedYear])
 
-  // Update the useEffect hook to fetch transactions from localStorage
+  // Fetch transactions from API
   useEffect(() => {
     // Get the first 3 FAQ items
     setFaqs(faqItems.slice(0, 3))
 
-    // Fetch transactions from localStorage
-    const fetchTransactions = () => {
-      try {
-        // Get income data
-        const storedIncome = localStorage.getItem("incomeData")
-        let incomeData = []
-        if (storedIncome) {
-          incomeData = JSON.parse(storedIncome).map((item) => ({
-            ...item,
-            type: "income",
-          }))
-        }
+    // Fetch transactions from API
+    const fetchTransactions = async () => {
+      if (!isAuthenticated || !user) {
+        setTransactions([])
+        return
+      }
 
-        // Get expense data
-        const storedExpenses = localStorage.getItem("expensesData")
-        let expenseData = []
-        if (storedExpenses) {
-          expenseData = JSON.parse(storedExpenses).map((item) => ({
-            ...item,
-            type: "expense",
-          }))
-        }
+      try {
+        const token = await getAccessTokenSilently()
+        
+        // Fetch income and expenses in parallel
+        const [incomeRows, expenseRows] = await Promise.all([
+          api(`/api/users/${user.sub}/incomes`, { token }),
+          api(`/api/users/${user.sub}/expenses`, { token })
+        ])
+
+        // Map income data
+        const incomeData = incomeRows.map((item) => ({
+          id: item.id,
+          type: "income",
+          category: item.category || "Other",
+          description: item.description,
+          amount: Number(item.amount),
+          value: Number(item.amount),
+          date: item.date,
+        }))
+
+        // Map expense data
+        const expenseData = expenseRows.map((item) => ({
+          id: item.id,
+          type: "expense",
+          category: item.category || "Other",
+          description: item.description,
+          amount: Number(item.amount),
+          value: Number(item.amount),
+          date: item.date,
+        }))
 
         // Combine and sort by date (newest first)
         const combined = [...incomeData, ...expenseData]
@@ -129,6 +164,8 @@ const Dashboard = () => {
         setTransactions([])
       }
     }
+
+    fetchTransactions()
 
     // Fetch saving goals from localStorage or API
     const fetchSavingGoals = () => {
@@ -161,9 +198,8 @@ const Dashboard = () => {
       }
     }
 
-    fetchTransactions()
     fetchSavingGoals()
-  }, [])
+  }, [isAuthenticated, user, getAccessTokenSilently])
 
   // Format date string to readable format (e.g., "Jan 1, 2023")
   const formatDate = (dateString) => {
